@@ -2,7 +2,7 @@
 #include "Math.h"
 #include "Aimbot.h"
 
-//We should probably also check if we can aWall backtracked players?
+
 
 float Autowall::GetHitgroupDamageMultiplier(HitGroups iHitGroup) {
 	switch (iHitGroup) {
