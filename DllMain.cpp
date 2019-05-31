@@ -119,6 +119,7 @@ DWORD WINAPI Stage1(LPVOID hInstance)
 
 	//
 	SurfaceHook = std::make_unique<VMTHook>(pSurface);
+	SurfaceHook->HookFunction(Hooks::hLockCursor, 67);
 	//	SurfaceHook->HookFunction(Hooks::hPlaySounds, 82);
 	//	//SurfaceHook->HookFunction(Hooks::OnScreenSizeChanged, 116);
 	//
