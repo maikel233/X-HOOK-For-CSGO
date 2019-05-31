@@ -42,7 +42,8 @@ typedef bool(*LineGoesThroughSmokeFn) (Vector, Vector, int16_t);
 
 
 typedef void(*InitKeyValuesFn) (KeyValues*, const char*);
-typedef void(*LoadFromBufferFn) (KeyValues*, const char*, const char*, void*, const char*, void*);
+typedef void(*LoadFromBufferFn) (KeyValues*, const char*, const char*, void*, const char*, void*);		
+typedef void(__thiscall *LoadFromBufferFn) (KeyValues*, const char*, const char*, void*, const char*, void*, void*);
 
 
 
@@ -291,7 +292,7 @@ enum class ItemDefinitionIndex : int
 };
 
 
-enum class EClassIds : int
+enum class EClassIds
 {
 	CAI_BaseNPC = 0,
 	CAK47,
@@ -320,8 +321,13 @@ enum class EClassIds : int
 	CBeam,
 	CBeamSpotlight,
 	CBoneFollower,
+	CBRC4Target,
+	CBreachCharge,
+	CBreachChargeProjectile,
 	CBreakableProp,
 	CBreakableSurface,
+	CBumpMine,
+	CBumpMineProjectile,
 	CC4,
 	CCascadeLight,
 	CChicken,
@@ -332,9 +338,13 @@ enum class EClassIds : int
 	CCSPlayerResource,
 	CCSRagdoll,
 	CCSTeam,
+	CDangerZone,
+	CDangerZoneController,
 	CDEagle,
 	CDecoyGrenade,
 	CDecoyProjectile,
+	CDrone,
+	CDronegun,
 	CDynamicLight,
 	CDynamicProp,
 	CEconEntity,
@@ -347,6 +357,7 @@ enum class EClassIds : int
 	CEnvAmbientLight,
 	CEnvDetailController,
 	CEnvDOFController,
+	CEnvGasCanister,
 	CEnvParticleScript,
 	CEnvProjectedTexture,
 	CEnvQuadraticBeam,
@@ -359,6 +370,7 @@ enum class EClassIds : int
 	CFireSmoke,
 	CFireTrail,
 	CFish,
+	CFists,
 	CFlashbang,
 	CFogController,
 	CFootstepControl,
@@ -376,6 +388,7 @@ enum class EClassIds : int
 	CFuncSmokeVolume,
 	CFuncTrackTrain,
 	CGameRulesProxy,
+	CGrassBurn,
 	CHandleTest,
 	CHEGrenade,
 	CHostage,
@@ -383,16 +396,20 @@ enum class EClassIds : int
 	CIncendiaryGrenade,
 	CInferno,
 	CInfoLadderDismount,
+	CInfoMapRegion,
 	CInfoOverlayAccessor,
 	CItem_Healthshot,
+	CItemCash,
 	CItemDogtags,
 	CKnife,
 	CKnifeGG,
 	CLightGlow,
 	CMaterialModifyControl,
+	CMelee,
 	CMolotovGrenade,
 	CMolotovProjectile,
 	CMovieDisplay,
+	CParadropChopper,
 	CParticleFire,
 	CParticlePerformanceMonitor,
 	CParticleSystem,
@@ -401,8 +418,13 @@ enum class EClassIds : int
 	CPhysicsProp,
 	CPhysicsPropMultiplayer,
 	CPhysMagnet,
+	CPhysPropAmmoBox,
+	CPhysPropLootCrate,
+	CPhysPropRadarJammer,
+	CPhysPropWeaponUpgrade,
 	CPlantedC4,
 	CPlasma,
+	CPlayerPing,
 	CPlayerResource,
 	CPointCamera,
 	CPointCommentaryNode,
@@ -413,6 +435,7 @@ enum class EClassIds : int
 	CPrecipitationBlocker,
 	CPredictedViewModel,
 	CProp_Hallucination,
+	CPropCounter,
 	CPropDoorRotating,
 	CPropJeep,
 	CPropVehicleDriveable,
@@ -429,6 +452,9 @@ enum class EClassIds : int
 	CSmokeGrenade,
 	CSmokeGrenadeProjectile,
 	CSmokeStack,
+	CSnowball,
+	CSnowballPile,
+	CSnowballProjectile,
 	CSpatialEntity,
 	CSpotlightEnd,
 	CSprite,
@@ -438,6 +464,8 @@ enum class EClassIds : int
 	CSteamJet,
 	CSun,
 	CSunlightShadowControl,
+	CSurvivalSpawnChopper,
+	CTablet,
 	CTeam,
 	CTeamplayRoundBasedRulesProxy,
 	CTEArmorRicochet,
@@ -531,6 +559,7 @@ enum class EClassIds : int
 	CWeaponSG550,
 	CWeaponSG552,
 	CWeaponSG556,
+	CWeaponShield,
 	CWeaponSSG08,
 	CWeaponTaser,
 	CWeaponTec9,
@@ -539,13 +568,14 @@ enum class EClassIds : int
 	CWeaponUSP,
 	CWeaponXM1014,
 	CWorld,
+	CWorldVguiText,
 	DustTrail,
 	MovieExplosion,
 	ParticleSmokeGrenade,
 	RocketTrail,
 	SmokeTrail,
 	SporeExplosion,
-	SporeTrail
+	SporeTrail,
 };
 
 
