@@ -452,6 +452,10 @@ public:
 namespace Settings
 {
 
+	namespace NoDuckCooldown
+	{
+		extern bool enabled;
+	}
 
 	namespace TracerEffects
 	{
