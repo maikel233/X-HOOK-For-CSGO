@@ -740,7 +740,17 @@ namespace Hooks
 		AutoAccept::PlaySound(fileName);
 	}
 
-
+	
+	void	__stdcall hLockCursor()
+	{
+		bool Lock = G::is_renderer_active;
+		if (Lock) {
+			pSurface->unlockcursor(); // IDX 66
+			return;
+		}
+		SurfaceHook->GetOriginalFunction<LockCursor>(67)(pSurface);
+	}
+	
 	void __fastcall Hooks::RenderSmokePostViewmodel(void* ecx, void* edx) {
 		if (!NoSmoke::RenderSmokePostViewmodel())
 			RenderViewHook->GetOriginalFunction<NoSmokeFn>(41)(ecx);
