@@ -96,7 +96,7 @@ namespace Hooks
 
 	void OnScreenSizeChanged(void* thisptr, int oldwidth, int oldheight);
 	void __stdcall hPlaySounds(const char* fileName);
-
+	void __stdcall hLockCursor();
 	void __fastcall hRenderView(void* ecx, void* edx, CViewSetup &setup, CViewSetup &hudViewSetup, int nClearFlags, int whatToDraw);
 	void __fastcall  RenderSmokePostViewmodel(void* ecx, void* edx);
 	void __fastcall hOverrideView(void* _this, void* _edx, ViewSetup* setup);
