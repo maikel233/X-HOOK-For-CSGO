@@ -37,6 +37,9 @@ typedef bool(__thiscall* OverrideConfigFn)(void*, MaterialSystem_Config_t*, bool
 /* Surface */
 typedef void(*OnScreenSizeChangedFn)(void*, int, int);
 typedef void(__thiscall* PlaySoundFn)(ISurface*, const char*);
+
+typedef void(__thiscall* LockCursor)(void*);
+
 /* ViewRender */
 
 //typedef void(__thiscall* RenderViewFn)(void*, CViewSetup&, CViewSetup&, int, int);
