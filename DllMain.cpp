@@ -27,20 +27,21 @@ DWORD WINAPI Stage1(LPVOID hInstance)
 
 	MsgFunc_ServerRankRevealAll = reinterpret_cast<MsgFunc_ServerRankRevealAllFn>(FindPatternV2("client_panorama.dll", "55 8B EC 8B 0D ? ? ? ? 85 C9 75 ? A1 ? ? ? ? 68 ? ? ? ? 8B 08 8B 01 FF 50 ? 85 C0 74 ? 8B C8 E8 ? ? ? ? 8B C8 EB ? 33 C9 89 0D ? ? ? ? 8B 45 ? FF 70 ? E8 ? ? ? ? B0 ? 5D"));
 	//MsgFunc_ServerRankRevealAll = reinterpret_cast<MsgFunc_ServerRankRevealAllFn>(FindPattern("client_panorama.dll", "\x55\x8B\xEC\x83\xEC\x0C\xC7\x45\x00\x00\x00\x00\x00\8D", "xxxxxxxx?????x"));
-	IsReadyCallback = reinterpret_cast < IsReady > ((DWORD)FindPatternV2("client_panorama.dll", "55 8B EC 83 E4 F8 8B 4D 08 BA ? ? ? ? E8 ? ? ? ? 85 C0 75 12"));          //FindPattern("client_panorama.dll", "\x55\x8B\xEC\x83\xE4\xF8\x83\xEC\x08\x56\x8B\x35\x00\x00\x00\x00\x57\x83\xBE", "xxxxxxxxxxxx????xxx"));
+	IsReadyCallback = reinterpret_cast < IsReady > ((DWORD)FindPatternV2("client_panorama.dll", "55 8B EC 83 E4 F8 83 EC 08 56 8B 35 ? ? ? ? 57 83 BE"));          //FindPattern("client_panorama.dll", "\x55\x8B\xEC\x83\xE4\xF8\x83\xEC\x08\x56\x8B\x35\x00\x00\x00\x00\x57\x83\xBE", "xxxxxxxxxxxx????xxx"));
 				
 /*	pViewRender = **reinterpret_cast<CViewRender***>(FindPattern("client_panorama.dll", "\xFF\x50\x14\xE8\x00\x00\x00\x00\x5D", "xxxx????x") - 7);			*/																																						   
 	pViewRender = **reinterpret_cast<CViewRender***>(FindPatternV2("client_panorama.dll", "FF 50 14 E8 ? ? ? ? 5D") - 7);
 
 //	KeyValues_KeyValues = FindPattern("client_panorama.dll", "\x68\x00\x00\x00\x00\x8B\xC8\xE8\x00\x00\x00\x00\x89\x45\xFC\xEB\x07\xC7\x45\x00\x00\x00\x00\x00\x8B\x03\x56", "x????xxx????xxxxxxx?????xxx");
-	KeyValues_KeyValues = FindPatternV2("client_panorama.dll", "55 8B EC 51 33 C0 C7 45");
+KeyValues_KeyValues = FindPatternV2(XorStr("client_panorama.dll"), XorStr("8B 0E 33 4D FC 81 E1 ? ? ? ? 31 0E 88 46 03 C1 F8 08 66 89 46 12 8B C6")) - 0x45;
 	KeyValues_LoadFromBuffer = FindPatternV2("client_panorama.dll", "55 8B EC 83 E4 F8 83 EC 34 53 8B 5D 0C 89 4C 24 04");
 	pPredSeed = *(int**)(FindPattern("client_panorama.dll", "\x8B\x0D\x00\x00\x00\x00\xBA\x00\x00\x00\x00\xE8\x00\x00\x00\x00\x83\xC4\x04", "xx????x????x????xxx") + 2);
 
 
 
 	dwPresent = (DWORD_PTR**)(FindPattern("gameoverlayrenderer.dll", "\xA3\x00\x00\x00\x00\x68\x00\x00\x00\x00\xFF\x76\x54\xE8\x00\x00\x00\x00\x83\xC4\x08\x84\xC0\x75\x17", "x????x????xxxx????xxxxxxx") + 1);
-	pClientState = *(CClientState**)(FindPattern("engine.dll", "\x8B\x3D\x00\x00\x00\x00\x8A\xF9", "xx????xx") + 2); pClientState = *(CClientState**)(pClientState);
+
+	pClientState = *(CClientState**)(FindPatternV2("engine.dll", "A1 ? ? ? ? 8B 80 ? ? ? ? C3") + 1);
 
 	pGameRules = *(CSGameRulesProxy***)(FindPattern("client_panorama.dll", "\xA1\x00\x00\x00\x00\x85\xC0\x0F\x84\x00\x00\x00\x00\x80\xB8\x00\x00\x00\x00\x00\x0F\x84\x00\x00\x00\x00\x0F\x10\x05", "x????xxxx????xx?????xx????xxx") + 0x1);
 	csPlayerResource = *(C_CSPlayerResource***)(FindPattern("client_panorama.dll", "\xA1\x00\x00\x00\x00\x57\x85\xC0\x74\x08", "x????xxxxx") + 1);
@@ -132,8 +133,8 @@ DWORD WINAPI Stage1(LPVOID hInstance)
 	SoundHook->HookFunction(Hooks::EmitSound2, 5);
 //
 	RenderViewHook = std::make_unique<VMTHook>(pViewRender);
-	RenderViewHook->HookFunction(Hooks::hRenderView, 6);
-	RenderViewHook->HookFunction(Hooks::RenderSmokePostViewmodel, 41);
+	//RenderViewHook->HookFunction(Hooks::hRenderView, 6);
+	//RenderViewHook->HookFunction(Hooks::RenderSmokePostViewmodel, 41);
 
 	ModelRenderHook = std::make_unique<VMTHook>(pModelRender);
 	ModelRenderHook->HookFunction(Hooks::hDrawModelExecute, 21);
@@ -348,8 +349,7 @@ DWORD __stdcall HandleConfigs(void* args)
 {
 	while (true)
 	{
-		//		IRC::Thread(); // Not required atm..
-		//		Config::Handle();
+		//		IRC::Thread(); 
 		if (Settings::HWID::uninject)
 			ExitThread(NULL);
 		Sleep(24);
