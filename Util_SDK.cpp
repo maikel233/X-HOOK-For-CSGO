@@ -68,7 +68,7 @@ void Util::InitKeyValues(KeyValues* keyValues, char const * name)
 	}
 }
 
-void Util::LoadFromBuffer(KeyValues* keyValues, char const *resourceName, const char *pBuffer)
+void Util::LoadFromBuffer(KeyValues* keyValues, char const *resourceName, const char *pBuffer, /*IBaseFileSystem**/void* pFileSystem, const char* pPathID, void* pfnEvaluateSymbolProc)
 {
 	DWORD dwFunction = (DWORD)KeyValues_LoadFromBuffer;
 
