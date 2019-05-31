@@ -199,6 +199,7 @@ namespace Hooks
 			GrenadeHelper::CreateMove(cmd);
 			GrenadePrediction::CreateMove(cmd);
 			EdgeJump::PrePredictionCreateMove(cmd);
+			NoDuckCooldown::CreateMove(cmd);
 			BHop::CreateMoveCircle(cmd);
 			PredictionSystem::StartPrediction(cmd);
 			Autoblock::CreateMove(cmd);
