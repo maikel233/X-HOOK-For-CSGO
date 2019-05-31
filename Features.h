@@ -55,6 +55,7 @@
 #include "Spammer.h"
 #include "TelePort.h"
 #include "ThirdPerson.h"
+#include "noduckcooldown.h"
 #include "View.h"
 #include "SkinChanger.h"
 #include "PredictionSystem.h"
@@ -79,6 +80,7 @@
 #include "angleindicator.h"
 #include "valvedscheck.h"
 #include "FakeLatency.h"
+//#include "LobbyChatEditor.h"
 //GUI
 #include "configs.h"
 
