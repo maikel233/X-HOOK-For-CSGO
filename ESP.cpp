@@ -74,6 +74,7 @@ bool Settings::ESP::Info::grabbingHostage = false;
 bool Settings::ESP::Info::rescuing = false;
 bool Settings::ESP::Info::location = false;
 bool Settings::ESP::Info::lby = false;
+bool Settings::ESP::Info::money = false;
 bool Settings::ESP::Info::resolveInfo = false;
 bool Settings::ESP::Boxes::enabled = false;
 BoxType Settings::ESP::Boxes::type = BoxType::FRAME_2D;
@@ -109,7 +110,9 @@ bool Settings::ESP::Spread::spreadLimit = false;
 bool Settings::ESP::Test::testfunction1 = false;
 bool Settings::ESP::Test::testfunction2 = false;
 bool Settings::ESP::Test::testfunction3 = false;
-        
+
+
+bool Settings::Debug::AnimLayers::draw = false;
 
 inline void CrossProduct(const Vector& a, const Vector& b, Vector& result)
 {
@@ -536,12 +539,79 @@ static void DrawBox(Color color, int x, int y, int w, int h, C_BaseEntity* entit
 	}
 	else if (Settings::ESP::Boxes::type == BoxType::FLAT_2D)
 	{
-		// color
-		Draw::Rectangle(x, y, x + w, y + h, color);
-		// outer outline
-		Draw::Rectangle(x + 1, y + 1, x + w - 1, y + h - 1, Color(10, 10, 10, 190));
-		// inner outline
-		Draw::Rectangle(x - 1, y - 1, x + w + 1, y + h + 1, Color(10, 10, 10, 190));
+		int VertLine = (int)(w * 0.33f);
+		int HorzLine = (int)(h * 0.33f);
+		int squareLine = min(VertLine, HorzLine);
+
+		// top-left corner / color
+		Draw::Rectangle(x, y, x + squareLine, y + 1, color);
+		Draw::Rectangle(x, y, x + 1, y + squareLine, color);
+
+		// top-left corner / outer outline
+		//Draw::Rectangle(x - 1, y - 1, x + squareLine, y, Color(10, 10, 10, 190));
+		//Draw::Rectangle(x - 1, y, x, y + squareLine, Color(10, 10, 10, 190));
+
+		// top-left corner / inner outline
+		//Draw::Rectangle(x + 1, y + 1, x + squareLine, y + 2, Color(10, 10, 10, 190));
+		//Draw::Rectangle(x + 1, y + 2, x + 2, y + squareLine, Color(10, 10, 10, 190));
+
+		// top-left corner / missing edges
+		Draw::Rectangle(x + squareLine, y - 1, x + squareLine + 1, y + 2, Color(10, 10, 10, 190));
+		Draw::Rectangle(x - 1, y + squareLine, x + 2, y + squareLine + 1, Color(10, 10, 10, 190));
+
+
+		// top-right corner / color
+		Draw::Rectangle(x + w - squareLine, y, x + w, y + 1, color);
+		Draw::Rectangle(x + w - 1, y, x + w, y + squareLine, color);
+
+		// top-right corner / outer outline
+		//Draw::Rectangle(x + w - squareLine, y - 1, x + w + 1, y, Color(10, 10, 10, 190));
+		//Draw::Rectangle(x + w, y, x + w + 1, y + squareLine, Color(10, 10, 10, 190));
+
+		// top-right corner / inner outline
+		//Draw::Rectangle(x + w - squareLine, y + 1, x + w - 1, y + 2, Color(10, 10, 10, 190));
+		//Draw::Rectangle(x + w - 2, y + 2, x + w - 1, y + squareLine, Color(10, 10, 10, 190));
+
+		// top-right corner / missing edges
+		Draw::Rectangle(x + w - squareLine - 1, y - 1, x + w - squareLine, y + 2, Color(10, 10, 10, 190));
+		Draw::Rectangle(x + w - 2, y + squareLine, x + w + 1, y + squareLine + 1, Color(10, 10, 10, 190));
+
+
+		// bottom-left corner / color
+		Draw::Rectangle(x, y + h - 1, x + squareLine, y + h, color);
+		Draw::Rectangle(x, y + h - squareLine, x + 1, y + h, color);
+
+		// bottom-left corner / outer outline
+		//Draw::Rectangle(x - 1, y + h, x + squareLine, y + h + 1, Color(10, 10, 10, 190));
+		//Draw::Rectangle(x - 1, y + h - squareLine, x, y + h, Color(10, 10, 10, 190));
+
+		// bottom-left corner / inner outline
+		//Draw::Rectangle(x + 1, y + h - 2, x + squareLine, y + h - 1, Color(10, 10, 10, 190));
+		//Draw::Rectangle(x + 1, y + h - squareLine, x + 2, y + h - 2, Color(10, 10, 10, 190));
+
+		// bottom-left corner / missing edges
+		Draw::Rectangle(x + squareLine, y + h - 2, x + squareLine + 1, y + h + 1, Color(10, 10, 10, 190));
+		Draw::Rectangle(x - 1, y + h - squareLine - 1, x + 2, y + h - squareLine, Color(10, 10, 10, 190));
+
+
+		// bottom-right corner / color
+		Draw::Rectangle(x + w - squareLine, y + h - 1, x + w, y + h, color);
+		Draw::Rectangle(x + w - 1, y + h - squareLine, x + w, y + h, color);
+
+		// bottom-right corner / outer outline
+		//Draw::Rectangle(x + w - squareLine, y + h, x + w + 1, y + h + 1, Color(10, 10, 10, 190));
+		//Draw::Rectangle(x + w, y + h - squareLine, x + w + 1, y + h + 1, Color(10, 10, 10, 190));
+
+		// bottom-right corner / inner outline
+		//Draw::Rectangle(x + w - squareLine, y + h - 2, x + w - 1, y + h - 1, Color(10, 10, 10, 190));
+		//Draw::Rectangle(x + w - 2, y + h - squareLine, x + w - 1, y + h - 2, Color(10, 10, 10, 190));
+
+		// bottom-right corner / missing edges
+		Draw::Rectangle(x + w - squareLine, y + h - 2, x + w - squareLine + 1, y + h + 1, Color(10, 10, 10, 190));
+		Draw::Rectangle(x + w - 2, y + h - squareLine - 1, x + w + 1, y + h - squareLine, Color(10, 10, 10, 190));
+
+		Draw::FilledRectangle(x, y, x + w, y + h, Color(color.r, color.g, color.b, 21));
+
 	}
 	else if (Settings::ESP::Boxes::type == BoxType::BOX_3D)
 	{
@@ -800,41 +870,41 @@ static void DrawDirection(const Vector& origin) //monarch is the NIGGA
 	flYPosition = (int)((height / 2.0f) - (radius * flCosYaw));
 */
 
-	int width, height;
-	pEngine->GetScreenSize(width, height);
-
-	float flRadius = 360.0f;
-	Vector vRealAngles;
-	pEngine->GetViewAngles(vRealAngles);
-
-	Vector vForward, vRight, vUp(0.0f, 0.0f, 1.0f);
-
-	Math::AngleVectors(vRealAngles, vForward);
-
-	vForward.z = 0.0f;
-	Math::NormalizeVector(vForward);
-	vRight = CrossProduct(vUp, vForward);
-
-	float flFront = VecDotProduct(origin, vForward);
-	float flSide = VecDotProduct(origin, vRight);
-	float flXPosition = flRadius * -flSide;
-	float flYPosition = flRadius * -flFront;
-
-	float flRotation = G::UserCmd->viewangles.y + 180;
-
-	flRotation = atan2(flXPosition, flYPosition) + PI;
-	flRotation *= 180.f / PI;
-
-	float flYawRadians = -(flRotation)* PI / 180.f;
-	float flCosYaw = cos(flYawRadians);
-	float flSinYaw = sin(flYawRadians);
-
-	flXPosition = (int)((width / 2.0f) + (flRadius * flSinYaw));
-	flYPosition = (int)((height / 2.0f) - (flRadius * flCosYaw));
-
-
-	Draw::OutlinedCircle(flXPosition, flYPosition, 5, 25, Color(255, 0, 0, 255));
-	
+//	int width, height;
+//	pEngine->GetScreenSize(width, height);
+//
+//	float flRadius = 360.0f;
+//	Vector vRealAngles;
+//	pEngine->GetViewAngles(vRealAngles);
+//
+//	Vector vForward, vRight, vUp(0.0f, 0.0f, 1.0f);
+//
+//	Math::AngleVectors(vRealAngles, vForward);
+//
+//	vForward.z = 0.0f;
+//	Math::NormalizeVector(vForward);
+//	vRight = CrossProduct(vUp, vForward);
+//
+//	float flFront = VecDotProduct(origin, vForward);
+//	float flSide = VecDotProduct(origin, vRight);
+//	float flXPosition = flRadius * -flSide;
+//	float flYPosition = flRadius * -flFront;
+//
+//	float flRotation = G::UserCmd->viewangles.y + 180;
+//
+////	flRotation = atan2(flXPosition, flYPosition) + PI;
+////	flRotation *= 180.f / PI;
+//
+////	float flYawRadians = -(flRotation)* PI / 180.f;
+//	float flCosYaw = cos(flYawRadians);
+//	float flSinYaw = sin(flYawRadians);
+//
+//	flXPosition = (int)((width / 2.0f) + (flRadius * flSinYaw));
+//	flYPosition = (int)((height / 2.0f) - (flRadius * flCosYaw));
+//
+//
+//	Draw::OutlinedCircle(flXPosition, flYPosition, 5, 25, Color(255, 0, 0, 255));
+//	
 
 	//RENDER::DrawFilledCircle(flXPosition, flYPosition, 10, 50, CColor(255, 0, 255, 120));
 }
@@ -1618,6 +1688,13 @@ static void DrawPlayer(int index, C_BasePlayer* player, IEngineClient::player_in
 	if (Settings::ESP::Info::scoped && player->IsScoped())
 		stringsToShow.push_back("Scoped");
 
+	if (Settings::ESP::Info::money)
+	{
+		char money[6];
+		sprintf(money, "$%d", player->GetMoney());
+		stringsToShow.push_back(money);
+	}
+
 	if (Settings::ESP::Info::reloading && activeWeapon && activeWeapon->GetInReload())
 		stringsToShow.push_back("Reloading");
 
@@ -1641,6 +1718,13 @@ static void DrawPlayer(int index, C_BasePlayer* player, IEngineClient::player_in
 
 	if (Settings::ESP::Info::rescuing && player->IsRescuing())
 		stringsToShow.push_back("Rescuing");
+
+	if (Settings::Debug::AnimLayers::draw) {
+		CUtlVector<AnimationLayer> *layers = player->GetAnimOverlay();
+		for (int i = 0; i <= layers->Count(); i++) {
+			stringsToShow.push_back(Util::GetActivityName(player->GetSequenceActivity(layers->operator[](i).m_nSequence)));
+		}
+	}
 
 	if (Settings::Resolver::enabled && localplayer->GetAlive() && Resolver::resolvingId == player->GetIndex() && Settings::ESP::Info::lby) {
 		if (Settings::Resolver::LagComp) {
@@ -1685,8 +1769,8 @@ static void DrawPlayer(int index, C_BasePlayer* player, IEngineClient::player_in
 	if (Settings::ESP::Skeleton::enabled)
 		DrawSkeleton(player);
 
-	//if (Settings::ESP::SkeletonBacktrack::enabled)
-	//	DrawBacktrackIndicator(player);
+	if (Settings::ESP::SkeletonBacktrack::enabled)
+		DrawBacktrackIndicator(player);
 
 	if (Settings::ESP::BulletTracers::enabled)
 		DrawBulletTrace(player);

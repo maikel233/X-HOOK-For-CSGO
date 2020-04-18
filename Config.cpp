@@ -69,12 +69,12 @@ bool Config::CheckConfigs()
 	strcat(Cbble, "\\config.json");
 
 		/*
-		URLDownloadToFile(nullptr, XorStr("http://x-hook.xyz/Xhook/pictures/bg.jpg"), Pic1, 0, nullptr); Sleep(400);
-		URLDownloadToFile(nullptr, XorStr("http://x-hook.xyz/Xhook/Grenadehelper/de_dust2/config.json"), Dust2, 0, nullptr); Sleep(400);
-		URLDownloadToFile(nullptr, XorStr("http://x-hook.xyz/Xhook/Grenadehelper/de_mirage/config.json"), Mirage, 0, nullptr); Sleep(400);
-		URLDownloadToFile(nullptr, XorStr("http://x-hook.xyz/Xhook/Grenadehelper/de_cache/config.json"), Cache, 0, nullptr); Sleep(400);
-		URLDownloadToFile(nullptr, XorStr("http://x-hook.xyz/Xhook/Grenadehelper/de_overpass/config.json"), Overpass, 0, nullptr); Sleep(400);
-		URLDownloadToFile(nullptr, XorStr("http://x-hook.xyz/Xhook/Grenadehelper/de_cbble/config.json"), Cbble, 0, nullptr); Sleep(400);
+		URLDownloadToFile(nullptr, XorStr("http://xhook.xyz/Xhook/pictures/bg.jpg"), Pic1, 0, nullptr); Sleep(400);
+		URLDownloadToFile(nullptr, XorStr("http://xhook.xyz/Xhook/Grenadehelper/de_dust2/config.json"), Dust2, 0, nullptr); Sleep(400);
+		URLDownloadToFile(nullptr, XorStr("http://xhook.xyz/Xhook/Grenadehelper/de_mirage/config.json"), Mirage, 0, nullptr); Sleep(400);
+		URLDownloadToFile(nullptr, XorStr("http://xhook.xyz/Xhook/Grenadehelper/de_cache/config.json"), Cache, 0, nullptr); Sleep(400);
+		URLDownloadToFile(nullptr, XorStr("http://xhook.xyz/Xhook/Grenadehelper/de_overpass/config.json"), Overpass, 0, nullptr); Sleep(400);
+		URLDownloadToFile(nullptr, XorStr("http://xhook.xyz/Xhook/Grenadehelper/de_cbble/config.json"), Cbble, 0, nullptr); Sleep(400);
 		*/
 		
 	//strcat(Path, "\\Rage.ini");

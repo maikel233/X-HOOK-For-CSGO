@@ -31,7 +31,7 @@ static std::string GetTimeString()
 void Info()
 {
 
-	//Draw::Text(1, -1, "X-HOOK.XYZ V1.2 for Counter-Strike Global offensive", esp_font, Color(255, 255, 255, 255));
+	//Draw::Text(1, -1, "XHOOK.XYZ V1.2 for Counter-Strike Global offensive", esp_font, Color(255, 255, 255, 255));
 
 	//	if (pEngine->IsInGame() && (*pGameRules) && (*pGameRules)->IsValveDS())
 	//		Draw::Text(200, -1, "VAC Server", esp_font, Color(0, 255, 0, 255));
@@ -46,7 +46,7 @@ void Info()
 			return;
 		}
 
-		//Draw::Text(1, -1, "X-HOOK.XYZ V1.3 for Counter-Strike Global offensive", esp_font, Color(255, 255, 255, 255));
+		//Draw::Text(1, -1, "XHOOK.XYZ V1.3 for Counter-Strike Global offensive", esp_font, Color(255, 255, 255, 255));
 		time_t rawtime;
 		struct tm* timeinfo;
 		char buffer[40];
@@ -56,7 +56,7 @@ void Info()
 		strftime(buffer, sizeof(buffer), "%T %Z", timeinfo);
 		std::string time(buffer);
 
-		std::string watermark(XorStr("X-HOOK.XYZ | "));
+		std::string watermark(XorStr("XHOOK.XYZ | "));
 		watermark.append(time);
 
 		Draw::Text(1, -1, watermark.c_str(), esp_font, Color(255, 255, 255, 255));
@@ -68,66 +68,65 @@ void Info()
 	}
 }
 
-//Spotify
+
+/* 
 void ShowSpotify::RenderWindow()
 {
-	//if (!Settings::Spotify::ShowControls)
-	//	return;
+	if (!Settings::Spotify::ShowControls)
+		return;
 
-	//ImGui::SetNextWindowSize(ImVec2(256, 50), ImGuiSetCond_FirstUseEver);
+	ImGui::SetNextWindowSize(ImVec2(256, 50), ImGuiSetCond_FirstUseEver);
 
-	//if (ImGui::Begin("Spotify controls"), &Settings::ShowSpectators::enabled, ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_ShowBorders)
-	//{
-	//	//
-	//	static Spotify* spotify = new Spotify();
-	//	if (spotify->_IsAttached())
-	//	{
-	//		std::wstring curSong = spotify->GetCurrentSong();
+	if (ImGui::Begin("Spotify controls"), &Settings::ShowSpectators::enabled, ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_ShowBorders)
+	{
+		
+		static Spotify* spotify = new Spotify();
+		if (spotify->_IsAttached())
+		{
+			std::wstring curSong = spotify->GetCurrentSong();
 
-	//		if (ImGui::Button("<= Previous song")) {
-	//			spotify->Previous();
-	//		}
-	//		ImGui::SameLine();
-	//		if (curSong.find(L"Paused") == std::wstring::npos)
-	//		{
-	//			if (ImGui::Button("Pause song")) {
-	//				spotify->Pause();
-	//			}
-	//		}
-	//		else
-	//		{
-	//			if (ImGui::Button("Play song")) {
-	//				spotify->Pause();
-	//			}
-	//		}
+			if (ImGui::Button("<= Previous song")) {
+				spotify->Previous();
+			}
+			ImGui::SameLine();
+			if (curSong.find(L"Paused") == std::wstring::npos)
+			{
+				if (ImGui::Button("Pause song")) {
+					spotify->Pause();
+				}
+			}
+			else
+			{
+				if (ImGui::Button("Play song")) {
+					spotify->Pause();
+				}
+			}
 
-	//		ImGui::SameLine();
-	//		if (ImGui::Button("Next Song =>")) {
-	//			spotify->Next();
-	//		}
+			ImGui::SameLine();
+			if (ImGui::Button("Next Song =>")) {
+				spotify->Next();
+			}
 
-	//		if (curSong.find(L"Paused") == std::wstring::npos)
-	//		{
-	//			_bstr_t b(curSong.c_str());
-	//			const char* c = b;
+			if (curSong.find(L"Paused") == std::wstring::npos)
+			{
+				_bstr_t b(curSong.c_str());
+				const char* c = b;
 
 
-	//			ImGui::Text("Current song: ");
-	//			ImGui::SameLine();
-	//			ImGui::Text("%s", c);
-	//		}
-	//		else
-	//		{
+				ImGui::Text("Current song: ");
+				ImGui::SameLine();
+				ImGui::Text("%s", c);
+			}
+			else
+			{
 
-	//			ImGui::Separator();
-	//			ImGui::Text("Music Paused");
-	//		}
-	//	} // End of spotify attach
+				ImGui::Separator();
+				ImGui::Text("Music Paused");
+			}
+		} // End of spotify attach
 
-	//	ImGui::End();
-	//}
+		ImGui::End();
+	}
 	
 }
-
-//Windows Media player?
-//VLC?
+*/

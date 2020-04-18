@@ -20,6 +20,12 @@ namespace Backtracking {
 	void ToggleRequiredCVars(bool activate = true);
 
 	void FrameStageNotify(ClientFrameStage_t stage);
+	void Createmove(CUserCmd* cmd);
+
+	bool IsTickValid(int tick);
+	float GetLerpTime();
+
+
 }
 
 //

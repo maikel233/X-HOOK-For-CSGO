@@ -44,7 +44,7 @@ static const char* PresetChars() {
 
 	switch (Settings::ClanTagChanger::preset) {
 	case valueType::XHOOK:
-		return "X-HOOK.XYZ";
+		return "XHOOK.XYZ";
 		break;
 	case valueType::Dogeii_Gang:
 		return "Dogeii Gang";
@@ -123,9 +123,9 @@ void ClanTagChanger::UpdateClanTagCallback()
 	}
 
 	ClanTagChanger::animations = {
-		Marquee("X-HOOK.XYZ", L"X-HOOK.XYZ"),
-		Words("X-HOOK.XYZ", L"X-HOOK.XYZ"),
-		Letters("X-HOOK.XYZ", L"X-HOOK.XYZ")
+		Marquee("XHOOK.XYZ", L"XHOOK.XYZ"),
+		Words("XHOOK.XYZ", L"XHOOK.XYZ"),
+		Letters("XHOOK.XYZ", L"XHOOK.XYZ")
 	};
 
 	int current_animation = (int)Settings::ClanTagChanger::type - 1;

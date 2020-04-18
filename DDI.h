@@ -2,7 +2,7 @@
 
 void Info();
 
-namespace ShowSpotify
-{
-	void RenderWindow();
-}
+//namespace ShowSpotify
+//{
+//	void RenderWindow();
+//}

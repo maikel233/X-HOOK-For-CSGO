@@ -5,7 +5,7 @@ static std::deque<CIncomingSequence>sequences;
 static int lastincomingsequencenumber;
 void LagCompensation::UpdateIncomingSequences()
 {
-	auto clientState = *reinterpret_cast<uintptr_t*>(uintptr_t(GetModuleHandle("engine.dll")) + 0x588B34); //DONT HARDCODE OFFESTS
+	auto clientState = *reinterpret_cast<uintptr_t*>(uintptr_t(GetModuleHandle("engine.dll")) + 0x58BCFC); //DONT HARDCODE OFFESTS
 
 
 	if (!clientState)
@@ -25,7 +25,7 @@ void LagCompensation::UpdateIncomingSequences()
 
 		if (netchan->m_nInSequenceNr > lastincomingsequencenumber)
 		{
-			//sequences.push_front(netchan->m_nInSequenceNr);
+			
 			lastincomingsequencenumber = netchan->m_nInSequenceNr;
 
 			sequences.push_front(CIncomingSequence(netchan->m_nInReliableState, netchan->m_nOutReliableState, netchan->m_nInSequenceNr, pGlobalVars->realtime));
@@ -50,7 +50,6 @@ void LagCompensation::AddLatencyToNetchan(INetChannel *netchan, float Latency)
 		if (pGlobalVars->realtime - seq.curtime >= Latency)
 		{
 			netchan->m_nInReliableState = seq.inreliablestate;
-			//netchan->m_nOutReliableState = seq.outreliablestate;
 			netchan->m_nInSequenceNr = seq.sequencenr;
 			break;
 		}

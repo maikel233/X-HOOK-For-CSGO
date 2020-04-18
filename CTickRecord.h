@@ -22,6 +22,7 @@ struct CTickRecord {
 	}
 
 	CTickRecord(C_BasePlayer* player) {
+		matrixBuilt = player->SetupBones(matrix, 128, 256, m_flSimulationTime);
 		m_flLowerBodyYawTarget = *player->GetLowerBodyYawTarget();
 		m_angEyeAngles = *player->GetEyeAngles();
 		m_flCycle = player->GetCycle();
@@ -31,9 +32,13 @@ struct CTickRecord {
 		m_vecVelocity = player->GetVelocity();
 		m_flPoseParameter = player->GetPoseParameter();
 		headPos = player->GetBonePosition((int)Bone::BONE_HEAD);
+		absOrigin = player->getAbsOriginal();
 		tickcount = 0;
 		player->SetupBones(pBoneToWorldOut, 128, 256, 0);
-		
+		mins = player->GetCollideable()->OBBMins();
+		maxs = player->GetCollideable()->OBBMaxs();
+		flags = player->GetFlags();
+
 		m_iLayerCount = player->GetNumAnimOverlays();
 		for (int i = 0; i < m_iLayerCount; i++)
 			animationLayer[i] = player->GetAnimOverlays()[i];
@@ -76,8 +81,8 @@ struct CTickRecord {
 	CValidTick validtick;
 	int tickcount = 0;*/
 
-
-
+	matrix3x4_t	matrix[128];
+	bool matrixBuilt;
 	float m_flLowerBodyYawTarget = 0.f;
 	Vector m_angEyeAngles = Vector(0, 0, 0);
 	float m_flCycle = 0.f;
@@ -85,8 +90,15 @@ struct CTickRecord {
 	int m_nSequence = 0;
 	Vector m_vecOrigin = Vector(0, 0, 0);
 	Vector m_vecVelocity = Vector(0, 0, 0);
+	Vector calcPos = Vector(0, 0, 0);
+	Vector mins = Vector(0, 0, 0);
+	Vector maxs = Vector(0, 0, 0);
+	Vector calcBestPos = Vector(0, 0, 0);
+	float calcDmg = 0.f;
+	int flags;
 	std::array<float, 24> m_flPoseParameter = {};
 	Vector headPos;
+	Vector absOrigin;
 	CValidTick validtick;
 	int tickcount = 0;
 	matrix3x4_t pBoneToWorldOut[128];

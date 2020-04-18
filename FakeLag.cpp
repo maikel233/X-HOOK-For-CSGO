@@ -1,6 +1,8 @@
 #include "Features.h"
 FakeLagType Settings::FakeLag::type = FakeLagType::OFF;
 int Settings::FakeLag::value = 9;
+float Settings::FakeLag::fakelatency = 0.0;
+bool Settings::FakeLag::enablefakelatency = false;
 bool FakeLag::bFlipping = false;
 
 int cmdCounter = 0;

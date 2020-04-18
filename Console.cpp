@@ -6,7 +6,7 @@ void OpenConsole()
 		FILE* fp;
 		if(AllocConsole())
 			Open = true;
-		SetConsoleTitleA("X-HOOK");
+		SetConsoleTitleA("XHOOK");
 		freopen_s(&fp, "CONOUT$", "w", stdout);
 	}
 }

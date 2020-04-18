@@ -7,6 +7,8 @@ int previousLagCompensation = -1;
 bool Backtracking::backtrackingLby = false;
 std::deque< CIncomingSequence > sequences;
 int m_last_incoming_sequence_number;
+float lastSimTime[64];
+
 
 template<class T, class U>
 inline T clamp(T in, U low, U high)
@@ -137,3 +139,162 @@ void Backtracking::ToggleRequiredCVars(bool activate) {
 //		}
 //	}
 //}
+
+
+//Pasta time
+
+bool Backtracking::IsTickValid(int tick)
+{
+	// better use polak's version than our old one, getting more accurate results
+
+	INetChannelInfo *nci = pEngine->GetNetChannelInfo();
+
+	if (!nci)
+		return false;
+
+	float sv_maxunlag = pCvar->FindVar("sv_maxunlag")->GetFloat();
+
+	float correct = clamp(nci->GetLatency(FLOW_OUTGOING) + GetLerpTime(), 0.f, sv_maxunlag/*1.f*//*sv_maxunlag*/);
+
+	float deltaTime = correct - (pGlobalVars->curtime - TICKS_TO_TIME(tick));
+
+	return fabsf(deltaTime) < 0.2f;
+}
+//std::map<int, std::deque<CTickRecord>>
+
+// calcs dmg for all records
+void FindBest(C_BasePlayer* target, std::deque<CTickRecord>::iterator record, int i) {
+	//std::deque<CTickRecord>
+	float bestDmg = 0.f;
+	Vector bestAimSpot = Vector(0, 0, 0);
+
+	C_BasePlayer* Localplayer = (C_BasePlayer*)pEntityList->GetClientEntity(pEngine->GetLocalPlayer());
+	
+	if (!Localplayer->GetAlive())
+		return;
+
+	Vector viewAngles;
+	pEngine->GetViewAngles(viewAngles);
+	Vector pVecTarget = Localplayer->GetEyePosition();
+	float tempFov = Settings::Aimbot::AutoAim::fov;
+	float cbFov = Math::GetFov(viewAngles, Math::CalcAngle(pVecTarget,
+		Backtracking::lagRecords[target->GetIndex()][i].headPos));
+
+	pCvar->ConsoleColorPrintf(ColorRGBA(255, 255, 255), XorStr("Reached end of our BT state."));
+
+	
+	if (record->calcPos != Localplayer->GetEyePosition()) {
+	target->GetCollideable()->OBBMins() = record->mins;
+	target->GetCollideable()->OBBMaxs() = record->maxs;
+	target->setAbsAngle(Vector(0, record->m_angEyeAngles.y, 0)); 
+	target->setAbsOriginal(record->absOrigin);
+	target->GetFlags2() = record->flags;
+	}
+
+	if (!record->matrixBuilt)
+	{
+	if (!target->SetupBones(record->matrix, 128, 256, record->m_flSimulationTime))
+	return;
+	record->matrixBuilt = true;
+	}
+
+
+
+	if ( cbFov < tempFov ) {
+	pCvar->ConsoleColorPrintf(ColorRGBA(255, 0, 0), XorStr("Target is in our FOV...\n"));
+	record->calcDmg = bestDmg;
+	record->calcBestPos = target->GetBonePositionBacktrack(int(Bone::BONE_HEAD), record->matrix);
+	record->calcPos = Localplayer->GetEyePosition();
+	}
+
+	
+
+
+}
+
+void Backtracking::Createmove(CUserCmd* cmd)
+{
+
+	float bestDmg = 0.f;
+	Vector bestAimSpot = Vector(0, 0, 0);
+	if (!pEngine->IsInGame() || !Settings::Aimbot::backtrack) {
+		Backtracking::lagRecords.clear();
+		return;
+	}
+
+	C_BasePlayer* Localplayer = (C_BasePlayer*)pEntityList->GetClientEntity(pEngine->GetLocalPlayer());
+	IEngineClient::player_info_t info;
+	if (!Localplayer->GetAlive())
+		return;
+
+	for (int i = 1; i < pEngine->GetMaxClients(); ++i) {
+		C_BasePlayer* target = (C_BasePlayer*)pEntityList->GetClientEntity(i);
+
+		if (!target
+			|| target == Localplayer
+			|| target->GetDormant()
+			|| !target->GetAlive()
+			|| target->GetImmune()
+			|| lastSimTime[target->GetIndex()] == target->GetSimulationTime()
+			|| target->GetTeam() == Localplayer->GetTeam())
+			continue;
+
+
+
+		lastSimTime[target->GetIndex()] = target->GetSimulationTime(); // dont wanna record fakelag records/position
+
+
+		//if (Backtracking::lagRecords[target->GetIndex()][i].calcPos != Localplayer->GetEyePosition()) {
+		//	target->GetCollideable()->OBBMins() = Backtracking::lagRecords[target->GetIndex()][i].mins;
+		//	target->GetCollideable()->OBBMaxs() = Backtracking::lagRecords[target->GetIndex()][i].maxs;
+		//	target->setAbsAngle(Vector(0, Backtracking::lagRecords[target->GetIndex()][i].m_angEyeAngles.y, 0));
+		//	target->setAbsOriginal(Backtracking::lagRecords[target->GetIndex()][i].absOrigin);
+		//	target->GetFlags2() = Backtracking::lagRecords[target->GetIndex()][i].flags;
+		//}
+
+		//if (!Backtracking::lagRecords[target->GetIndex()][i].matrixBuilt)
+		//{
+		//	if (!target->SetupBones(Backtracking::lagRecords[target->GetIndex()][i].matrix, 128, 256, Backtracking::lagRecords[target->GetIndex()][i].m_flSimulationTime))
+		//		return;
+		//	Backtracking::lagRecords[target->GetIndex()][i].matrixBuilt = true;
+		//}
+
+		//if (!Backtracking::lagRecords[target->GetIndex()][i].matrixBuilt)
+		//{
+		//	if (!target->SetupBones(Backtracking::lagRecords[target->GetIndex()][i].matrix, 128, 256, Backtracking::lagRecords[target->GetIndex()][i].m_flSimulationTime))
+		//		return;
+		//	Backtracking::lagRecords[target->GetIndex()][i].matrixBuilt = true;
+		//}
+
+		float bestTargetSimTime;
+		Vector viewAngles;
+		pEngine->GetViewAngles(viewAngles);
+		// FOV Style Closest
+		float tempFov = Settings::Aimbot::AutoAim::fov;
+		Vector bestSpot = { 0, 0, 0 };
+		Vector pVecTarget = Localplayer->GetEyePosition();
+		for (unsigned int i = 1; i < Backtracking::lagRecords[target->GetIndex()].size(); i++) {
+			float cbFov = Math::GetFov(viewAngles, Math::CalcAngle(pVecTarget,
+				Backtracking::lagRecords[target->GetIndex()][i].headPos));
+			if (cbFov < tempFov) {
+				tempFov = cbFov;
+				bestSpot = Backtracking::lagRecords[target->GetIndex()][i].headPos;
+
+
+		//		Backtracking::lagRecords[target->GetIndex()][i].calcDmg = bestDmg;
+		//		Backtracking::lagRecords[target->GetIndex()][i].calcBestPos = target->GetBonePositionBacktrack(int(Bone::BONE_HEAD), Backtracking::lagRecords[target->GetIndex()][i].matrix);
+		//		Backtracking::lagRecords[target->GetIndex()][i].calcPos = Localplayer->GetEyePosition();
+				bestTargetSimTime = Backtracking::lagRecords[target->GetIndex()][i].m_flSimulationTime;
+
+
+			}
+
+			if (cmd->buttons & IN_ATTACK)
+			{
+				cmd->tick_count = TIME_TO_TICKS(bestTargetSimTime);
+			}
+
+		}
+	}
+}
+
