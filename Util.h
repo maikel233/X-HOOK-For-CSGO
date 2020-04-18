@@ -44,7 +44,7 @@ namespace Util
 
 	bool IsBadReadPtr(PVOID pPointer);
 
-
+	const char *GetActivityName(int actNum);
 
 
 	static void SetConsoleState(bool);

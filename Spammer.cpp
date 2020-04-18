@@ -21,9 +21,9 @@ std::vector<std::string> Settings::Spammer::KillSpammer::messages = {
 };
 
 std::vector<std::string> Settings::Spammer::NormalSpammer::messages = {
-		"X-HOOK.XYZ",
-		"X-HOOK.XYZ | Free & Premium cheats",
-		"X-HOOK.XYZ - Legit | Rage"
+		"XHOOK.XYZ",
+		"XHOOK.XYZ | Free & Premium cheats",
+		"XHOOK.XYZ - Legit | Rage"
 };
 
 

@@ -262,7 +262,7 @@ void SpeedIndicator::RenderView(void* thisptr, CViewSetup& setup, CViewSetup& hu
 
 
 		Util::InitKeyValues(keyValues, XorStr("UnlitGeneric"));
-		Util::LoadFromBuffer(keyValues, materialName.c_str(), materialData.str().c_str());
+		Util::LoadFromBuffer(keyValues, materialName.c_str(), materialData.str().c_str(), nullptr, NULL, nullptr);
 
 		rearViewMat = pMaterial->CreateMaterial(materialName.c_str(), keyValues);
 		rearViewMat->AlphaModulate(1.0f);
