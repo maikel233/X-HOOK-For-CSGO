@@ -36,5 +36,7 @@
 //#include "ICommandLine.h" // Param check
 #include "materialsystem_config.h"
 #include "IMaterial.h"
-//#include "../steam_sdk/steam_api.h" // steam_sdk
-//#include "../steam_sdk/steam_api_internal.h"
+#include "Steamworks/isteammatchmaking.h"
+#include "Steamworks/isteamfriends.h"
+#include "Steamworks/isteamuser.h"
+#include "Steamworks/isteamclient.h"

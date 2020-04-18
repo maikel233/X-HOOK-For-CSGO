@@ -314,6 +314,9 @@ struct COffsets
 namespace Offsets
 {
 	void GetOffsets();
+	extern unsigned int playerAnimStateOffset;
+	extern unsigned int playerAnimOverlayOffset;
+	extern unsigned int getSequenceActivity;
 }
 
 

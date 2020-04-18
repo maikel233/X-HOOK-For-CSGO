@@ -225,6 +225,8 @@ void Offsets::GetOffsets()
 
 	offsets.CEconEntity.m_Item = NetVarManager::GetOffset(tables, "DT_EconEntity", "m_Item") + 0xC;
 
+
+
 	if (offsets.CEconEntity.m_Item == 0xc)
 		pCvar->ConsoleDPrintf("CEconEntity->m_Item failed to find netvar.\n");
 }

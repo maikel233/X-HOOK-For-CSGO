@@ -42,9 +42,8 @@ typedef bool(*LineGoesThroughSmokeFn) (Vector, Vector, int16_t);
 
 
 typedef void(*InitKeyValuesFn) (KeyValues*, const char*);
-typedef void(*LoadFromBufferFn) (KeyValues*, const char*, const char*, void*, const char*, void*);		
+//typedef void(*LoadFromBufferFn) (KeyValues*, const char*, const char*, void*, const char*, void*, void*);
 typedef void(__thiscall *LoadFromBufferFn) (KeyValues*, const char*, const char*, void*, const char*, void*, void*);
-
 
 
 typedef ICommandLine* (*CommandLineFn) (void);
@@ -221,21 +220,21 @@ enum class ObserverMode_t : int
 enum class ItemDefinitionIndex : int
 {
 	INVALID = -1,
-	WEAPON_DEAGLE = 1, // 589825
+	WEAPON_DEAGLE = 1,
 	WEAPON_ELITE = 2,
 	WEAPON_FIVESEVEN = 3,
-	WEAPON_GLOCK = 4, // 589828
-	WEAPON_AK47 = 7, // 589831
+	WEAPON_GLOCK = 4,
+	WEAPON_AK47 = 7,
 	WEAPON_AUG = 8,
-	WEAPON_AWP = 9, // 589833
+	WEAPON_AWP = 9,
 	WEAPON_FAMAS = 10,
 	WEAPON_G3SG1 = 11,
 	WEAPON_GALILAR = 13,
 	WEAPON_M249 = 14,
-	WEAPON_M4A1 = 16, // 589840
+	WEAPON_M4A1 = 16,
 	WEAPON_MAC10 = 17,
 	WEAPON_P90 = 19,
-	WEAPON_MP5 = 23,
+	WEAPON_MP5SD = 23,
 	WEAPON_UMP45 = 24,
 	WEAPON_XM1014 = 25,
 	WEAPON_BIZON = 26,
@@ -249,6 +248,7 @@ enum class ItemDefinitionIndex : int
 	WEAPON_MP9 = 34,
 	WEAPON_NOVA = 35,
 	WEAPON_P250 = 36,
+	WEAPON_SHIELD = 37,
 	WEAPON_SCAR20 = 38,
 	WEAPON_SG556 = 39,
 	WEAPON_SSG08 = 40,
@@ -261,12 +261,35 @@ enum class ItemDefinitionIndex : int
 	WEAPON_DECOY = 47,
 	WEAPON_INCGRENADE = 48,
 	WEAPON_C4 = 49,
+	ITEM_KEVLAR = 50,
+	ITEM_ASSAULTSUIT = 51,
+	ITEM_HEAVYASSAULTSUIT = 52,
+	ITEM_NVG = 54,
+	ITEM_DEFUSER = 55,
+	ITEM_CUTTERS = 56,
+	WEAPON_HEALTHSHOT = 57,
+	MUSICKIT_DEFAULT = 58,
 	WEAPON_KNIFE_T = 59,
-	WEAPON_M4A1_SILENCER = 60, // 262204
-	WEAPON_USP_SILENCER = 61, // 262205
+	WEAPON_M4A1_SILENCER = 60,
+	WEAPON_USP_SILENCER = 61,
+	RECIPE_TRADE_UP = 62,
 	WEAPON_CZ75A = 63,
 	WEAPON_REVOLVER = 64,
-	WEAPON_KNIFE_BAYONET = 500,
+	WEAPON_TAGRENADE = 68,
+	WEAPON_FISTS = 69,
+	WEAPON_BREACHCHARGE = 70,
+	WEAPON_TABLET = 72,
+	WEAPON_MELEE = 74,
+	WEAPON_AXE = 75,
+	WEAPON_HAMMER = 76,
+	WEAPON_SPANNER = 78,
+	WEAPON_KNIFE_GHOST = 80,
+	WEAPON_FIREBOMB = 81,
+	WEAPON_DIVERSION = 82,
+	WEAPON_FRAG_GRENADE = 83,
+	WEAPON_SNOWBALL = 84,
+	WEAPON_BUMPMINE = 85,
+	WEAPON_BAYONET = 500,
 	WEAPON_KNIFE_FLIP = 505,
 	WEAPON_KNIFE_GUT = 506,
 	WEAPON_KNIFE_KARAMBIT = 507,
@@ -279,8 +302,8 @@ enum class ItemDefinitionIndex : int
 	WEAPON_KNIFE_URSUS = 519,
 	WEAPON_KNIFE_GYPSY_JACKKNIFE = 520,
 	WEAPON_KNIFE_STILETTO = 522,
-	WEAPON_KNIFE_WIDOWMAKER = 532,
-	GLOVE_STUDDED_BLOODHOUND = 5027,
+	WEAPON_KNIFE_WIDOWMAKER = 523,
+	STUDDED_BLOODHOUND_GLOVES = 5027,
 	GLOVE_T_SIDE = 5028,
 	GLOVE_CT_SIDE = 5029,
 	GLOVE_SPORTY = 5030,
@@ -289,8 +312,8 @@ enum class ItemDefinitionIndex : int
 	GLOVE_MOTORCYCLE = 5033,
 	GLOVE_SPECIALIST = 5034,
 	GLOVE_HYDRA = 5035
-};
 
+};
 
 enum class EClassIds
 {
@@ -577,6 +600,7 @@ enum class EClassIds
 	SporeExplosion,
 	SporeTrail,
 };
+
 
 
 enum class Bone : int
@@ -1776,17 +1800,29 @@ enum class CSWeaponType : int
 	//WEAPONTYPE_PLACEHOLDER,
 	//WEAPONTYPE_GRENADE,
 	//WEAPONTYPE_UNKNOWN
-	WEAPONTYPE_C4 = 0,
-	WEAPONTYPE_GRENADE = 0,
-	WEAPONTYPE_KNIFE = 1, // was 0
-	WEAPONTYPE_PISTOL,
-	WEAPONTYPE_SUBMACHINEGUN,
-	WEAPONTYPE_RIFLE,
-	WEAPONTYPE_SNIPER_RIFLE = 4,
-	WEAPONTYPE_SHOTGUN,
-	WEAPONTYPE_MACHINEGUN = 5,
-	WEAPONTYPE_PLACEHOLDER,
-	WEAPONTYPE_UNKNOWN
+	//WEAPONTYPE_C4 = 0,
+	//WEAPONTYPE_GRENADE = 0,
+	//WEAPONTYPE_KNIFE = 1, // was 0
+	//WEAPONTYPE_PISTOL,
+	//WEAPONTYPE_SUBMACHINEGUN,
+	//WEAPONTYPE_RIFLE,
+	//WEAPONTYPE_SNIPER_RIFLE = 4,
+	//WEAPONTYPE_SHOTGUN,
+	//WEAPONTYPE_MACHINEGUN = 5,
+	//WEAPONTYPE_PLACEHOLDER,
+	//WEAPONTYPE_UNKNOWN
+	WEAPONTYPE_KNIFE = 0,
+	WEAPONTYPE_PISTOL = 1,
+	WEAPONTYPE_SUBMACHINEGUN = 2,
+	WEAPONTYPE_RIFLE = 3,
+	WEAPONTYPE_SHOTGUN = 4,
+	WEAPONTYPE_SNIPER_RIFLE = 5,
+	WEAPONTYPE_MACHINEGUN = 6,
+	WEAPONTYPE_C4 = 7,
+	WEAPONTYPE_UNKNOWN = 8,
+	WEAPONTYPE_GRENADE = 9,
+	WEAPONTYPE_HEALTHSHOT = 11
+
 
 };
 
@@ -1885,7 +1921,7 @@ const std::map<ItemDefinitionIndex, DefItem_t> ItemDefinitionIndexMap = {
 	{ ItemDefinitionIndex::WEAPON_M4A1,{ "#SFUI_WPNHUD_M4A1", "weapon_m4a1", "models/weapons/v_rif_m4a1.mdl", "m4a1" } },
 	{ ItemDefinitionIndex::WEAPON_MAC10,{ "#SFUI_WPNHUD_MAC10", "weapon_mac10", "models/weapons/v_smg_mac10.mdl", "mac10" } },
 	{ ItemDefinitionIndex::WEAPON_P90,{ "#SFUI_WPNHUD_P90", "weapon_p90", "models/weapons/v_smg_p90.mdl", "p90" } },
-	{ ItemDefinitionIndex::WEAPON_MP5,{ "#SFUI_WPNHUD_MP5SD", "weapon_mp5sd", "models/weapons/v_smg_mp5sd.mdl", "mp5sd" } },
+	{ ItemDefinitionIndex::WEAPON_MP5SD,{ "#SFUI_WPNHUD_MP5SD", "weapon_mp5sd", "models/weapons/v_smg_mp5sd.mdl", "mp5sd" } },
 
 	{ ItemDefinitionIndex::WEAPON_UMP45,{ "#SFUI_WPNHUD_UMP45", "weapon_ump45", "models/weapons/v_smg_ump45.mdl", "ump45" } },
 	{ ItemDefinitionIndex::WEAPON_XM1014,{ "#SFUI_WPNHUD_xm1014", "weapon_xm1014", "models/weapons/v_shot_xm1014.mdl", "xm1014" } },
@@ -1916,7 +1952,7 @@ const std::map<ItemDefinitionIndex, DefItem_t> ItemDefinitionIndexMap = {
 	{ ItemDefinitionIndex::WEAPON_USP_SILENCER,{ "#SFUI_WPNHUD_USP_SILENCER", "weapon_usp_silencer", "models/weapons/v_pist_223.mdl", "usp_silencer" } },
 	{ ItemDefinitionIndex::WEAPON_CZ75A,{ "#SFUI_WPNHUD_CZ75", "weapon_cz75a", "models/weapons/v_pist_cz_75.mdl", "cz75a" } },
 	{ ItemDefinitionIndex::WEAPON_REVOLVER,{ "#SFUI_WPNHUD_REVOLVER", "weapon_revolver", "models/weapons/v_pist_revolver.mdl", "revolver" } },
-	{ ItemDefinitionIndex::WEAPON_KNIFE_BAYONET,{ "#SFUI_WPNHUD_KnifeBayonet", "weapon_knife_bayonet", "models/weapons/v_knife_bayonet.mdl", "bayonet" } },
+	{ ItemDefinitionIndex::WEAPON_BAYONET,{ "#SFUI_WPNHUD_KnifeBayonet", "weapon_knife_bayonet", "models/weapons/v_knife_bayonet.mdl", "bayonet" } },
 	{ ItemDefinitionIndex::WEAPON_KNIFE_FLIP,{ "#SFUI_WPNHUD_KnifeFlip", "weapon_knife_flip", "models/weapons/v_knife_flip.mdl", "knife_flip" } },
 	{ ItemDefinitionIndex::WEAPON_KNIFE_GUT,{ "#SFUI_WPNHUD_KnifeGut", "weapon_knife_gut", "models/weapons/v_knife_gut.mdl", "knife_gut" } },
 	{ ItemDefinitionIndex::WEAPON_KNIFE_KARAMBIT,{ "#SFUI_WPNHUD_KnifeKaram", "weapon_knife_karambit", "models/weapons/v_knife_karam.mdl", "knife_karambit" } },
@@ -1930,7 +1966,7 @@ const std::map<ItemDefinitionIndex, DefItem_t> ItemDefinitionIndexMap = {
 	{ ItemDefinitionIndex::WEAPON_KNIFE_GYPSY_JACKKNIFE,{ "#SFUI_WPNHUD_knife_gypsy_jackknife", "weapon_knife_gypsy_jackknife", "models/weapons/v_knife_gypsy_jackknife.mdl", "knife_gypsy_jack" } },
 	{ ItemDefinitionIndex::WEAPON_KNIFE_STILETTO,{ "#SFUI_WPNHUD_knife_stiletto", "weapon_knife_stiletto", "models/weapons/v_knife_stiletto.mdl", "knife_stiletto" } },
 	{ ItemDefinitionIndex::WEAPON_KNIFE_WIDOWMAKER,{ "#SFUI_WPNHUD_knife_widowmaker", "weapon_knife_widowmaker", "models/weapons/v_knife_widowmaker.mdl", "knife_widowmaker" } },
-	{ ItemDefinitionIndex::GLOVE_STUDDED_BLOODHOUND,{ "#CSGO_Wearable_t_studdedgloves", "studded_bloodhound_gloves", "models/weapons/v_models/arms/glove_bloodhound/v_glove_bloodhound.mdl" } },
+	{ ItemDefinitionIndex::STUDDED_BLOODHOUND_GLOVES,{ "#CSGO_Wearable_t_studdedgloves", "studded_bloodhound_gloves", "models/weapons/v_models/arms/glove_bloodhound/v_glove_bloodhound.mdl" } },
 	{ ItemDefinitionIndex::GLOVE_T_SIDE,{ "#CSGO_Wearable_t_defaultgloves", "t_gloves", "models/weapons/v_models/arms/glove_fingerless/v_glove_fingerless.mdl" } },
 	{ ItemDefinitionIndex::GLOVE_CT_SIDE,{ "#CSGO_Wearable_ct_defaultgloves", "ct_gloves", "models/weapons/v_models/arms/glove_hardknuckle/v_glove_hardknuckle.mdl" } },
 	{ ItemDefinitionIndex::GLOVE_SPORTY,{ "#CSGO_Wearable_v_sporty_glove", "sporty_gloves", "models/weapons/v_models/arms/glove_sporty/v_glove_sporty.mdl" } },

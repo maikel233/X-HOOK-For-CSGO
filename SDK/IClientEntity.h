@@ -105,8 +105,11 @@ class ICollideable
 {
 public:
 	virtual void pad0();
-	virtual const Vector& OBBMins() const;
-	virtual const Vector& OBBMaxs() const;
+	virtual Vector& OBBMins() const;
+	virtual Vector& OBBMaxs() const;
+	//virtual void pad0();
+	//virtual const Vector& OBBMins() const;
+	//virtual const Vector& OBBMaxs() const;
 };
 
 class AnimationLayer
@@ -400,7 +403,7 @@ public:
 	void updateClientSideAnimation()
 	{
 		typedef void(__thiscall *o_updateClientSideAnimation)(void*);
-		getvfunc<o_updateClientSideAnimation>(this, 218)(this);
+		getvfunc<o_updateClientSideAnimation>(this, 221)(this);
 	}
 
 
@@ -442,6 +445,14 @@ public:
 	{
 		return (*(int(__thiscall **)(C_BaseEntity*))(*(DWORD *)this + 0x1E8))(this);  // pated
 	}
+
+	inline Vector GetBonePositionBacktrack(int bIndex, matrix3x4_t bMatrix[MAXSTUDIOBONES])
+	{
+		matrix3x4_t hbox = bMatrix[bIndex];
+
+		return Vector(hbox[0][3], hbox[1][3], hbox[2][3]);
+	}
+
 
 	std::array<float, 24> C_BaseEntity::GetPoseParameter() {
 		return *(std::array<float, 24>*) ((uintptr_t)
@@ -488,7 +499,8 @@ public:
 	char pad_0x0000[0x344]; //0x0000
 }; //Size=0x344
 
-
+//typedef int(*GetSequenceActivityFn)(void*, int);
+//extern GetSequenceActivityFn GetSeqActivity;
 /* generic game classes */
 class C_BasePlayer : public C_BaseEntity
 {
@@ -499,7 +511,7 @@ public:
 		static SetAbsOriginFn SetAbsOrigin;
 
 		if (!SetAbsOrigin)
-			SetAbsOrigin = (SetAbsOriginFn)(FindPattern("client.dll", "\x55\x8B\xEC\x83\xE4\xF8\x51\x53\x56\x57\x8B\xF1\xE8\x00\x00", "xxxxxxxxxxxxx??"));
+			SetAbsOrigin = (SetAbsOriginFn)(FindPattern("client_panorama.dll", "\x55\x8B\xEC\x83\xE4\xF8\x51\x53\x56\x57\x8B\xF1\xE8\x00\x00", "xxxxxxxxxxxxx??"));
 
 		SetAbsOrigin(this, origin);
 	}
@@ -510,7 +522,7 @@ public:
 		static SetAbsAngleFn SetAbsAngle;
 
 		if (!SetAbsAngle)
-			SetAbsAngle = (SetAbsAngleFn)(FindPattern("client.dll", "\x55\x8B\xEC\x83\xE4\xF8\x83\xEC\x64\x53\x56\x57\x8B\xF1\xE8", "xxxxxxxxxxxxxxx" ));
+			SetAbsAngle = (SetAbsAngleFn)(FindPattern("client_panorama.dll", "\x55\x8B\xEC\x83\xE4\xF8\x83\xEC\x64\x53\x56\x57\x8B\xF1\xE8", "xxxxxxxxxxxxxxx" ));
 
 		SetAbsAngle(this, Angle);
 	}
@@ -518,27 +530,75 @@ public:
 	void SetOrigin(Vector wantedpos)
 	{
 		typedef void(__thiscall* SetOriginFn)(void*, const Vector &);
-		static SetOriginFn SetOrigin = (SetOriginFn)(FindPatternV2("client.dll", "55 8B EC 83 E4 F8 51 53 56 57 8B F1 E8"));
+		static SetOriginFn SetOrigin = (SetOriginFn)(FindPatternV2("client_panorama.dll", "55 8B EC 83 E4 F8 51 53 56 57 8B F1 E8"));
 		SetOrigin(this, wantedpos);
 	}
 	void SetAngle2(Vector wantedang)
 	{
 		typedef void(__thiscall* SetAngleFn)(void*, const Vector &);
-		static SetAngleFn SetAngle = (SetAngleFn)((DWORD)FindPatternV2("client.dll", "55 8B EC 83 E4 F8 83 EC 64 53 56 57 8B F1"));
+		static SetAngleFn SetAngle = (SetAngleFn)((DWORD)FindPatternV2("client_panorama.dll", "55 8B EC 83 E4 F8 83 EC 64 53 56 57 8B F1"));
 		SetAngle(this, wantedang);
 	}
 
-	AnimationLayer *GetAnimOverlays()
+
+
+	//AnimationLayer *GetAnimOverlay(int i)
+	//{
+	//	if (i < 15)
+	//		return &GetAnimOverlays()[i];
+	//}
+
+
+	AnimationLayer *C_BasePlayer::GetAnimOverlays()
 	{
 		// to find offset: use 9/12/17 dll
 		// sig: 55 8B EC 51 53 8B 5D 08 33 C0
-		return *(AnimationLayer**)((DWORD)this + 0x2970);
+		return *(AnimationLayer**)((DWORD)this + 0x2980);
 	}
 
-	AnimationLayer *GetAnimOverlay(int i)
+	//AnimationLayer *C_BasePlayer::GetAnimOverlay(int i)
+	//{
+	//	if (i < 15)
+	//		return &GetAnimOverlays()[i];
+	//	return nullptr;
+	//}
+
+	int GetSequenceActivity(int sequence)
 	{
-		if (i < 15)
-			return &GetAnimOverlays()[i];
+
+	/*	auto hdr = pModelInfo->GetStudioModel(this->GetModel());
+
+		if (!hdr)
+			return -1;*/
+		//pModelInfo->GetStudioModel(entity->GetModel());
+		static auto get_sequence_activity = reinterpret_cast<int(__fastcall*)(void*, int)>(Offsets::getSequenceActivity);
+
+		return get_sequence_activity(this, sequence);
+
+		//if (!GetSeqActivity)
+		//	return -1;
+		//return GetSeqActivity(this, sequence);
+	}
+
+	//int GetSequenceActivity(int sequence)
+	//{
+	//	auto hdr = pModelInfo->GetStudioModel(this->GetModel());
+
+	//	if (!hdr)
+	//		return -1;
+
+	//	// sig for stuidohdr_t version: 53 56 8B F1 8B DA 85 F6 74 55
+	//	// sig for C_BaseAnimating version: 55 8B EC 83 7D 08 FF 56 8B F1 74 3D
+	//	// c_csplayer vfunc 242, follow calls to find the function.
+
+	//	static auto get_sequence_activity = reinterpret_cast<int(__fastcall*)(void*, studiohdr_t*, int)>(Offsets::getSequenceActivity);
+
+	//	return get_sequence_activity(this, hdr, sequence);
+	//}
+
+
+	CUtlVector<AnimationLayer>* GetAnimOverlay() {
+		return reinterpret_cast<CUtlVector<AnimationLayer>*>((uintptr_t)this + GetAnimOverlays());
 	}
 
 	CBasePlayerAnimState *GetBasePlayerAnimState()
@@ -554,7 +614,7 @@ public:
 	
 	void UpdateAnimationState(CCSGOPlayerAnimState *state, Vector angle)
 	{
-		static auto UpdateAnimState = FindPatternV2(("client.dll"), "55 8B EC 83 E4 F8 83 EC 18 56 57 8B F9 F3 0F 11 54 24");
+		static auto UpdateAnimState = FindPatternV2(("client_panorama.dll"), "55 8B EC 83 E4 F8 83 EC 18 56 57 8B F9 F3 0F 11 54 24");
 		if (!UpdateAnimState)
 			return;
 
@@ -572,7 +632,7 @@ public:
 	void ResetAnimationState(CCSGOPlayerAnimState *state)
 	{
 		using ResetAnimState_t = void(__thiscall*)(CCSGOPlayerAnimState*);
-		static auto ResetAnimState = (ResetAnimState_t)FindPatternV2(("client.dll"), "56 6A 01 68 ? ? ? ? 8B F1");
+		static auto ResetAnimState = (ResetAnimState_t)FindPatternV2(("client_panorama.dll"), "56 6A 01 68 ? ? ? ? 8B F1");
 		if (!ResetAnimState)
 			return;
 
@@ -582,7 +642,7 @@ public:
 	void CreateAnimationState(CCSGOPlayerAnimState *state)
 	{
 		using CreateAnimState_t = void(__thiscall*)(CCSGOPlayerAnimState*, C_BasePlayer*);
-		static auto CreateAnimState = (CreateAnimState_t)FindPatternV2("client.dll", "55 8B EC 56 8B F1 B9 ? ? ? ? C7 46");
+		static auto CreateAnimState = (CreateAnimState_t)FindPatternV2("client_panorama.dll", "55 8B EC 56 8B F1 B9 ? ? ? ? C7 46");
 		if (!CreateAnimState)
 			return;
 
@@ -902,14 +962,14 @@ public:
 	void SetModelIndex(int model)
 	{
 		typedef void(__thiscall* oSetModelIndex)(PVOID, int);
-		return getvfunc<oSetModelIndex>(this, 75)(this, model);
+		return getvfunc<oSetModelIndex>(this, 245)(this, model);
 	}
 
 
 	void SetModelIndex2(int index)
 	{
 		typedef void(__thiscall* oSetModelIndex)(void*, int);
-		return getvfunc<oSetModelIndex>(this, 75)(this, index);
+		return getvfunc<oSetModelIndex>(this, 245)(this, index);
 	}
 
 	int* GetFallbackSeed()
@@ -1017,8 +1077,11 @@ public:
 
 	int GetClipSize() {
 		return *(int*)((uintptr_t) // DefaultCLip1
-			this + 0x20);  // Default clip 2 0x0020
+			this + 0x38);  // Default clip 2 0x0020
 	}
+
+	//__int32 m_iWeaponType; //0x00C8 
+	//__int32 m_iWeaponType2; //0x00CC 
 
 	CSWeaponType GetWeaponType()
 	{
@@ -1082,6 +1145,93 @@ public:
 	{
 		return (int*)((uintptr_t)this + 0x01E8); // 0x01E8
 	}
+
+	//char pad_0000[4]; //0x0000
+	//char* ConsoleName; //0x0004
+	//char pad_0008[12]; //0x0008
+	//int iMaxClip1; //0x0014
+	//char pad_0018[12]; //0x0018
+	//int iMaxClip2; //0x0024
+	//char pad_0028[4]; //0x0028
+	//char* szWorldModel; //0x002C
+	//char* szViewModel; //0x0030
+	//char* szDropedModel; //0x0034
+	//char pad_0038[4]; //0x0038
+	//char* N00000984; //0x003C
+	//char pad_0040[56]; //0x0040
+	//char* szEmptySound; //0x0078
+	//char pad_007C[4]; //0x007C
+	//char* szBulletType; //0x0080
+	//char pad_0084[4]; //0x0084
+	//char* szHudName; //0x0088
+	//char* szWeaponName; //0x008C
+	//char pad_0090[60]; //0x0090
+	//int WeaponType; //0x00CC
+	//int iWeaponPrice; //0x00D0
+	//int iKillAward; //0x00D4
+	//char* szAnimationPrefex; //0x00D8
+	//float flCycleTime; //0x00DC
+	//float flCycleTimeAlt; //0x00E0
+	//float flTimeToIdle; //0x00E4
+	//float flIdleInterval; //0x00E8
+	//bool bFullAuto; //0x00EC
+	//char pad_00ED[3]; //0x00ED
+	//int iDamage; //0x00F0
+	//float flArmorRatio; //0x00F4
+	//int iBullets; //0x00F8
+	//float flPenetration; //0x00FC
+	//float flFlinchVelocityModifierLarge; //0x0100
+	//float flFlinchVelocityModifierSmall; //0x0104
+	//float flRange; //0x0108
+	//float flRangeModifier; //0x010C
+	//char pad_0110[28]; //0x0110
+	//int iCrosshairMinDistance; //0x012C
+	//float flMaxPlayerSpeed; //0x0130
+	//float flMaxPlayerSpeedAlt; //0x0134
+	//char pad_0138[4]; //0x0138
+	//float flSpread; //0x013C
+	//float flSpreadAlt; //0x0140
+	//float flInaccuracyCrouch; //0x0144
+	//float flInaccuracyCrouchAlt; //0x0148
+	//float flInaccuracyStand; //0x014C
+	//float flInaccuracyStandAlt; //0x0150
+	//float flInaccuracyJumpIntial; //0x0154
+	//float flInaccaurcyJumpApex;
+	//float flInaccuracyJump; //0x0158
+	//float flInaccuracyJumpAlt; //0x015C
+	//float flInaccuracyLand; //0x0160
+	//float flInaccuracyLandAlt; //0x0164
+	//float flInaccuracyLadder; //0x0168
+	//float flInaccuracyLadderAlt; //0x016C
+	//float flInaccuracyFire; //0x0170
+	//float flInaccuracyFireAlt; //0x0174
+	//float flInaccuracyMove; //0x0178
+	//float flInaccuracyMoveAlt; //0x017C
+	//float flInaccuracyReload; //0x0180
+	//int iRecoilSeed; //0x0184
+	//float flRecoilAngle; //0x0188
+	//float flRecoilAngleAlt; //0x018C
+	//float flRecoilVariance; //0x0190
+	//float flRecoilAngleVarianceAlt; //0x0194
+	//float flRecoilMagnitude; //0x0198
+	//float flRecoilMagnitudeAlt; //0x019C
+	//float flRecoilMagnatiudeVeriance; //0x01A0
+	//float flRecoilMagnatiudeVerianceAlt; //0x01A4
+	//float flRecoveryTimeCrouch; //0x01A8
+	//float flRecoveryTimeStand; //0x01AC
+	//float flRecoveryTimeCrouchFinal; //0x01B0
+	//float flRecoveryTimeStandFinal; //0x01B4
+	//int iRecoveryTransititionStartBullet; //0x01B8
+	//int iRecoveryTransititionEndBullet; //0x01BC
+	//bool bUnzoomAfterShot; //0x01C0
+	//char pad_01C1[31]; //0x01C1
+	//char* szWeaponClass; //0x01E0
+	//char pad_01E4[56]; //0x01E4
+	//float flInaccuracyPitchShift; //0x021C
+	//float flInaccuracySoundThreshold; //0x0220
+	//float flBotAudibleRange; //0x0224
+	//char pad_0228[12]; //0x0228
+	//bool bHasBurstMode; //0x0234
 };
 
 class C_BaseCombatWeapon : public C_BaseAttributableItem
@@ -1110,7 +1260,7 @@ public:
 
 	bool GetInReload()
 	{
-		return *(bool*)((uintptr_t)this + 0x3275);
+		return *(bool*)((uintptr_t)this + 0x32A5);//0x3275);
 	}
 
 	float GetAccuracyPenalty()
@@ -1126,25 +1276,25 @@ public:
 	CCSWeaponInfo* GetCSWpnData()
 	{
 		typedef CCSWeaponInfo* (__thiscall*oGetCSWpnData)(void*);
-		return getvfunc<oGetCSWpnData>(this, 444)(this);
+		return getvfunc<oGetCSWpnData>(this, 460)(this); // OLD 452
 	}
 
 	float GetInaccuracy()
 	{
 		typedef float(__thiscall*oGetInaccuracy)(void*);
-		return getvfunc<oGetInaccuracy>(this, 467)(this); 
+		return getvfunc<oGetInaccuracy>(this, 482)(this);  // OLD 476
 	}
 
 	float GetSpread()
 	{
 		typedef float(__thiscall*oGetSpread)(void*);
-		return getvfunc<oGetSpread>(this, 437)(this); 
+		return getvfunc<oGetSpread>(this, 452)(this);  // OLD 446
 	}
 
 	void UpdateAccuracyPenalty()
 	{
 		typedef void(__thiscall*oUpdateAccuracyPenalty)(void*);
-		return getvfunc<oUpdateAccuracyPenalty>(this, 469)(this); 
+		return getvfunc<oUpdateAccuracyPenalty>(this, 483)(this); 
 	}
 };
 

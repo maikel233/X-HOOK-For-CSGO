@@ -139,4 +139,10 @@ public:
 		typedef void(__thiscall*oDrawTexturedPolygon)(void*, int, FontVertex_t*, bool);
 		return getvfunc<oDrawTexturedPolygon>(this, 106)(this, vtxCount, vtx, bClipVertices);
 	}
+
+	void unlockcursor()
+	{
+		typedef void(__thiscall* original_fn)(void*);
+		return getvfunc< original_fn >(this, 66)(this);
+	}
 };

@@ -331,13 +331,14 @@ public:
 
 	inline CUserCmd* GetUserCmd(int sequence_number);
 //	inline CVerifiedUserCmd* GetVerifiedCmd(int sequence_number);
-
+	                                                  //should work -4 on all
 	void*               pvftable;                     //0x00
+	char                pad_0x08[0x8];               //0x08
 	bool                m_fTrackIRAvailable;          //0x04
 	bool                m_fMouseInitialized;          //0x05
 	bool                m_fMouseActive;               //0x06
 	bool                m_fJoystickAdvancedInit;      //0x07
-	char                pad_0x08[0x2C];               //0x08
+	char                pad_0x088[0x2C];               //0x08
 	void*               m_pKeys;                      //0x34
 	char                pad_0x38[0x64];               //0x38
 	int					pad_0x41;

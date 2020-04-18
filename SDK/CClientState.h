@@ -59,37 +59,64 @@ public:
 class INetChannelInfo
 {
 public:
-	char pad_0x0000[0x18]; //0x0000
+	__int32 vtable; //0x0000 
+	//Netmsgbinder* msgbinder1; //0x0004 
+	//Netmsgbinder* msgbinder2; //0x0008 
+	//Netmsgbinder* msgbinder3; //0x000C 
+//	Netmsgbinder* msgbinder4; //0x0010 
+	unsigned char m_bProcessingMessages; //0x0014 
+	unsigned char m_bShouldDelete; //0x0015 
+	char pad_0x0016[0x2]; //0x0016
 	__int32 m_nOutSequenceNr; //0x0018 
 	__int32 m_nInSequenceNr; //0x001C 
 	__int32 m_nOutSequenceNrAck; //0x0020 
 	__int32 m_nOutReliableState; //0x0024 
 	__int32 m_nInReliableState; //0x0028 
 	__int32 m_nChokedPackets; //0x002C 
-	char pad_0030[108]; //0x0030
-	int m_Socket; //0x009C
-	int m_StreamSocket; //0x00A0
-	int m_MaxReliablePayloadSize; //0x00A4
-	char pad_00A8[100]; //0x00A8
-	float last_received; //0x010C
-	float connect_time; //0x0110
-	char pad_0114[4]; //0x0114
-	int m_Rate; //0x0118
-	char pad_011C[4]; //0x011C
-	float m_fClearTime; //0x0120
-	char pad_0124[16688]; //0x0124
-	char m_Name[32]; //0x4254
-	unsigned int m_ChallengeNr; //0x4274
-	float m_flTimeout; //0x4278
-	char pad_427C[32]; //0x427C
-	float m_flInterpolationAmount; //0x429C
-	float m_flRemoteFrameTime; //0x42A0
-	float m_flRemoteFrameTimeStdDeviation; //0x42A4
-	int m_nMaxRoutablePayloadSize; //0x42A8
-	int m_nSplitPacketSequence; //0x42AC
-	char pad_42B0[40]; //0x42B0
-	bool m_bIsValveDS; //0x42D8
-	char pad_42D9[65]; //0x42D9
+
+	//bf_write m_StreamReliable; //0x0030 
+	/*CUtlMemory*/ char m_ReliableDataBuffer[12]; //0x0048 
+	//bf_write m_StreamUnreliable; //0x0054 
+	/*CUtlMemory*/ char m_UnreliableDataBuffer[12]; //0x006C 
+	//bf_write m_StreamVoice; //0x0078 
+	/*CUtlMemory*/char m_VoiceDataBuffer[12]; //0x0090 
+	__int32 m_Socket; //0x009C 
+	__int32 m_StreamSocket; //0x00A0 
+	__int32 m_MaxReliablePayloadSize; //0x00A4 
+	char pad_0x00A8[0x4]; //0x00A8
+//	netadr_t remote_address; //0x00AC 
+	char dylanpadding[84]; //padding added by dylan
+	float last_received; //0x00B8  //dylan found 0x10c
+						 //char pad_0x00BC[0x4]; //0x00BC
+	double /*float*/ connect_time; //0x00C0 //dylan found 0x110
+								   //char pad_0x00C4[0x4]; //0x00C4
+	__int32 m_Rate; //0x00C8  //dylan found 0x118
+	/*float*/double m_fClearTime; //0x00CC  //dylan found 0x120
+	char pad_0x00D0[0x8]; //0x00D0
+	char m_WaitingList[48];
+	//CUtlVector m_WaitingList[0]; //0x00D8 
+	//CUtlVector m_WaitingList[1]; //0x00EC 
+	//char pad_0x0100[0x4120]; //0x0100
+	char pad_0x0100[0x40F0]; //dylan changed
+	__int32 m_PacketDrop; //0x4220  //dylan found 0x4250
+	char m_Name[32]; //0x4224 
+	__int32 m_ChallengeNr; //0x4244 
+	float m_Timeout; //0x4248 //dylan found 0x4278
+//	INetChannelHandler* m_MessageHandler; //0x424C 
+	/*CUtlVector*/char m_NetMessages[14]; //0x4250 
+	__int32 dylanUnknown;
+	void* m_pDemoRecorder; //0x4264 
+	__int32 m_nQueuedPackets; //0x4268  //dylan found 0x4298
+	float m_flInterpolationAmount; //0x426C //dylan found 0x429c
+	float m_flRemoteFrameTime; //0x4270 //dylan found 0x42a0
+	float m_flRemoteFrameTimeStdDeviation; //0x4274  //dylan found 0x42a4
+	float m_flRemoteFrameTimeUnknown; //dylan found 0x42a8
+	__int32 m_nMaxRoutablePayloadSize; //0x4278  //dylan found 0x42ac
+	__int32 m_nSplitPacketSequence; //0x427C  //dylan found 0x42b0
+	char pad_0x4280[0x14]; //0x4280
+
+
+	bool Transmit(bool a);
 
 	virtual const char  *GetName(void) const = 0;	// get channel name
 	virtual const char  *GetAddress(void) const = 0; // get channel IP address as string
@@ -191,31 +218,36 @@ class CClientState //: public CBaseHudChat
 public:
 	char pad_0000[156]; //0x0000
 	class INetChannel* m_pNetChannel; //0x0094
-	char pad_0098[16]; //0x0098
-	unsigned int m_nRetryNumber; //0x00A8
-	char pad_00AC[84]; //0x00AC
-	int m_nSignonState; //0x0100
-	char pad_0104[8]; //0x0104
+	//char pad_0098[16]; //0x0098
+	char pad_00A0[116]; //0x00A0
+	//unsigned int m_nRetryNumber; //0x00A8
+	//char pad_00AC[84]; //0x00AC
+	//int m_nSignonState; //0x0100
+	//char pad_0104[8]; //0x0104
 	float m_flNextCmdTime; //0x010C
 	int m_nServerCount; //0x0110
 	int m_nCurrentSequence; //0x0114
-	char pad_0118[75]; //0x0118
+	char pad_0120[76]; //0x0120
 	int m_nServerTick; //0x0163
 	int m_nClientTick; //0x0167
 	int m_nDeltaTick; //0x016B
-	char pad_016F[4]; //0x016F
-	int m_nViewEntity; //0x0173
-	char pad_0177[8]; //0x0177
+	bool paused; //0x0178
+	char pad_0179[15]; //0x0179
+	//int m_nViewEntity; //0x0173
+	//char pad_0177[8]; //0x0177
 	char m_szLevelName[260]; //0x017F
 	char m_szLevelNameShort[40]; //0x0283
-	char pad_02AB[18940]; //0x02AB
-	char pad_0x2DA0; //0x4CA7
+//	char pad_02AB[18940]; //0x02AB
+//	char pad_0x2DA0; //0x4CA7
+	char pad_02B4[212]; //0x02B4
+	uint32_t max_players; //0x0388
+	char pad_038C[18844]; //0x038C
 	int lastoutgoingcommand; //0x4CA8
 	int chokedcommands; //0x4CAC
 	int last_command_ack; //0x4CB0
 	int command_ack; //0x4CB4
 	int m_nSoundSequence; //0x4CB8
-	char pad_4CBC[8]; //0x4CBC
+	char pad_4D38[80]; //0x4D38
 	bool ishltv; //0x4CC4
 	CBaseHudChat			*m_pChatElement;
 
