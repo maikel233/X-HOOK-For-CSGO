@@ -52,7 +52,7 @@ void IRC::RenderWindow()
 		}
 
 		
-		ImGui::Columns(1, XorStr("X-HOOK - IRC"));
+		ImGui::Columns(1, XorStr("XHOOK - IRC"));
 		ImGui::Separator();
 		ImGui::Text(XorStr("Chat"));
 		ImGui::NextColumn();
@@ -135,7 +135,7 @@ bool IRC::SendResponse(std::string msg)
 	Message.append("\"");
 	find_and_replace(Message, " ", "%20");
 	g_Winsock.InitWinsock();
-	g_Winsock.Connect(XorStr("x-hook.xyz")); 
+	g_Winsock.Connect(XorStr("xhook.xyz")); 
 	std::string cstrResponse;
 	g_Winsock.SendHttpGet(Message.c_str(), cstrResponse);
 	g_Winsock.Disconnect();
@@ -152,7 +152,7 @@ std::string IRC::GetResponse()
 	//Message.append(XorStr("/index.php"));
 	g_Winsock.InitWinsock();
 
-	g_Winsock.Connect(XorStr("x-hook.xyz")); // Note VPS is needed Website has shared hosting not possible (:
+	g_Winsock.Connect(XorStr("xhook.xyz")); // Note VPS is needed Website has shared hosting not possible (:
 	std::string cstrResponse;
 	g_Winsock.SendHttpGet(Message.c_str(), cstrResponse);
 	g_Winsock.Disconnect();

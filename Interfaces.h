@@ -37,6 +37,13 @@ extern IEngineSound*		pSound;
 extern CViewRender*			pViewRender;
 extern CBaseHudChat * pChat;
 extern CGlowObjectManager*			pGlowManager;
+extern ISteamClient * pSteamClient;
+extern ISteamMatchmaking * pSteamMatchmaking;
+extern ISteamUser * pSteamUser;
+extern ISteamFriends * pSteamFriends;
+
+
+
 //extern CMoveData* g_MoveData;
 //extern ICommandLine* commandline;
 extern LPDIRECT3DTEXTURE9 BackgroundTexture;
@@ -70,6 +77,7 @@ extern std::unique_ptr<VMTHook>SoundHook;
 extern std::unique_ptr<VMTHook>SurfaceHook;
 extern std::unique_ptr<VMTHook>RenderViewHook;
 extern std::unique_ptr<VMTHook>NetChannelHook;
+extern std::unique_ptr<VMTHook>SteamHook;
 extern std::unique_ptr<VMTHook>test;
 //extern std::unique_ptr<VMTHook>SteamGameCoordinatorTable;
 //extern CSX::Hook::VTable SteamGameCoordinatorTable;

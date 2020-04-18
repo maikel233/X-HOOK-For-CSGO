@@ -55,7 +55,6 @@ private:
 	inline bool Authenticate();
 	inline bool Detour(bool, int);
 	inline bool BackroundWorker(bool);
-	static inline void SetInfo(void);
 	static inline void InvokeBSOD();
 	static inline const char* getMachineName();
 	static inline uint16_t getCpuHash();

@@ -36,6 +36,13 @@ CGlowObjectManager*			pGlowManager;
 //ISteamGameCoordinator* g_pSteamGameCoordinator;
 CBaseHudChat * pChat;
 //ISteamUser* g_pSteamUser;
+
+ISteamClient * pSteamClient;
+ISteamMatchmaking * pSteamMatchmaking;
+ISteamUser * pSteamUser;
+ISteamFriends * pSteamFriends;
+
+
 LPDIRECT3DTEXTURE9 BackgroundTexture = NULL;
 LPDIRECT3DTEXTURE9 UsericoTexture = NULL;
 LPDIRECT3DTEXTURE9 LogoicoTexture = NULL;
@@ -68,6 +75,7 @@ std::unique_ptr<VMTHook>SoundHook;
 std::unique_ptr<VMTHook>SurfaceHook;
 std::unique_ptr<VMTHook>RenderViewHook;
 std::unique_ptr<VMTHook>NetChannelHook;
+std::unique_ptr<VMTHook>SteamHook;
 std::unique_ptr<VMTHook>test;
 
 

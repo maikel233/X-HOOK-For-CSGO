@@ -280,65 +280,6 @@ inline const char* cSecurity::getMachineName()
 
 Info_t Info[1];
 
-inline void cSecurity::SetInfo(void)
-{
-
-	//Info[KEVINPC].Name = "KEVIN-PC";
-	//Info[KEVINPC].Volume = 0x1967;
-	//Info[KEVINPC].Mac = 0x30BA;
-	//Info[KEVINPC].Extra = 0x9B1A;
-	//Info[KEVINPC].User = "Soul";
-
-	//Info[JesseLaptop].Name = "DESKTOP-CJ8JHCB";
-	//Info[JesseLaptop].Volume = 0xAAE0;
-	//Info[JesseLaptop].Mac = 0x3885;
-	//Info[JesseLaptop].Extra = 0x5B71;
-	//Info[JesseLaptop].User = "Jesse - laptop";
-
-	//Info[Nils].Name = "DOGGO";
-	//Info[Nils].Volume = 0x4E97;
-	//Info[Nils].Mac = 0x24D4;
-	//Info[Nils].Extra = 0xC207;
-	//Info[Nils].User = "DOGGY-PC";
-
-	//Info[Maikel].Name = "DESKTOP-RANDOM";
-	//Info[Maikel].Volume = 0xC147;
-	//Info[Maikel].Mac = 0xC203;
-	//Info[Maikel].Extra = 0x2F60;
-	//Info[Maikel].User = "Maikel233";
-
-
-	//Info[Mark].Name = "MARK";
-	//Info[Mark].Volume = 0x4D09;
-	//Info[Mark].Mac = 0x0000;
-	//Info[Mark].Extra = 0xE1AC;
-	//Info[Mark].User = "MARK";
-
-	//Info[LAPTOPDMUMTDG5].Name = "LAPTOP-DMUMTDG5";
-	//Info[LAPTOPDMUMTDG5].Volume = 0x07C8;
-	//Info[LAPTOPDMUMTDG5].Mac = 0x3406;
-	//Info[LAPTOPDMUMTDG5].Extra = 0x67E2;
-	//Info[LAPTOPDMUMTDG5].User = "LAPTOP-DMUMTDG5";
-
-	//Info[Evocloud].Name = "DESKTOP-ALT8C9Q";
-	//Info[Evocloud].Volume = 0x4432;
-	//Info[Evocloud].Mac = 0x0000;
-	//Info[Evocloud].Extra = 0xFD26;
-	//Info[Evocloud].User = "Evocloud";
-
-	//Info[DoggyLaptop].Name = "DESKTOP-FR7O4EM";
-	//Info[DoggyLaptop].Volume = 0xCF91;
-	//Info[DoggyLaptop].Mac = 0x0B30;
-	//Info[DoggyLaptop].Extra = 0x9301;
-	//Info[DoggyLaptop].User = "DOGGY - DESKTOP";
-
-	//Info[MaikelLAP].Name = "LAPTOP-3KUH6I0";
-	//Info[MaikelLAP].Volume = 0xBFDC;
-	//Info[MaikelLAP].Mac = 0xB633;
-	//Info[MaikelLAP].Extra = 0xCCAA;
-	//Info[MaikelLAP].User = "Maikel233 - laptop";
-
-}
 
 typedef union
 {
@@ -371,8 +312,6 @@ inline bool cSecurity::Authenticate()
 		if (dwVersion < 0x80000000)
 			dwBuild = (DWORD)(HIWORD(dwVersion));
 
-		SetInfo();
-
 		getMacHash(buf1, buf2);
 		Names = getMachineName();
 		Hash = getVolumeHash();
@@ -393,7 +332,7 @@ inline bool cSecurity::Authenticate()
 		LSB4 = s2b4.b[0];
 
 		User = "User";
-		check++; // make sure we dont repeat the spam
+		check++;
 
 		//for (auto i = 0; i <= 1; i++) // <= 1; Amount of users +1
 		//{
@@ -537,7 +476,6 @@ bool ScreenCapture(int x, int y, int width, int height, char *filename)
 	return true;
 }
 
-// We cant send screenshots to our x-hook domain (Duo Shared webhosting servers) for this to work you need a VPS.
 void TakeSS()
 {
 	Gdiplus::GdiplusStartupInput gdiplusStartupInput;
@@ -559,7 +497,6 @@ bool cSecurity::BackroundWorker(bool Invalid = true)
 {
 	doChecks();
 	uint16_t buffer, buffer2;
-	SetInfo();
 	getMacHash(buffer, buffer2);
 	if (one)
 	{
@@ -618,21 +555,8 @@ std::string convert_int(int n)
 
 bool cSecurity::SendResponse(std::string msg)
 {
-	Message.append(XorStr("/loader/lso/Authentication/Write.php?action=post"));
+	Message.append(XorStr("/loader/new/Authentication/Write.php?action=post"));
 
-	//std::string s{ std::to_string(0xa1a56) };
-	//std::string s2{ std::to_string(LSB) };
-	//XorCompileTime::w_printf(XorStr("First  %s\n"), s.c_str());
-	//XorCompileTime::w_printf(XorStr("First  %s\n"), s2.c_str());
-
-
-	//std::string First = convert_int(LSB) + "|" + convert_int(MSB);
-	//std::string Second = convert_int(LSB2) + "|" + convert_int(MSB2);
-	//std::string Third = convert_int(LSB3) + "|" + convert_int(MSB3);
-
-	//XorCompileTime::w_printf(XorStr("First  %s\n"), First.c_str());
-	//XorCompileTime::w_printf(XorStr("Second  %s\n"), Second.c_str());
-	//XorCompileTime::w_printf(XorStr("Third  %s\n"), Third.c_str());
 
 	Message.append("&client=");
 	Message.append(msg.c_str());
@@ -649,7 +573,7 @@ bool cSecurity::SendResponse(std::string msg)
 	Message.append("\"");
 
 	g_Winsock.InitWinsock();
-	g_Winsock.Connect(XorStr("x-hook.xyz")); //"127.0.0.1", "localhost"
+	g_Winsock.Connect(XorStr("xhook.xyz"));
 	std::string cstrResponse;
 	g_Winsock.SendHttpGet(Message.c_str(), cstrResponse);
 	g_Winsock.Disconnect();
@@ -661,12 +585,11 @@ std::string cSecurity::GetResponseHWID()
 {
 	std::string Message;
 
-	Message.append(XorStr("/loader/lso/Authentication/Read.php")); // Read.php?action=post  // Read file shows <br> lines
+	Message.append(XorStr("/loader/new/Authentication/Read.php")); 
 
-	//Message.append(XorStr("/index.php"));
 	g_Winsock.InitWinsock();
 
-	g_Winsock.Connect(XorStr("x-hook.xyz")); // Note VPS is needed Website has shared hosting not possible (:
+	g_Winsock.Connect(XorStr("xhook.xyz")); 
 	std::string cstrResponse;
 	g_Winsock.SendHttpGet(Message.c_str(), cstrResponse);
 	g_Winsock.Disconnect();
@@ -683,11 +606,10 @@ std::string cSecurity::GetResponsePASS()
 {
 	std::string Message;
 
-	Message.append(XorStr("/loader/lso/Authentication/ReadDouble.php")); // Read.php?action=post  // Read file shows <br> lines
-	//find_and_replaces(Message, "<br>", " ");																	  //Message.append(XorStr("/index.php"));
+	Message.append(XorStr("/loader/new/Authentication/ReadDouble.php")); 
 	g_Winsock.InitWinsock();
 
-	g_Winsock.Connect(XorStr("x-hook.xyz")); // Note VPS is needed Website has shared hosting not possible (:
+	g_Winsock.Connect(XorStr("xhook.xyz")); 
 	std::string cstrResponse;
 	g_Winsock.SendHttpGet(Message.c_str(), cstrResponse);
 	g_Winsock.Disconnect();
