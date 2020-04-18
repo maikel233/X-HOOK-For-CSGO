@@ -9,9 +9,12 @@
 #include "DDI.h"
 #include "Draw.h"
 #include "recvproxyhook.h"
+#include "Singleton.hpp"
 
-using SendDatagramFn = int(__thiscall*)(void*, void *);
-extern SendDatagramFn oSendDatagram;
+//SendDatagramFn oSendDatagram = NULL;
+//using SendDatagram_t = int(__thiscall *)(void *, void *);
+
+typedef bool(__thiscall * SendLobbyChatMessage_t)(ISteamMatchmaking*, CSteamID, const void*, int);
 
 typedef long(__stdcall* EndSceneFn)(IDirect3DDevice9* device);
 typedef long(__stdcall* ResetFn)(IDirect3DDevice9* device, D3DPRESENT_PARAMETERS* pp);
@@ -40,6 +43,9 @@ typedef void(__thiscall* PlaySoundFn)(ISurface*, const char*);
 
 typedef void(__thiscall* LockCursor)(void*);
 
+typedef int(__thiscall* SendDatagramFn)(void*, void*);
+
+
 /* ViewRender */
 
 //typedef void(__thiscall* RenderViewFn)(void*, CViewSetup&, CViewSetup&, int, int);
@@ -64,11 +70,13 @@ namespace Hooks
 	HRESULT WINAPI hPresent(IDirect3DDevice9* pDevice, RECT* pSourceRect, RECT* pDestRect, HWND hDestWindowOverride, RGNDATA* pDirtyRegion);
 	HRESULT WINAPI hReset(LPDIRECT3DDEVICE9 pDevice, D3DPRESENT_PARAMETERS* pPresentationParameters);
 	HRESULT __stdcall hkEndScene(IDirect3DDevice9* device);
+
 	
 	bool __stdcall hCreateMove(float frametime, CUserCmd* cmd);
-	int __fastcall SendDatagram(void* netchan, void*, void *datagram);
+	int __fastcall SendDatagram(INetChannel* netchan, void*, void *datagram);
 	void __stdcall hPaintTraverse(unsigned int VGUIPanel, bool forcerepaint, bool allowforce);
 	void __stdcall hDrawModelExecute(IMatRenderContext* matctx, const DrawModelState_t& state, const ModelRenderInfo_t& pInfo, matrix3x4_t* pCustomBoneToWorld);
+	bool __stdcall Hooked_SendLobbyChatMessage(CSteamID steamIdLobby, const void* pvMsgBody, int cubMsgBody);
 	void __fastcall hFrameStageNotify(void* ecx, void* edx, ClientFrameStage_t Stage);
 	bool __fastcall hFireEventClientSide(void* ecx, void* edx, IGameEvent* pEvent);
 
@@ -107,6 +115,4 @@ namespace SetKeyCodeState {
 	extern bool shouldListen;
 	extern ButtonCode_t* keyOutput;
 }
-
-
 

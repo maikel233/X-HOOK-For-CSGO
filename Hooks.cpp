@@ -12,6 +12,7 @@
 #include <d3dx9.h>
 #include <d3d9.h>
 #include <d3d9types.h>
+#include "FakeLatency.h"
 
 #pragma comment(lib, "winmm.lib")
 #pragma comment(lib, "d3d9.lib")
@@ -135,46 +136,37 @@ namespace Hooks
 
 
 
-#define FAKE_LATENCY_AMOUNT 0.046875f
-	SendDatagramFn oSendDatagram = NULL;
-	using SendDatagram_t = int(__thiscall *)(void *, void *);
-	int __fastcall SendDatagram(void* netchan, void*, void *datagram)
+
+
+
+	int __fastcall Hooks::SendDatagram(INetChannel* netchan, void*, void *datagram)
 	{
-
-		static auto original_fn = NetChannelHook->GetOriginalFunction<SendDatagram_t>(46);
-	
-
-		INetChannel* channel = (INetChannel*)HNetchan;
-		bf_write* data = (bf_write*)datagram;
-
-		if (!Settings::Aimbot::LegitBackTrack || datagram)
+		if (datagram)
 		{
-			return original_fn(channel, data);
+			return NetChannelHook->GetOriginalFunction<SendDatagramFn>(46)(netchan, datagram);
 		}
-		//	return original_fn(net_channel, datagram);
+
+		int instate = netchan->m_nInReliableState;
+		int insequencenr = netchan->m_nInSequenceNr;
+
+		float ammount = Settings::FakeLag::fakelatency;
+
+		if (Settings::FakeLag::enablefakelatency)
+			gLagCompensation.AddLatencyToNetchan(netchan, ammount);
+
 		
-		//auto * channel = reinterpret_cast< INetChannel * >(net_channel);
-		gLagCompensation.AddLatencyToNetchan(channel, FAKE_LATENCY_AMOUNT);
-	//	lagcompensation::add_latency(chan, FAKE_LATENCY_AMOUNT);
+
+		netchan->m_nInReliableState = instate;
+		netchan->m_nInSequenceNr = insequencenr;
 
 
+		
+		return NetChannelHook->GetOriginalFunction<SendDatagramFn>(46)(netchan, datagram);
 
-		int instate = channel->m_nInReliableState;
-		int insequencenr = channel->m_nInSequenceNr;
-
-		int ret = original_fn(channel, data);
-
-		channel->m_nInReliableState = instate;
-		channel->m_nInSequenceNr = insequencenr;
-
-		//pCvar->ConsoleColorPrintf(ColorRGBA(0, 162, 232), XorStr(" very sad nothing is happening... \n"));
-
-		return ret;
 	}
 
 
 
-	
 
 	static bool hooked = false;
 	bool __stdcall hCreateMove(float frametime, CUserCmd* cmd)
@@ -189,6 +181,7 @@ namespace Hooks
 			bSendPacket = SendPacket;
 			bSendPackett = bSendPacket;
 			SendPacket = true;
+
 			lbyindicator::CreateMove(cmd);
 			Resolver::CreateMove(cmd);
 			BHop::CreateMove(cmd);
@@ -210,7 +203,7 @@ namespace Hooks
 			Airstuck::CreateMove(cmd);
 			Fakewalk::CreateMove(cmd);
 			MoonWalk::CreateMove(cmd);
-			backtracking->legitBackTrack(cmd);
+		    Backtracking::Createmove(cmd);
 			Walkbot::CreateMove(cmd);
 			FakeLag::CreateMove(cmd);
 			ESP::CreateMove(cmd);
@@ -219,72 +212,47 @@ namespace Hooks
 			AngleIndicator::PostPredictionCreateMove(cmd);
 			EdgeJump::PostPredictionCreateMove(cmd);
 
-		/*	if (Settings::Aimbot::LegitBackTrack)
+			
+				//gLagCompensation.UpdateIncomingSequences();
+				//auto clientState = *reinterpret_cast<uintptr_t*>(uintptr_t(GetModuleHandle("engine.dll")) + 0x58BCFC); //Do a patternscan and make a global var
+				//uintptr_t temp = *reinterpret_cast<uintptr_t*>(clientState + 0x9C);
+				//INetChannel* netchan = reinterpret_cast<INetChannel*>(temp);//Do a global var
 
-			{*/
-			//	gLagCompensation.UpdateIncomingSequences();
-		//	}
-
-			//if (Settings::Aimbot::LegitBackTrack)
-			//{
-			//	if (!HNetchan)
+			//	if (!hooked && clientState) //ReInject after map change??? Detect mapchange and rehook
 			//	{
-			//		DWORD ClientState = *(DWORD*)pClientState;
-			//		if (ClientState)
+			//		if (netchan)
 			//		{
-			//			DWORD NetChannel = *(DWORD*)(*(DWORD*)pClientState + 0x9C);
-			//			if (NetChannel)
-			//			{
-			//				/*	NetChannelHook = std::make_unique<VMTHook>(pClientState->m_pNetChannel);
-			//					NetChannelHook->HookFunction(Hooks::SendDatagram, 46);*/
 
-
-
-			//				HNetchan = new VMTHook((DWORD**)NetChannel);
-			//				oSendDatagram = (SendDatagramFn)HNetchan->HookFunction((void*)SendDatagram, 46);
-			//			}
+			//			hooked = true;
+			//		//	CVMTHookManager* VMTNetChan = new CVMTHookManager((PDWORD*)netchan);
+			//		//	oSendDatagram = (SendDatagramFn)(VMTNetChan->HookMethod((DWORD)SendDatagram, 46));
+			//			pCvar->ConsoleColorPrintf(ColorRGBA(0, 162, 255), XorStr("[XHOOK] Hooking send datagram. \n"));
+			//			NetChannelHook = std::make_unique<VMTHook>(netchan);
+			//			NetChannelHook->HookFunction(Hooks::SendDatagram, 46);
 			//		}
-			//	}
-
-			//	//if (HNetchan)
-			//	//{
-
-			//	//	DWORD ClientState = *(DWORD*)pClientState;
-			//	//	if (ClientState)
-			//	//	{
-			//	//		DWORD NetChannel = *(DWORD*)(*(DWORD*)pClientState + 0x9C);
-			//	//		if (NetChannel)
-			//	//		{
-			//	//			//Real_m_nInSequencenumber = 0.0f;
-			//	//			delete HNetchan;
-			//	//			HNetchan = nullptr;
-			//	//		}
-			//	//		else
-			//	//		{
-			//	//			//LocalPlayer.Real_m_nInSequencenumber = 0.0f;
-			//	//			//HNetchan->ClearClassBase();
-			//	//			
-			//	//			delete HNetchan;
-			//	//			HNetchan = nullptr;
-			//	//		}
-			//	//	}
-			//	//	else
-			//	//	{
-			//	//	
-			//	//		delete HNetchan;
-			//	//		HNetchan = nullptr;
-			//	//	}
-			////	}
-			//
 			//	
-			//
-
+			//}
 		}
 		else
 			return ClientModeHook->GetOriginalFunction<CreateMoveFn>(24)(pClientMode, frametime, cmd);
 
 		return false;
 	}
+
+	bool __stdcall Hooked_SendLobbyChatMessage(CSteamID steamIdLobby, const void* pvMsgBody, int cubMsgBody)
+	{
+		typedef bool(__thiscall* SendLobbyChatMessage_t)(ISteamMatchmaking*, CSteamID, const void*, int);
+		static SendLobbyChatMessage_t Original_SendLobbyChatMessage = SteamHook->GetOriginalFunction<SendLobbyChatMessage_t>(26);
+
+		if (!LobbyMod::Get()->InterpretLobbyMessage(steamIdLobby, pvMsgBody, cubMsgBody))
+			return Original_SendLobbyChatMessage(pSteamMatchmaking, steamIdLobby, pvMsgBody, cubMsgBody);//Original_SendLobbyChatMessage(I.SteamMatchmaking(), steamIdLobby, pvMsgBody, cubMsgBody);
+
+		return true;
+	}
+
+
+
+	//void* thisptr, int edx, void* ctx, void*                                     state, const ModelRenderInfo_t& pInfo, matrix3x4_t* pCustomBoneToWorld)
 	void __stdcall hDrawModelExecute(IMatRenderContext* matctx, const DrawModelState_t& state, const ModelRenderInfo_t& pInfo, matrix3x4_t* pCustomBoneToWorld)
 	{
 
@@ -323,7 +291,7 @@ namespace Hooks
 		}
 		else if (stage == ClientFrameStage_t::FRAME_NET_UPDATE_POSTDATAUPDATE_START)
 		{
-			backtracking->Update(pGlobalVars->tickcount);
+			//backtracking->Update(pGlobalVars->tickcount);
 			//lagcompensation::Get().update_sequence();
 		//	gLagCompensation.UpdateIncomingSequences();
 			
@@ -343,7 +311,7 @@ namespace Hooks
 		if (Settings::Aimbot::LegitBackTrack)
 
 		{
-		//	gLagCompensation.UpdateIncomingSequences();
+	//		gLagCompensation.UpdateIncomingSequences();
 		}
 		Backtracking::FrameStageNotify(stage);
 		CustomGlow::FrameStageNotify(stage);
@@ -372,7 +340,7 @@ namespace Hooks
 	bool InitImages = true;
 	static int width = 0;
 	static int height = 0;
-
+	
 
 	HRESULT WINAPI hkEndScene(IDirect3DDevice9* device)
 	{
@@ -436,7 +404,7 @@ namespace Hooks
 		}
 
 		Menu();
-
+		
 		device->SetRenderState(D3DRS_COLORWRITEENABLE, dwOld_D3DRS_COLORWRITEENABLE);
 
 		return oEndScene(device);
@@ -476,7 +444,7 @@ namespace Hooks
 
 				SYSTEMTIME str_t;
 				GetLocalTime(&str_t);
-				sprintf(Buffer, "say [X-HOOK]: Time: %d:%d:%d Hey Here we go again :)", str_t.wHour, str_t.wMinute, str_t.wSecond); // our current round						
+				sprintf(Buffer, "say [XHOOK]: Time: %d:%d:%d Hey Here we go again :)", str_t.wHour, str_t.wMinute, str_t.wSecond); // our current round						
 
 				Settings::WalkBot::marker = 0;
 
@@ -488,7 +456,7 @@ namespace Hooks
 
 				SYSTEMTIME str_t;
 				GetLocalTime(&str_t);
-				sprintf(Buffer, "say [X-HOOK]: Time: %d:%d:%d Hey Here we go again :)", str_t.wHour, str_t.wMinute, str_t.wSecond); // our current round						
+				sprintf(Buffer, "say [XHOOK]: Time: %d:%d:%d Hey Here we go again :)", str_t.wHour, str_t.wMinute, str_t.wSecond); // our current round						
 
 				pEngine->ExecuteClientCmd(Buffer); 
 			}
@@ -499,7 +467,7 @@ namespace Hooks
 				IEngineClient::player_info_t PlayerInfo;
 				if (pEngine->GetPlayerInfo(PlayerID, &PlayerInfo)) {
 					char Buffer[128];
-					sprintf(Buffer, "say [X-HOOK] %s just connected", PlayerInfo.name);
+					sprintf(Buffer, "say [XHOOK] %s just connected", PlayerInfo.name);
 					pEngine->ExecuteClientCmd(Buffer); 
 				}
 			}
@@ -525,78 +493,78 @@ namespace Hooks
 							char Buffer[128];
 
 							switch (Kills) {
-							case 1: sprintf(Buffer, "say [X-HOOK] First kill! %s just got owned [KS: 1]", PlayerInfo.name);
+							case 1: sprintf(Buffer, "say [XHOOK] First kill! %s just got owned [KS: 1]", PlayerInfo.name);
 								if (Settings::Spammer::KillSpammer::enableCustomSounds)
 								{
 									PlaySoundA(XorStr("C:\\xhook\\Hitsounds\\Firstblood.wav"), nullptr, SND_ASYNC);
 								}
 								break;
-							case 2:	sprintf(Buffer, "say [X-HOOK] Double kill! %s just got owned [KS: 2]", PlayerInfo.name);
+							case 2:	sprintf(Buffer, "say [XHOOK] Double kill! %s just got owned [KS: 2]", PlayerInfo.name);
 								if (Settings::Spammer::KillSpammer::enableCustomSounds)
 								{
 									PlaySoundA(XorStr("C:\\xhook\\Hitsounds\\Doubekill.wav"), nullptr, SND_ASYNC);
 								}
 								break;
-							case 3:	sprintf(Buffer, "say [X-HOOK] Triple kill! %s just got owned [KS: 3]", PlayerInfo.name);
+							case 3:	sprintf(Buffer, "say [XHOOK] Triple kill! %s just got owned [KS: 3]", PlayerInfo.name);
 								if (Settings::Spammer::KillSpammer::enableCustomSounds)
 								{
 									PlaySoundA(XorStr("C:\\xhook\\Hitsounds\\Triplekill.wav"), nullptr, SND_ASYNC);
 								}
 								break;
-							case 4:	sprintf(Buffer, "say [X-HOOK] Ultra kill! %s just got owned [KS: 4]", PlayerInfo.name);
+							case 4:	sprintf(Buffer, "say [XHOOK] Ultra kill! %s just got owned [KS: 4]", PlayerInfo.name);
 								if (Settings::Spammer::KillSpammer::enableCustomSounds)
 								{
 									PlaySoundA(XorStr("C:\\xhook\\Hitsounds\\Ultrakill.wav"), nullptr, SND_ASYNC);
 								}
 								break;
-							case 5:	sprintf(Buffer, "say [X-HOOK] MMMONSTERKILL! %s just got owned [KS: 5]", PlayerInfo.name);
+							case 5:	sprintf(Buffer, "say [XHOOK] MMMONSTERKILL! %s just got owned [KS: 5]", PlayerInfo.name);
 								if (Settings::Spammer::KillSpammer::enableCustomSounds)
 								{
 									PlaySoundA(XorStr("C:\\xhook\\Hitsounds\\Monsterkill.wav"), nullptr, SND_ASYNC);
 								}
 								break;
-							case 6:	sprintf(Buffer, "say [X-HOOK] Unbelievable! %s just got owned [KS: 6]", PlayerInfo.name);
+							case 6:	sprintf(Buffer, "say [XHOOK] Unbelievable! %s just got owned [KS: 6]", PlayerInfo.name);
 								if (Settings::Spammer::KillSpammer::enableCustomSounds)
 								{
 									PlaySoundA(XorStr("C:\\xhook\\Hitsounds\\MegaKill.wav"), nullptr, SND_ASYNC);
 								}
 								break;
-							case 7:	sprintf(Buffer, "say [X-HOOK] Ludicrouskill! %s just got owned [KS: 7]", PlayerInfo.name);
+							case 7:	sprintf(Buffer, "say [XHOOK] Ludicrouskill! %s just got owned [KS: 7]", PlayerInfo.name);
 								if (Settings::Spammer::KillSpammer::enableCustomSounds)
 								{
 									PlaySoundA(XorStr("C:\\xhook\\Hitsounds\\ludicrouskill.wav"), nullptr, SND_ASYNC);
 								}
-							case 8:	sprintf(Buffer, "say [X-HOOK] HolyShit! %s just got owned [KS: 8]", PlayerInfo.name);
+							case 8:	sprintf(Buffer, "say [XHOOK] HolyShit! %s just got owned [KS: 8]", PlayerInfo.name);
 								if (Settings::Spammer::KillSpammer::enableCustomSounds)
 								{
 									PlaySoundA(XorStr("C:\\xhook\\Hitsounds\\holyshit.wav"), nullptr, SND_ASYNC);
 								}
 								break;
-							case 9: sprintf(Buffer, "say [X-HOOK] KILLING SPREE! %s just got owned [KS: 9]", PlayerInfo.name);
+							case 9: sprintf(Buffer, "say [XHOOK] KILLING SPREE! %s just got owned [KS: 9]", PlayerInfo.name);
 								if (Settings::Spammer::KillSpammer::enableCustomSounds)
 								{
 									PlaySoundA(XorStr("C:\\xhook\\Hitsounds\\Killingspree.wav"), nullptr, SND_ASYNC);
 								}
 								break;
-							case 10: sprintf(Buffer, "say [X-HOOK] Perfect! %s just got owned [KS: 10]", PlayerInfo.name);
+							case 10: sprintf(Buffer, "say [XHOOK] Perfect! %s just got owned [KS: 10]", PlayerInfo.name);
 								if (Settings::Spammer::KillSpammer::enableCustomSounds)
 								{
 									PlaySoundA(XorStr("C:\\xhook\\Hitsounds\\Perfect.wav"), nullptr, SND_ASYNC);
 								}
 								break;
-							case 11: sprintf(Buffer, "say [X-HOOK] %s just got owned [KS: 12]", PlayerInfo.name);
+							case 11: sprintf(Buffer, "say [XHOOK] %s just got owned [KS: 12]", PlayerInfo.name);
 								if (Settings::Spammer::KillSpammer::enableCustomSounds)
 								{
 									PlaySoundA(XorStr("C:\\xhook\\Hitsounds\\Ownage.wav"), nullptr, SND_ASYNC);
 								}
 								break;
-							case 12: sprintf(Buffer, "say [X-HOOK] Wicked sick! %s just got owned [KS: 11]", PlayerInfo.name);
+							case 12: sprintf(Buffer, "say [XHOOK] Wicked sick! %s just got owned [KS: 11]", PlayerInfo.name);
 								if (Settings::Spammer::KillSpammer::enableCustomSounds)
 								{
 									PlaySoundA(XorStr("C:\\xhook\\Hitsounds\\WickedSick.wav"), nullptr, SND_ASYNC);
 								}
 								break;
-							case 13: sprintf(Buffer, "say [X-HOOK] Wicked sick! %s just got owned [KS: 13]", PlayerInfo.name);
+							case 13: sprintf(Buffer, "say [XHOOK] Wicked sick! %s just got owned [KS: 13]", PlayerInfo.name);
 								if (Settings::Spammer::KillSpammer::enableCustomSounds)
 								{
 									PlaySoundA(XorStr("C:\\xhook\\Hitsounds\\ComboWhore.wav"), nullptr, SND_ASYNC);
@@ -604,34 +572,34 @@ namespace Hooks
 								break;
 
 
-							case 15: sprintf(Buffer, "say [X-HOOK] RAMPAGE! %s just got owned [KS: 15]", PlayerInfo.name);
+							case 15: sprintf(Buffer, "say [XHOOK] RAMPAGE! %s just got owned [KS: 15]", PlayerInfo.name);
 								if (Settings::Spammer::KillSpammer::enableCustomSounds)
 								{
 									PlaySoundA(XorStr("C:\\xhook\\Hitsounds\\Rampage.wav"), nullptr, SND_ASYNC);
 								}
 								break;
-							case 21: sprintf(Buffer, "say [X-HOOK] DOMINATING! %s just got owned [KS: 21]", PlayerInfo.name);
+							case 21: sprintf(Buffer, "say [XHOOK] DOMINATING! %s just got owned [KS: 21]", PlayerInfo.name);
 								if (Settings::Spammer::KillSpammer::enableCustomSounds)
 								{
 									PlaySoundA(XorStr("C:\\xhook\\Hitsounds\\Dominating.wav"), nullptr, SND_ASYNC);
 								}
 								break;
-							case 26: sprintf(Buffer, "say [X-HOOK]UNSTOPPABLE! %s just got owned [KS: 26]", PlayerInfo.name);
+							case 26: sprintf(Buffer, "say [XHOOK]UNSTOPPABLE! %s just got owned [KS: 26]", PlayerInfo.name);
 								if (Settings::Spammer::KillSpammer::enableCustomSounds)
 								{
 									PlaySoundA(XorStr("C:\\xhook\\Hitsounds\\unstoppable.wav"), nullptr, SND_ASYNC);
 								}
 								break;
-							case 37: sprintf(Buffer, "say [X-HOOK] GODLIKE! %s just got owned [KS: 37]", PlayerInfo.name);
+							case 37: sprintf(Buffer, "say [XHOOK] GODLIKE! %s just got owned [KS: 37]", PlayerInfo.name);
 								if (Settings::Spammer::KillSpammer::enableCustomSounds)
 								{
 									PlaySoundA(XorStr("C:\\xhook\\Hitsounds\\Godlike.wav"), nullptr, SND_ASYNC);
 								}
 								break;
-							case 40: sprintf(Buffer, "say [X-HOOK] BEYOND GODLIKE! %s just got owned [KS: 40]", PlayerInfo.name); break;
-							case 50: sprintf(Buffer, "say [X-HOOK] KILLPOCALYPSE! %s just got owned [KS: 50]", PlayerInfo.name); break;
-							case 55: sprintf(Buffer, "say [X-HOOK] KILLIONAIRE! [KS: 55]", PlayerInfo.name); break;
-							default: sprintf(Buffer, "say [X-HOOK] %s got rekt! [KS: %i]", PlayerInfo.name, Kills); break;
+							case 40: sprintf(Buffer, "say [XHOOK] BEYOND GODLIKE! %s just got owned [KS: 40]", PlayerInfo.name); break;
+							case 50: sprintf(Buffer, "say [XHOOK] KILLPOCALYPSE! %s just got owned [KS: 50]", PlayerInfo.name); break;
+							case 55: sprintf(Buffer, "say [XHOOK] KILLIONAIRE! [KS: 55]", PlayerInfo.name); break;
+							default: sprintf(Buffer, "say [XHOOK] %s got rekt! [KS: %i]", PlayerInfo.name, Kills); break;
 							}
 
 							pEngine->ExecuteClientCmd(Buffer); // Send our Kill Message.
@@ -669,7 +637,7 @@ namespace Hooks
 				IEngineClient::player_info_t PlayerInfo;
 				if (pEngine->GetPlayerInfo(PlayerID, &PlayerInfo)) {
 					char Buffer[128];
-					sprintf(Buffer, "say [X-HOOK] %s just ragequit :>", PlayerInfo.name);
+					sprintf(Buffer, "say [XHOOK] %s just ragequit :>", PlayerInfo.name);
 					pEngine->ExecuteClientCmd(Buffer);
 				}
 			}
@@ -681,7 +649,7 @@ namespace Hooks
 	void __stdcall hBeginFrame(float frameTime)
 	{
 
-//		ClanTagChanger::BeginFrame(frameTime);
+	//	ClanTagChanger::BeginFrame(frameTime);
 		NameChanger::BeginFrame(frameTime);
 		NameStealer::BeginFrame(frameTime);
 		Spammer::BeginFrame(frameTime);
@@ -741,7 +709,6 @@ namespace Hooks
 		AutoAccept::PlaySound(fileName);
 	}
 
-	
 	void	__stdcall hLockCursor()
 	{
 		bool Lock = G::is_renderer_active;
@@ -751,7 +718,8 @@ namespace Hooks
 		}
 		SurfaceHook->GetOriginalFunction<LockCursor>(67)(pSurface);
 	}
-	
+
+
 	void __fastcall Hooks::RenderSmokePostViewmodel(void* ecx, void* edx) {
 		if (!NoSmoke::RenderSmokePostViewmodel())
 			RenderViewHook->GetOriginalFunction<NoSmokeFn>(41)(ecx);
