@@ -3,7 +3,7 @@
 #include "sdk/SDK.h"
 #include "interfaces.h"
 
-#define PI 3.14159265358979323846f
+/*#define PI 3.14159265358979323846f
 
 inline Vector angle_vector(Vector meme)
 {
@@ -60,4 +60,4 @@ namespace SDK
 
 extern SDK::backtrackData headPositions[64][12];
 
-extern SDK::BackTracks* backtracking;
+extern SDK::BackTracks* backtrackin*///g;

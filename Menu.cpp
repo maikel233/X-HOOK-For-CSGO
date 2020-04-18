@@ -80,7 +80,7 @@ const char* ChamModes[] = { "Fake", "Real", "Lower Body Yaw", "Ghost" };
 const char* strafeTypes[] = { "Forwards", "Backwards", "Left", "Right", "Rage" };
 const char* animationTypes[] = { "Static", "Current Time", "Marquee", "Words", "Letters" };
 const char* spammerTypes[] = { "None", "Normal", "Positions" };
-const char* presetTypes[] = { "X-HOOK.XYZ", "Dogeii Gang", "Custom" };
+const char* presetTypes[] = { "XHOOK.XYZ", "Dogeii Gang", "Custom" };
 const char* lagTypes[] = { "Off", "AimTux", "Normal", "Step", "Reactive", "Nuclear", "Lunico" };
 const char* teams[] = { "Allies", "Enemies", "Both" };
 const char* grenadeTypes[] = { "Flashbang", "Smoke Grenade", "Molotov", "HE Grenade" };
@@ -591,7 +591,7 @@ bool ColorPicker4(float col[4])
 
 
 static char fName[128] = "default";
-bool Settings::HWID::LoggedIn = false;
+bool Settings::HWID::LoggedIn = true;
 static char Pass[256] = "";
 static int miss = 0;
 
@@ -604,18 +604,18 @@ void Authentication()
 
 	if (!Settings::HWID::LoggedIn) {
 		if (g_pSecurity->isVerified()) {
-			ImGui::OpenPopup(XorStr("X-HOOK"));
+			ImGui::OpenPopup(XorStr("XHOOK"));
 		}
 		else {
 			g_pSecurity->isVerified();
-			ImGui::OpenPopup(XorStr("Unique ID"));
+			ImGui::OpenPopup(XorStr("HWID Error."));
 		}
 	}
 	if (miss >= 4) {
 		Settings::HWID::uninject = true;
 		ExitProcess(NULL);
 	}
-	if (ImGui::BeginPopupModal(XorStr("Unique ID"))) {
+	if (ImGui::BeginPopupModal(XorStr("HWID Error."))) {
 		ImGui::Text(
 			XorStr(" Oooops looks like something went wrong \n close this window and open csgo console for more info ")
 		);
@@ -626,7 +626,7 @@ void Authentication()
 
 		if (ImGui::Button(XorStr("Ok"))) {
 			pCvar->ConsoleColorPrintf(ColorRGBA(255, 0, 0),
-				XorStr("This device is not recognized. Wait one hour and try again \n Incase nothing happends contact a admin or moderator on x-hook or on discord."));
+				XorStr("[XHOOK] This device is not recognized. Wait one hour and try again \n[XHOOK] Visit xhook.xyz/forum for more information."));
 			g_pSecurity->SendHWID = true;
 			g_pSecurity->Thread();
 			ImGui::CloseCurrentPopup();
@@ -636,9 +636,9 @@ void Authentication()
 
 	ImGui::Columns(1);
 
-	if (ImGui::BeginPopupModal(XorStr("X-HOOK"), NULL, ImGuiWindowFlags_NoResize)) {
+	if (ImGui::BeginPopupModal(XorStr("XHOOK"), NULL, ImGuiWindowFlags_NoResize)) {
 		ImGui::Text(
-			XorStr("Welcome to Project X-HOOK. \nPlease enter your Verification ID: ")
+			XorStr("Welcome to Project XHOOK. \nPlease enter your Verification ID: ")
 		);
 		ImGui::SameLine();
 		if (ImGui::Button(" ", ImVec2(1, 1))) {
@@ -712,7 +712,7 @@ void Menu()
 
 	if (G::is_renderer_active) {
 		if (mouse_enabled) {
-			pEngine->ClientCmd_Unrestricted("toggleconsole");
+			//pEngine->ClientCmd_Unrestricted("toggleconsole");
 			//pCvar->FindVar("cl_mouseenable")->SetValue(mouse_enabled);
 			//pInputSystem->EnableInput(!mouse_enabled);
 			//pInputSystem->ResetInputState();
@@ -722,7 +722,7 @@ void Menu()
 	}
 	else {
 		if (!mouse_enabled) {
-			pEngine->ClientCmd_Unrestricted("toggleconsole");
+		//	pEngine->ClientCmd_Unrestricted("toggleconsole");
 		/*	pCvar->FindVar("cl_mouseenable")->SetValue(!mouse_enabled);
 			pInputSystem->EnableInput(!mouse_enabled);
 			pInputSystem->ResetInputState();*/
@@ -820,15 +820,14 @@ void Menu()
 	}
 
 	 // TEST
-//	if (Settings::HWID::LoggedIn) {
-	/*	Radar::RenderWindow();*/
+	if (Settings::HWID::LoggedIn) {
 		Radar::RenderWindow();
 		ShowSpectators::RenderWindow();
-		ShowSpotify::RenderWindow();
+	//	ShowSpotify::RenderWindow();
 		ResolverInfo::RenderWindow();
 		EventLogger::PaintImGui();
 		SpeedIndicator::Paint();
-//	}
+	}
 
 
 	if (G::is_renderer_active)
@@ -839,18 +838,18 @@ void Menu()
 		static bool MenuBool;
 
 
-		/*if (!Settings::HWID::LoggedIn) {
+		if (!Settings::HWID::LoggedIn) {
 			Authentication();
-		}*/
+		}
 
-		/*if (Settings::HWID::LoggedIn)
-		{*/
-			IRC::RenderWindow();
+		if (Settings::HWID::LoggedIn)
+		{
+			//IRC::RenderWindow();
 			Configs::RenderWindow();
 			
-			DrawUserPanel(); //X-hook panel
+			DrawUserPanel(); 
 
-			ImGui::Begin("X-HOOK V1.32 - Panorama build", &MenuBool, ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_ShowBorders);
+			ImGui::Begin("XHOOK V1.33", &MenuBool, ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_ShowBorders);
 			{
 				Pos = ImGui::GetWindowPos();
 				for (int i = 0; i < IM_ARRAYSIZE(tabs); i++)
@@ -888,12 +887,8 @@ void Menu()
 				switch (page)
 				{
 				case 0:
-
 					AimTab::RenderTab();
 					break;
-				/*case 1:
-					Triggerbot::RenderTab();
-					break;*/
 				case 1:
 
 
@@ -932,7 +927,7 @@ void Menu()
 								ImGui::Checkbox("Head Dot", &Settings::ESP::HeadDot::enabled);
 								SetTooltip("Adds a Dot on the Head of a player");
 								ImGui::Checkbox("Skeleton", &Settings::ESP::Skeleton::enabled);
-								SetTooltip("Will draw backtrack skeleton, and chams.");
+								SetTooltip("Will draw skeleton.");
 							}
 							ImGui::NextColumn();
 							{
@@ -945,8 +940,8 @@ void Menu()
 								ImGui::Combo("##BARCOLTYPE", (int*)& Settings::ESP::Bars::colorType, BarColorTypes, IM_ARRAYSIZE(BarColorTypes));
 								ImGui::Combo("##TEAMCOLTYPE", (int*)& Settings::ESP::teamColorType, TeamColorTypes, IM_ARRAYSIZE(TeamColorTypes));
 								ImGui::PopItemWidth();
-								ImGui::Checkbox("Skeleton", &Settings::ESP::Skeleton::enabled);
-								SetTooltip("Show a players skeleton");
+								ImGui::Checkbox("Draw Ticks", &Settings::ESP::SkeletonBacktrack::enabled);
+								SetTooltip("Show BT ticks");
 								ImGui::PushItemWidth(-1);
 								ImGui::SliderFloat("##HDOTSIZE", &Settings::ESP::HeadDot::size, 1.f, 10.f, "Size: %0.3f");
 								ImGui::PopItemWidth();
@@ -1606,6 +1601,8 @@ void Menu()
 								ImGui::Checkbox("Edge Jump", &Settings::EdgeJump::enabled);
 								ImGui::Checkbox("CircleStrafe", &Settings::CircleStrafe::enabled);
 								SetTooltip("Jumps off the edges");
+								ImGui::Checkbox("NoDuck", &Settings::NoDuckCooldown::enabled);
+								SetTooltip("Remove the duck cooldown.");
 							}
 							ImGui::NextColumn();
 							{
@@ -1647,7 +1644,7 @@ void Menu()
 								if (Settings::Spammer::KillSpammer::enabledSync)
 								{
 									ImGui::Checkbox("Kill sounds", &Settings::Spammer::KillSpammer::enableCustomSounds);
-									SetTooltip("Download the hitsounds folder on x-hook.xyz/forum. Place it in C:/Xhook/");
+									SetTooltip("Download the hitsounds folder on xhook.xyz/forum. Place it in C:/Xhook/");
 									
 								}
 								ImGui::Checkbox("Chat PlayerHurt", &Settings::Spammer::KillSpammer::enabledHurt);
@@ -2047,13 +2044,13 @@ void Menu()
 							if (ImGui::Button(XorStr("Infinite Name Spam")))
 								NameChanger::InitColorChange(NameChanger::type = NC_Type::NC_RAINBOW);
 							ImGui::SameLine();
-							if (ImGui::Button("X-HOOK"))
+							if (ImGui::Button("XHOOK"))
 							{
 								NameChanger::changes = 0;
 								NameChanger::type = NC_Type::NC_TROLL;
 							}
 							ImGui::SameLine();
-							if (ImGui::Button("X-HOOK"))
+							if (ImGui::Button("XHOOK"))
 								NameChanger::changes = 0;
 							NameChanger::type = NC_Type::NC_NORMAL;
 							ImGui::SameLine();
@@ -2113,13 +2110,14 @@ void Menu()
 								ImGui::Checkbox("Show Ranks", &Settings::ShowRanks::enabled);
 								SetTooltip("Displays competitive rank of all players in the scoreboard next to their name during a competitive match");
 								ImGui::Checkbox("Screenshot Cleaner", &Settings::ScreenshotCleaner::enabled);
-								SetTooltip("Prevents X-HOOK visuals from appearing in screenshots taken");
+								SetTooltip("Prevents XHOOK visuals from appearing in screenshots taken");
 								UI::KeyBindButton(&Settings::Airstuck::key);
 								UI::KeyBindButton(&Settings::Autoblock::key);
 //								UI::KeyBindButton(&Settings::Teleport::key);
 								UI::KeyBindButton(&Settings::JumpThrow::key);
 								ImGui::Checkbox("Sniper Crosshair", &Settings::SniperCrosshair::enabled);
 								ImGui::Checkbox(XorStr("Event Logger"), &Settings::EventLogger::enabled);
+								ImGui::Checkbox(XorStr("Debug Anim overlay"), &Settings::Debug::AnimLayers::draw);
 							}
 							ImGui::NextColumn();
 							{
@@ -2136,6 +2134,7 @@ void Menu()
 									if (Settings::FakeLag::type != FakeLagType::LUNICO)
 										ImGui::Text(XorStr("Choke Amount"));
 									ImGui::ItemSize(ImVec2(0.0f, 0.0f), 0.0f);
+									ImGui::Checkbox("Enable", &Settings::FakeLag::enablefakelatency);
 								}
 								ImGui::NextColumn();
 								{
@@ -2148,6 +2147,8 @@ void Menu()
 										ImGui::SliderInt(XorStr("##FAKELAGAMOUNT"), &Settings::FakeLag::value, 0, 16,
 											XorStr("Amount: %0.f"));
 									}
+									
+									ImGui::SliderFloat("##fakelatency", &Settings::FakeLag::fakelatency, 0.f, 100.f, "fakelatency: %0.f");
 									ImGui::PopItemWidth();
 								}
 							}
@@ -2249,6 +2250,60 @@ void Menu()
 						ImGui::Separator();
 						ImGui::PushItemWidth(138);
 						ImGui::Checkbox("Config window", &Configs::showWindow);
+
+
+						const char* ChatColours[] = { "Off", "Custom", "Red", "Green", "Yellow", "Unknow", "Unknow2", "Unknow3", "Unknow4" };
+						const char* ChatColoursNonOwner[] = { "Off", "Custom", "Red" };
+
+					//w	if (LobbyMod::Get()->DoesOwnCurrentLobby())
+							ImGui::Combo("Chat Colour", (int*)& Settings::Lobbychat::preset, ChatColours, ARRAYSIZE(ChatColours));
+					//	else
+						//	ImGui::Combo("Chat Colour", (int*)& Settings::Lobbychat::preset, ChatColoursNonOwner, ARRAYSIZE(ChatColoursNonOwner));
+
+						if (Settings::Lobbychat::preset != chatType::Color_Standard)
+						{
+							if (Settings::Lobbychat::preset == chatType::Color_Custom)
+								ImGui::InputText("Chat Format", Settings::Lobbychat::LobbyChat_Format, 256);
+							else
+								ImGui::Checkbox("Prepend Name", &Settings::Lobbychat::LobbyChat_PrependName);
+
+							ImGui::Checkbox("Endline Spam", &Settings::Lobbychat::LobbyChat_EndlineSpam);
+							ImGui::SliderFloat("Repeat Exponent", &Settings::Lobbychat::LobbyChat_RepeatExponent, 0.f, 3.f, "%.2f");
+						}
+
+						ImGui::Separator();
+
+						ImGui::Checkbox("Hide Invite Names", &Settings::Lobbychat::LobbyInvite_HideInviteNames);
+
+						if (LobbyMod::Get()->DoesOwnCurrentLobby())
+						{
+							ImGui::Separator();
+
+							//Queue Bomb reporting.
+						}
+						ImGui::Checkbox("Queue Bomb", &Settings::Lobbychat::LobbyNuke_Enable);
+						ImGui::SliderFloat("Exponent", &Settings::Lobbychat::LobbyNuke_Exponent, 0.f, 3.f, "%.2f");
+
+						ImGui::Separator();
+
+						ImGui::Checkbox("Modify Player Profiles", &Settings::Lobbychat::LobbyRank_ModifyProfiles);
+
+						ImGui::SliderInt("Player Rank", &Settings::Lobbychat::LobbyRank_PlayerRank, 0, 18);
+						ImGui::SliderInt("Player Level", &Settings::Lobbychat::LobbyRank_PlayerLevel, 0, 50);
+						ImGui::Checkbox("Prime", &Settings::Lobbychat::LobbyRank_Prime);
+
+						if (LobbyMod::Get()->DoesOwnCurrentLobby())
+						{
+							ImGui::Separator();
+
+							ImGui::SliderInt("Others Player Rank", &Settings::Lobbychat::LobbyRank_OtherPlayersRank, 0, 18);
+							ImGui::SliderInt("Others Player Level", &Settings::Lobbychat::LobbyRank_OtherPlayersLevel, 0, 50);
+							ImGui::Checkbox("Others Prime Status", &Settings::Lobbychat::LobbyRank_OtherPlayersPrime);
+						}
+
+
+					
+
 					}
 					break;
 				case 6:
@@ -2332,5 +2387,8 @@ void Menu()
 		ImGui::End();
 	   
 	 }
+	 
+
+  }
   ImGui::Render();
 }

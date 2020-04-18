@@ -86,10 +86,10 @@ void NameChanger::BeginFrame(float frameTime)
 		switch (NameChanger::type)
 		{
 		case NC_Type::NC_NORMAL:
-			SetName("\X-HOOK.XYZ");
+			SetName("\XHOOK.XYZ");
 			break;
 		case NC_Type::NC_TROLL:
-			SetName("\X-HOOK.XYZ");
+			SetName("\XHOOK.XYZ");
 			break;
 		case NC_Type::NC_RAINBOW:
 			SetName(Rainbowify(origName).c_str());
@@ -104,7 +104,7 @@ void NameChanger::BeginFrame(float frameTime)
 		return;
 	}
 
-	SetName(Util::PadStringRight("X-HOOK.XYZ", strlen("X-HOOK.XYZ") + changes));
+	SetName(Util::PadStringRight("XHOOK.XYZ", strlen("XHOOK.XYZ") + changes));
 }
 
 void NameChanger::SetName(const char* name)

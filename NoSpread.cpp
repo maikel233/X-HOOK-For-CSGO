@@ -19,11 +19,13 @@ void AimbotNoSpread::NoSpread(Vector& angles, CUserCmd* cmd)
 	if (!activeWeapon)
 		return;
 
-	
+
 	if (activeWeapon)
 	{
 		if (cmd->random_seed > 0)
-			
+		{
+		}
 		//No pasta for you (:
+
 	}
 }

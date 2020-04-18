@@ -364,7 +364,7 @@ void Math::AngleVectors3(const Vector &angles, Vector *forward, Vector *right, V
 {
 	auto SinCos = [](float flRadians, float* pflSine, float* pflCosine)
 	{
-		__asm
+	/*	__asm
 		{
 			fld	DWORD PTR[flRadians]
 			fsincos
@@ -372,7 +372,7 @@ void Math::AngleVectors3(const Vector &angles, Vector *forward, Vector *right, V
 			mov eax, DWORD PTR[pflSine]
 			fstp DWORD PTR[edx]
 			fstp DWORD PTR[eax]
-		}
+		}*/
 	};
 	float sr, sp, sy, cr, cp, cy;
 

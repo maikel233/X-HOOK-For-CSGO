@@ -57,6 +57,19 @@ enum class valueType : int {
 	Dogeii_Gang,
 	CUSTOM,
 };
+
+enum class chatType : int {
+	Color_Standard = 0,
+	Color_Custom,
+	Color_Error,
+	Color_Green,
+	Color_Yellow,
+	Color_Unknow,
+	Color_Unknow2,
+	Color_Unknow3,
+	Color_Unknow4,
+};
+
 enum class AutostrafeType : int
 {
 	AS_FORWARDS,
@@ -904,6 +917,14 @@ namespace Settings
 		extern ButtonCode_t ResolverOverrideKey;
 	}
 
+	namespace Debug
+	{
+		namespace AnimLayers
+		{
+			extern bool draw;
+		}
+	}
+
 	namespace AngleIndicator {
 
 		extern bool enabled;
@@ -1024,6 +1045,7 @@ namespace Settings
 			extern bool rescuing;
 			extern bool location;
 			extern bool lby;
+			extern bool money;
 			extern bool resolveInfo;
 			extern bool showxhookcopyright;
 			extern bool FPS;
@@ -1369,6 +1391,29 @@ namespace Settings
 		extern bool enabled;
 	}
 
+	namespace Lobbychat
+	{
+		extern chatType preset;
+		extern bool LobbyChat_EndlineSpam;
+		extern bool LobbyChat_PrependName;
+		extern float LobbyChat_RepeatExponent;
+		extern char LobbyChat_Format[256];
+
+		extern bool LobbyNuke_Enable;
+		extern float LobbyNuke_Exponent;
+
+		extern bool LobbyInvite_HideInviteNames;
+
+		extern bool LobbyRank_ModifyProfiles;
+		extern int LobbyRank_PlayerRank;
+		extern int LobbyRank_PlayerLevel;
+		extern bool LobbyRank_Prime;
+
+		extern int LobbyRank_OtherPlayersRank;
+		extern int LobbyRank_OtherPlayersLevel;
+		extern bool LobbyRank_OtherPlayersPrime;
+	}
+
 	namespace ClanTagChanger
 	{
 		extern char value[30];
@@ -1401,6 +1446,8 @@ namespace Settings
 	namespace FakeLag {
 		extern FakeLagType type;
 		extern int value;
+		extern bool enablefakelatency;
+		extern float fakelatency;
 	}
 	namespace spinFactor {
 		extern int value;

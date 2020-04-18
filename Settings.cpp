@@ -465,6 +465,7 @@ void Settings::LoadDefaultsOrSave(std::string path)
 	settings["ESP"]["Info"]["grabbing_hostage"] = Settings::ESP::Info::grabbingHostage;
 	settings["ESP"]["Info"]["rescuing"] = Settings::ESP::Info::rescuing;
 	settings["ESP"]["Info"]["location"] = Settings::ESP::Info::location;
+	settings[XorStr("ESP")][XorStr("Info")][XorStr("money")] = Settings::ESP::Info::money;
 	settings[XorStr("ESP")][XorStr("Info")][XorStr("lby")] = Settings::ESP::Info::lby;
 	settings[XorStr("ESP")][XorStr("Info")][XorStr("resolveInfo")] = Settings::ESP::Info::resolveInfo;
 	settings["ESP"]["Boxes"]["enabled"] = Settings::ESP::Boxes::enabled;
@@ -1073,6 +1074,7 @@ void Settings::LoadConfig(std::string path)
 	GetVal(settings["ESP"]["Info"]["grabbing_hostage"], &Settings::ESP::Info::grabbingHostage);
 	GetVal(settings["ESP"]["Info"]["rescuing"], &Settings::ESP::Info::rescuing);
 	GetVal(settings["ESP"]["Info"]["location"], &Settings::ESP::Info::location);
+	GetVal(settings[XorStr("ESP")][XorStr("Info")][XorStr("money")], &Settings::ESP::Info::money);
 	GetVal(settings[XorStr("ESP")][XorStr("Info")][XorStr("lby")], &Settings::ESP::Info::lby);
 	GetVal(settings[XorStr("ESP")][XorStr("Info")][XorStr("resolveInfo")], &Settings::ESP::Info::resolveInfo);
 	GetVal(settings["ESP"]["Boxes"]["enabled"], &Settings::ESP::Boxes::enabled);

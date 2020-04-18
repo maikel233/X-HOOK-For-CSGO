@@ -1,6 +1,6 @@
 #include "Features.h"
 
-#include "skybox.h"
+//#include "skybox.h"
 
 bool Settings::NoSky::enabled = false;
 bool Settings::SkyBox::enabled = false;
