@@ -1,7 +1,7 @@
 #include "Features.h"
 
 bool Settings::Aimbot::AutoSlow::goingToSlow;
-bool Settings::Aimbot::enabled = false;
+bool Settings::Aimbot::enabled = true;
 bool Settings::Aimbot::pSilent = false;
 bool Settings::Aimbot::silent = false;
 bool Settings::Aimbot::friendly = false;
@@ -349,16 +349,6 @@ static Vector GetClosestSpot(CUserCmd* cmd, C_BasePlayer* localPlayer, C_BasePla
 
 
 
-	//// Like footprints but for the head xDDDDD D DD D D D DD D D
-	//Vector headprints2D[Backtracking::MAX_QUEUE_SIZE + 1];
-	//for (unsigned int i = 1; i < 12; i++) {
-	//	pDebugOverlay->ScreenPosition(Vector(Backtracking::lagRecords[player->GetIndex()][i].headPos.x,
-	//		Backtracking::lagRecords[player->GetIndex()][i].headPos.y,
-	//		Backtracking::lagRecords[player->GetIndex()][i].headPos.z),
-	//		headprints2D[i]);
-
-	//	Draw::FilledCircle(Vector2D(headprints2D[i].x, headprints2D[i].y), 10, Settings::ESP::HeadDot::size,
-	//		Color::FromImColor(ESP::GetESPPlayerColor(player, true)));
 static Vector GetClosestBacktrack(CUserCmd* cmd, C_BasePlayer* localPlayer, C_BasePlayer* enemy, int* tickDiff) {
 	Vector viewAngles;
 	pEngine->GetViewAngles(viewAngles);
@@ -469,14 +459,14 @@ GetClosestPlayer(CUserCmd* cmd, bool visibleCheck, Vector& bestSpot, float& best
 				continue;
 			eVecTarget = tempSpot;
 		}
-		else if (Settings::Aimbot::backtrack) {
+	/*	else if (Settings::Aimbot::backtrack) {
 			int tempTickDiff = -1;
 			Vector spot = GetClosestBacktrack(cmd, localplayer, player, &tempTickDiff);
 			if ((spot.x == 0 && spot.y == 0 && spot.z == 0) || tempTickDiff == -1)
 				continue;
 			eVecTarget = spot;
 			*tickDiff = tempTickDiff;
-		}
+		}*/
 
 		if (Settings::SmartAim::enabled) {
 			if (missedShots <= 5) {
@@ -580,6 +570,7 @@ static void RCS(Vector& angle, C_BasePlayer* player, CUserCmd* cmd) {
 	if (!Settings::Aimbot::RCS::always_on && !hasTarget)
 		return;
 
+
 	C_BasePlayer* localplayer = (C_BasePlayer*)pEntityList->GetClientEntity(pEngine->GetLocalPlayer());
 	Vector CurrentPunch = *localplayer->GetAimPunchAngle();
 
@@ -609,29 +600,30 @@ static void AutoCockRevolver(C_BaseCombatWeapon* activeWeapon, C_BasePlayer* loc
 	if (!Settings::Aimbot::AutoCockRevolver::enabled)
 		return;
 
-
-	if (!localplayer || !localplayer->GetAlive())
-		return;
-
-	if (localplayer->GetFrozen())
-		return;
-
-	if (cmd->buttons & IN_RELOAD)
+	if (Settings::Aimbot::AimStep::enabled && Aimbot::aimStepInProgress)
 		return;
 
 	if (*activeWeapon->GetItemDefinitionIndex() != ItemDefinitionIndex::WEAPON_REVOLVER)
 		return;
 
-	
-	Aimbot::shootingRevolver = false;
+	if (activeWeapon->GetAmmo() == 0)
+		return;
+
+	if (cmd->buttons & IN_USE)
+		return;
+
 	cmd->buttons |= IN_ATTACK;
+		
 	float postponeFireReady = activeWeapon->GetPostponeFireReadyTime();
-	if (cmd->buttons & IN_ATTACK2) {
-		cmd->buttons |= IN_ATTACK;
-		Aimbot::shootingRevolver = true;
-	}
-	else if (postponeFireReady > 0 && postponeFireReady < pGlobalVars->curtime) {
-		cmd->buttons &= ~IN_ATTACK;
+
+	if (postponeFireReady > 0)
+	{
+		if (postponeFireReady < pGlobalVars->curtime)
+		{
+			if (localplayer)
+				return;
+			cmd->buttons &= ~IN_ATTACK;
+		}
 	}
 }
 
@@ -800,6 +792,21 @@ AutoSlow(C_BasePlayer* player, float& forward, float& sideMove, float& bestDamag
 
 static void AutoPistol(C_BaseCombatWeapon* activeWeapon, CUserCmd* cmd)
 {
+	//if (!Settings::Aimbot::AutoPistol::enabled)
+	//	return;
+
+	//if (!activeWeapon || activeWeapon->GetCSWpnData()->GetWeaponType() != CSWeaponType::WEAPONTYPE_PISTOL)
+	//	return;
+
+	//if (activeWeapon->GetNextPrimaryAttack() < pGlobalVars->curtime)
+	//	return;
+
+	//if (*activeWeapon->GetItemDefinitionIndex() == ItemDefinitionIndex::WEAPON_REVOLVER)
+	//	cmd->buttons &= ~IN_ATTACK2;
+	//else
+	//	cmd->buttons &= ~IN_ATTACK;
+
+
 	if (!Settings::Aimbot::AutoPistol::enabled)
 		return;
 
@@ -809,10 +816,9 @@ static void AutoPistol(C_BaseCombatWeapon* activeWeapon, CUserCmd* cmd)
 	if (activeWeapon->GetNextPrimaryAttack() < pGlobalVars->curtime)
 		return;
 
-	if (*activeWeapon->GetItemDefinitionIndex() == ItemDefinitionIndex::WEAPON_REVOLVER)
-		cmd->buttons &= ~IN_ATTACK2;
-	else
+	if (*activeWeapon->GetItemDefinitionIndex() != ItemDefinitionIndex::WEAPON_REVOLVER)
 		cmd->buttons &= ~IN_ATTACK;
+
 }
 
 
@@ -837,10 +843,15 @@ static void AutoShoot(C_BasePlayer* player, Vector spot, C_BaseCombatWeapon* act
 	C_BasePlayer* localplayer = (C_BasePlayer*)pEntityList->GetClientEntity(pEngine->GetLocalPlayer());
 
 
-	if (Settings::Aimbot::AutoShoot::autoscope && activeWeapon->GetCSWpnData()->GetZoomLevels() > 0 &&
-		!localplayer->IsScoped())
-		cmd->buttons |= IN_ATTACK2;
+	//if (Settings::Aimbot::AutoShoot::autoscope && activeWeapon->GetCSWpnData()->GetZoomLevels() > 0 &&
+	//	!localplayer->IsScoped())
+	//	cmd->buttons |= IN_ATTACK2;
 
+	if (Settings::Aimbot::AutoShoot::autoscope && Util::Items::IsScopeable(*activeWeapon->GetItemDefinitionIndex()) && !localplayer->IsScoped())
+	{
+		cmd->buttons |= IN_ATTACK2;
+		return; // continue next tick
+	}
 
 	if (Settings::Aimbot::AutoShoot::velocityCheck && localplayer->GetVelocity().Length() > (activeWeapon->GetCSWpnData()->GetMaxPlayerSpeed() / 3))
 		return;
@@ -852,17 +863,10 @@ static void AutoShoot(C_BasePlayer* player, Vector spot, C_BaseCombatWeapon* act
 
 	float nextPrimaryAttack = activeWeapon->GetNextPrimaryAttack();
 
-	if (nextPrimaryAttack > pGlobalVars->curtime)
+	if (!(*activeWeapon->GetItemDefinitionIndex() == ItemDefinitionIndex::WEAPON_REVOLVER))
 	{
-		if (*activeWeapon->GetItemDefinitionIndex() == ItemDefinitionIndex::WEAPON_REVOLVER)
-			cmd->buttons &= ~IN_ATTACK2;
-		else
+		if (nextPrimaryAttack > pGlobalVars->curtime)
 			cmd->buttons &= ~IN_ATTACK;
-	}
-	else
-	{
-		if (*activeWeapon->GetItemDefinitionIndex() == ItemDefinitionIndex::WEAPON_REVOLVER)
-			cmd->buttons |= IN_ATTACK2;
 		else
 			cmd->buttons |= IN_ATTACK;
 	}
@@ -933,14 +937,15 @@ static void MoveMouse(CUserCmd* cmd, const Vector &angle, const Vector &oldAngle
 
 void Aimbot::CreateMove(CUserCmd* cmd) {
 
-	if (!Settings::Aimbot::enabled)
-		return;
-
 	C_BasePlayer* localplayer = (C_BasePlayer*)pEntityList->GetClientEntity(pEngine->GetLocalPlayer());
 	if (!localplayer || !localplayer->GetAlive())
 		return;
 
+	
 	Aimbot::UpdateValues();
+
+	if (!Settings::Aimbot::enabled)
+		return;
 
 	Vector oldAngle;
 	pEngine->GetViewAngles(oldAngle);
@@ -956,20 +961,27 @@ void Aimbot::CreateMove(CUserCmd* cmd) {
 	if (Settings::Aimbot::IgnoreJump::enabled && !(localplayer->GetFlags() & FL_ONGROUND))
 		return;
 
+
+
 	C_BaseCombatWeapon* activeWeapon = (C_BaseCombatWeapon*)pEntityList->GetClientEntityFromHandle(
 		localplayer->GetActiveWeapon());
 	if (!activeWeapon || activeWeapon->GetInReload())
 		return;
+
+	
 
 	CSWeaponType weaponType = activeWeapon->GetCSWpnData()->GetWeaponType();
 	if (weaponType == CSWeaponType::WEAPONTYPE_C4 || weaponType == CSWeaponType::WEAPONTYPE_GRENADE ||
 		weaponType == CSWeaponType::WEAPONTYPE_KNIFE)
 		return;
 
+
 	Vector aimSpot = { 0, 0, 0 };
 	float bestDamage = 0.0f;
 	int tickDiff = -1;
 	C_BasePlayer* player = GetClosestPlayer(cmd, true, aimSpot, bestDamage, &tickDiff);
+
+
 
 	if (player) {
 		bool skipPlayer = false;

@@ -514,11 +514,11 @@ void Aimbot::RenderTab()
 				SetTooltip("Distance based spread limit. Makes the limit lower if the target is further away.");
 				
 				//not in the weapon struct config so its not saving for the different guns...
-				if (ImGui::Checkbox("Legit Backtrack", &Settings::Aimbot::LegitBackTrack))
-				{
-					UI::UpdateWeaponSettings(); // for later.
-					Backtracking::ToggleRequiredCVars(backtrack);
-				}
+				//if (ImGui::Checkbox("Toggle Backtrack", &Settings::Aimbot::backtrack))
+				//{
+				//	UI::UpdateWeaponSettings(); // for later.
+				//	Backtracking::ToggleRequiredCVars(backtrack);
+				//}
 				if (ImGui::Checkbox(XorStr("Rage Backtrack"), &backtrack)) {
 					UI::UpdateWeaponSettings();
 					Backtracking::ToggleRequiredCVars(backtrack);
