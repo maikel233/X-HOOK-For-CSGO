@@ -151,6 +151,18 @@ public:
 		return getvfunc<oGetTextureGroupName>(this, 1)(this);
 	}
 
+	void IncrementReferenceCount()
+	{
+		typedef void(__thiscall* oIncrementReferenceCount)(void*);
+		return getvfunc<oIncrementReferenceCount>(this, 12)(this);
+	}
+
+	void DecrementReferenceCount()
+	{
+		typedef void(__thiscall* oDecrementReferenceCount)(void*);
+		return getvfunc<oDecrementReferenceCount>(this, 13)(this);
+	}
+
 	void AlphaModulate(float alpha)
 	{
 		typedef void(__thiscall* oAlphaModulate)(void*, float);
@@ -167,6 +179,11 @@ public:
 	{
 		typedef void(__thiscall* oColorModulate)(void*, float, float, float);
 		return getvfunc<oColorModulate>(this, 28)(this, color.r / 255.0f, color.g / 255.0f, color.b / 255.0f);
+	}
+
+	void ColorModulate(ImColor color) {
+		typedef void(__thiscall* oColorModulate)(void*, float, float, float);
+		return getvfunc<oColorModulate>(this, 28)(this, color.Value.x, color.Value.y, color.Value.z);
 	}
 
 	void SetMaterialVarFlag(MaterialVarFlags_t flag, bool on)
@@ -186,4 +203,7 @@ public:
 		typedef void(__thiscall* oGetColorModulate)(void*, float*, float*, float*);
 		return getvfunc<oGetColorModulate>(this, 45)(this, r, g, b);
 	}
+
+	//GetReferenceCount idx 56
+	//IsPrecached idx 70
 };

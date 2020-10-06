@@ -216,44 +216,80 @@ public:
 class CClientState //: public CBaseHudChat
 {
 public:
-	char pad_0000[156]; //0x0000
-	class INetChannel* m_pNetChannel; //0x0094
-	//char pad_0098[16]; //0x0098
-	char pad_00A0[116]; //0x00A0
-	//unsigned int m_nRetryNumber; //0x00A8
-	//char pad_00AC[84]; //0x00AC
-	//int m_nSignonState; //0x0100
-	//char pad_0104[8]; //0x0104
-	float m_flNextCmdTime; //0x010C
-	int m_nServerCount; //0x0110
-	int m_nCurrentSequence; //0x0114
-	char pad_0120[76]; //0x0120
-	int m_nServerTick; //0x0163
-	int m_nClientTick; //0x0167
-	int m_nDeltaTick; //0x016B
-	bool paused; //0x0178
-	char pad_0179[15]; //0x0179
-	//int m_nViewEntity; //0x0173
-	//char pad_0177[8]; //0x0177
-	char m_szLevelName[260]; //0x017F
-	char m_szLevelNameShort[40]; //0x0283
-//	char pad_02AB[18940]; //0x02AB
-//	char pad_0x2DA0; //0x4CA7
-	char pad_02B4[212]; //0x02B4
-	uint32_t max_players; //0x0388
-	char pad_038C[18844]; //0x038C
-	int lastoutgoingcommand; //0x4CA8
-	int chokedcommands; //0x4CAC
-	int last_command_ack; //0x4CB0
-	int command_ack; //0x4CB4
-	int m_nSoundSequence; //0x4CB8
-	char pad_4D38[80]; //0x4D38
-	bool ishltv; //0x4CC4
-	CBaseHudChat			*m_pChatElement;
+//	char pad_0000[156]; //0x0000
+//	class INetChannel* m_pNetChannel; //0x0094
+//	//char pad_0098[16]; //0x0098
+//	char pad_00A0[116]; //0x00A0
+//	//unsigned int m_nRetryNumber; //0x00A8
+//	//char pad_00AC[84]; //0x00AC
+//	//int m_nSignonState; //0x0100
+//	//char pad_0104[8]; //0x0104
+//	float m_flNextCmdTime; //0x010C
+//	int m_nServerCount; //0x0110
+//	int m_nCurrentSequence; //0x0114
+//	char pad_0120[76]; //0x0120
+//	int m_nServerTick; //0x0163
+//	int m_nClientTick; //0x0167
+//	int m_nDeltaTick; //0x016B
+//	bool paused; //0x0178
+//	char pad_0179[15]; //0x0179
+//	//int m_nViewEntity; //0x0173
+//	//char pad_0177[8]; //0x0177
+//	char m_szLevelName[260]; //0x017F
+//	char m_szLevelNameShort[40]; //0x0283
+////	char pad_02AB[18940]; //0x02AB
+////	char pad_0x2DA0; //0x4CA7
+//	char pad_02B4[212]; //0x02B4
+//	uint32_t max_players; //0x0388
+//	char pad_038C[18844]; //0x038C
+//	int lastoutgoingcommand; //0x4CA8
+//	int chokedcommands; //0x4CAC
+//	int last_command_ack; //0x4CB0
+//	int command_ack; //0x4CB4
+//	int m_nSoundSequence; //0x4CB8
+//	char pad_4D38[80]; //0x4D38
+//	bool ishltv; //0x4CC4
+//	CBaseHudChat			*m_pChatElement;
+
+	char		u0[156];
+	class INetChannel* m_pNetChannel;
+	uint32_t	challenge_nr;
+	char		u1[100];
+	uint32_t	m_nSignonState;
+	char		u2[8];
+	float		m_flNextCmdTime;
+	uint32_t	server_count;
+	uint32_t	current_sequence;
+	char		u3[84];
+	uint32_t	m_nDeltaTick;
+	bool		paused;
+	char		u4[3];
+	uint32_t	m_nViewEntity;
+	uint32_t	player_slot;
+	char m_szLevelName[260]; 
+	char m_szLevelNameShort[80];
+	char		group_name[80];
+	char		u5[92];
+	uint32_t	max_players;
+	char		u6[18824];
+	float		last_server_tick_time;
+	bool		in_simulation;
+	char		u7[3];
+	uint32_t	old_tick_count;
+	float		tick_remainder;
+	float		frame_time;
+	int		lastoutgoingcommand;
+	int		chokedcommands;
+	int		last_command_ack;
+	int		command_ack;
+	int		m_nSoundSequence;
+	char		u8[80];
+	Vector3		view_angles;
 
 	void ForceFullUpdate()
 	{
-		*reinterpret_cast<int*>(reinterpret_cast<uintptr_t>(this) + 0x174) = -1;
+		//*reinterpret_cast<int*>(reinterpret_cast<uintptr_t>(this) + 0x174) = -1;
+		//m_nDeltaTick = -1;
 	}
 
 }; //Size: 0x4CC5
