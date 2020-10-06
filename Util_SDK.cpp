@@ -64,15 +64,15 @@ ButtonCode_t Util::GetButtonCode(std::string buttonName)
 typedef void(__thiscall* orgGameFunc_LoadFromBuffer)(void* thisptr, const char* resourceName, const char* pBuffer, /*IBaseFileSystem**/void* pFileSystem, const char* pPathID, void* pfnEvaluateSymbolProc);
 orgGameFunc_LoadFromBuffer pLoadFromBuffer;
 
-void Util::LoadFromBuffer(KeyValues* pKeyValues, const char* resourceName, const char* pBuffer, /*IBaseFileSystem**/void* pFileSystem = nullptr, const char* pPathID = NULL, void* pfnEvaluateSymbolProc = nullptr)
-{
-	auto dwLoadFromBuffer = FindPatternV2("client.dll", "55 8B EC 83 E4 F8 83 EC 34 53 8B 5D 0C 89"); //55 8B EC 83 E4 F8 83 EC 34 53 8B 5D 0C 89
-
-	if (!pLoadFromBuffer)
-		pLoadFromBuffer = reinterpret_cast<orgGameFunc_LoadFromBuffer>(dwLoadFromBuffer);
-
-	pLoadFromBuffer(pKeyValues, resourceName, pBuffer, pFileSystem, pPathID, pfnEvaluateSymbolProc);
-}
+//void Util::LoadFromBuffer(KeyValues* pKeyValues, const char* resourceName, const char* pBuffer, /*IBaseFileSystem**/void* pFileSystem = nullptr, const char* pPathID = NULL, void* pfnEvaluateSymbolProc = nullptr)
+//{
+//	auto dwLoadFromBuffer = FindPattern("client.dll", "55 8B EC 83 E4 F8 83 EC 34 53 8B 5D 0C 89"); //55 8B EC 83 E4 F8 83 EC 34 53 8B 5D 0C 89
+//
+//	if (!pLoadFromBuffer)
+//		pLoadFromBuffer = reinterpret_cast<orgGameFunc_LoadFromBuffer>(dwLoadFromBuffer);
+//
+//	pLoadFromBuffer(pKeyValues, resourceName, pBuffer, pFileSystem, pPathID, pfnEvaluateSymbolProc);
+//}
 
 
 void Util::InitKeyValues(KeyValues* keyValues, char const * name)
@@ -88,22 +88,22 @@ void Util::InitKeyValues(KeyValues* keyValues, char const * name)
 	
 
 }
-//
-//void Util::LoadFromBuffer(KeyValues* keyValues, char const *resourceName, const char *pBuffer, /*IBaseFileSystem**/void* pFileSystem, const char* pPathID, void* pfnEvaluateSymbolProc)
-//{
-//	DWORD dwFunction = (DWORD)KeyValues_LoadFromBuffer;
-//
-//	__asm
-//	{
-//		push 0
-//		push 0
-//		push 0
-//		push pBuffer
-//		push resourceName
-//		mov ecx, keyValues
-//		call dwFunction
-//	}
-//}
+
+void Util::LoadFromBuffer(KeyValues* keyValues, char const *resourceName, const char *pBuffer, /*IBaseFileSystem**/void* pFileSystem, const char* pPathID, void* pfnEvaluateSymbolProc)
+{
+	DWORD dwFunction = (DWORD)KeyValues_LoadFromBuffer;
+
+	__asm
+	{
+		push 0
+		push 0
+		push 0
+		push pBuffer
+		push resourceName
+		mov ecx, keyValues
+		call dwFunction
+	}
+}
 int RandomInt2(int min, int max)
 {
 	return rand() % (max - min + 1) + min;

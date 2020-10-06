@@ -33,10 +33,20 @@ const char* skyBoxNames[] = {
         "vertigo",
         "vertigo_hdr",
         "vertigoblue_hdr",
-        "vietnam" // 21
+        "vietnam", // 21
+        "sky_lunacy",
+        "sky_borealis01",
+        "cliff",
+        "blue",
+        "city1",
+        "neb1",
+        "xen8",
+        "sky2mh_" // 29
 };
 
+
 void SkyBox::FrameStageNotify(ClientFrameStage_t stage) {
+
     if (!pEngine->IsInGame() && skyboxMaterials.size() > 0) {
         for (const auto& it : skyboxMaterials) {
             IMaterial* mat = pMaterial->GetMaterial(it.first);
@@ -64,12 +74,16 @@ void SkyBox::FrameStageNotify(ClientFrameStage_t stage) {
     if (stage != ClientFrameStage_t::FRAME_NET_UPDATE_POSTDATAUPDATE_END)
         return;
 
-    for (MaterialHandle_t i = pMaterial->FirstMaterial();
-        i != pMaterial->InvalidMaterial(); i = pMaterial->NextMaterial(i)) {
-        IMaterial* mat = pMaterial->GetMaterial(i);
+    
+
+        for (MaterialHandle_t i = pMaterial->FirstMaterial(); i != pMaterial->InvalidMaterial(); i = pMaterial->NextMaterial(i))
+        {
+            IMaterial* mat = pMaterial->GetMaterial(i);
+
 
         if (!mat || strcmp(mat->GetTextureGroupName(), TEXTURE_GROUP_SKYBOX) != 0)
             continue;
+        
 
         if (skyboxMaterials.find(i) == skyboxMaterials.end()) {
             mat->GetColorModulate(&r1, &g1, &b1);
@@ -83,6 +97,7 @@ void SkyBox::FrameStageNotify(ClientFrameStage_t stage) {
 
         if (skyboxMaterials.at(i) != color) {
             mat->ColorModulate(color);
+            mat->AlphaModulate(color.Value.w);
 
             skyboxMaterials.at(i) = color;
         }

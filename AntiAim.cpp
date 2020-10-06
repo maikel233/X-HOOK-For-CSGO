@@ -1456,9 +1456,9 @@ void AntiAim::CreateMove(CUserCmd* cmd) {
 		return;
 	}
 
-	// AutoDisable checks
+	//// AutoDisable checks
 
-	// Knife
+	//// Knife
 	if (Settings::AntiAim::Misc::AutoDisable::knifeHeld && pLocal->GetAlive() &&
 		activeWeapon->GetCSWpnData()->GetWeaponType() == CSWeaponType::WEAPONTYPE_KNIFE) {
 		AntiAim::fakeTp = true;
@@ -1472,30 +1472,30 @@ void AntiAim::CreateMove(CUserCmd* cmd) {
 		return;
 	}
 
-	// No Enemy
-	if (Settings::AntiAim::Misc::AutoDisable::noEnemy && pLocal->GetAlive() && !HasViableEnemy()) {
-		AntiAim::fakeTp = true;
-		return;
-	}
+	//// No Enemy
+	//if (Settings::AntiAim::Misc::AutoDisable::noEnemy && pLocal->GetAlive() && !HasViableEnemy()) {
+	//	AntiAim::fakeTp = true;
+	//	return;
+	//}
 
-	// Freezetime
-	if (Settings::AntiAim::Misc::AutoDisable::freezeTime &&
-		((*pGameRules) && (*pGameRules)->IsFreezeTime())) {
-		AntiAim::fakeTp = true;
-		return;
-	}
+	//// Freezetime
+	//if (Settings::AntiAim::Misc::AutoDisable::freezeTime &&
+	//	((*pGameRules) && (*pGameRules)->IsFreezeTime())) {
+	//	AntiAim::fakeTp = true;
+	//	return;
+	//}
 
 	AntiAim::fakeTp = false;
 
 	isAntiAiming = true;
 
 
-	/* Unused shieet
-	* Vector edge_angle = angle;
-	* bool shouldEdge = AntiAim::IsAirborne() ? Settings::AntiAim::Airborne::HeadEdge::enabled :
-	AntiAim::IsMoving() ? Settings::AntiAim::Moving::HeadEdge::enabled :
-	Settings::AntiAim::Standing::HeadEdge::enabled;
-	shouldEdge = shouldEdge && GetBestHeadAngle( edge_angle );*/
+	///* Unused shieet
+	//* Vector edge_angle = angle;
+	//* bool shouldEdge = AntiAim::IsAirborne() ? Settings::AntiAim::Airborne::HeadEdge::enabled :
+	//AntiAim::IsMoving() ? Settings::AntiAim::Moving::HeadEdge::enabled :
+	//Settings::AntiAim::Standing::HeadEdge::enabled;
+	//shouldEdge = shouldEdge && GetBestHeadAngle( edge_angle );*/
 
 	static bool bFlip;
 
@@ -1635,41 +1635,6 @@ void AntiAim::CreateMove(CUserCmd* cmd) {
 		Settings::AntiAim::Standing::Pitch::enabled)) {
 		DoAntiAimX(angle, bFlip, shouldClamp);
 	}
-
-	/*if ((IsAirborne() ? Settings::AntiAim::Airborne::HeadEdge::enabled :
-		IsMoving() ? Settings::AntiAim::Moving::HeadEdge::enabled :
-		Settings::AntiAim::Standing::HeadEdge::enabled)) {
-		if (CanEdge()) {
-			float angleYEdge = GetBestHeadEdgeAngle();
-
-
-			static float fakeAdd = 0.f;
-			static float realAdd = 0.f;
-
-			if (AntiAim::IsAirborne()) {
-				fakeAdd = Settings::AntiAim::Airborne::HeadEdge::fakeAdd;
-				realAdd = Settings::AntiAim::Airborne::HeadEdge::realAdd;
-			}
-			else if (AntiAim::IsMoving()) {
-				fakeAdd = Settings::AntiAim::Moving::HeadEdge::fakeAdd;
-				realAdd = Settings::AntiAim::Moving::HeadEdge::realAdd;
-			}
-			else if (AntiAim::IsStanding()) {
-				fakeAdd = Settings::AntiAim::Standing::HeadEdge::fakeAdd;
-				realAdd = Settings::AntiAim::Standing::HeadEdge::realAdd;
-			}
-
-
-			if (!bFlip) {
-				SendPacket = false;
-				angle.y = Math::ClampYaw(angleYEdge + realAdd);
-			}
-			else {
-				SendPacket = true;
-				angle.y = Math::ClampYaw(angleYEdge + fakeAdd);
-			}
-		}
-	}*/
 
 	Math::NormalizeAngles(angle);
 

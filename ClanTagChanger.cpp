@@ -137,7 +137,7 @@ std::wstring oldclantag;
 void ClanTagChanger::BeginFrame(float frameTime)
 
 {
-	static auto SetClanTag = (int(__fastcall*)(const char*, const char*))(FindPatternV2("engine.dll", "53 56 57 8B DA 8B F9 FF 15"));
+	static auto SetClanTag = (int(__fastcall*)(const char*, const char*))(FindPattern("engine.dll", "53 56 57 8B DA 8B F9 FF 15"));
 
 	if (!Settings::ClanTagChanger::enabled) {
 		ClanTagChanger::RestoreOriginalClanTag();

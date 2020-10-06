@@ -19,7 +19,7 @@ void PredictionSystem::StartPrediction(CUserCmd* cmd) {
 	
 	if (m_random_seed == 0)
 	{
-		m_random_seed = *reinterpret_cast<int **>(FindPatternV2("client_panorama.dll", "A3 ? ? ? ? 66 0F 6E 86") + 1);
+		m_random_seed = *reinterpret_cast<int **>(FindPattern("client.dll", "A3 ? ? ? ? 66 0F 6E 86") + 1);
 	}
 
 	*m_random_seed = MD5_PseudoRandom(cmd->command_number) & 0x7FFFFFFF;

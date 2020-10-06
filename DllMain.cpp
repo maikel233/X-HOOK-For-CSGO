@@ -53,23 +53,33 @@ DWORD WINAPI Stage1(LPVOID hInstance)
 	pSteamUser = pSteamClient->GetISteamUser(GetHSteamUser(), GetHSteamPipe(), "SteamUser019");
 
 	//Offsets::getSequenceActivity = (DWORD)(FindPatternV2("client_panorama.dll", "55 8B EC 53 8B 5D 08 56 8B F1 83"));
-	pGlowManager = *(CGlowObjectManager **)(FindPatternV2("client.dll", "0F 11 05 ? ? ? ? 83 C8 01 C7 05 ? ? ? ? 00 00 00 00") + 3);
-	MsgFunc_ServerRankRevealAll = reinterpret_cast<MsgFunc_ServerRankRevealAllFn>(FindPatternV2("client.dll", "55 8B EC 51 A1 ? ? ? ? 85 C0 75 37"));
-	IsReadyCallback = reinterpret_cast < IsReady > ((DWORD)FindPatternV2("client_panorama.dll", "55 8B EC 83 E4 F8 83 EC 08 56 8B 35 ? ? ? ? 57 83 BE"));        
+	pGlowManager = *(CGlowObjectManager **)(FindPattern("client.dll", "0F 11 05 ? ? ? ? 83 C8 01 C7 05 ? ? ? ? 00 00 00 00") + 3);
+	MsgFunc_ServerRankRevealAll = reinterpret_cast<MsgFunc_ServerRankRevealAllFn>(FindPattern("client.dll", "55 8B EC 51 A1 ? ? ? ? 85 C0 75 37"));
+	IsReadyCallback = reinterpret_cast <IsReady> ((DWORD)FindPattern("client.dll", "55 8B EC 83 E4 F8 83 EC 08 56 8B 35 ? ? ? ? 57 83 BE"));
 			
 	///	pViewRender = **reinterpret_cast<CViewRender***>(FindPattern("client_panorama.dll", "\xFF\x50\x14\xE8\x00\x00\x00\x00\x5D", "xxxx????x") - 7);			*/																																						   
 	//	pViewRender = *reinterpret_cast<CViewRender**>(FindPatternV2("client.dll", "A1 ? ? ? ? B9 ? ? ? ? C7 05 ? ? ? ? ? ? ? ? FF 10") + 1);						 <= fix
 	
-	KeyValues_KeyValues = FindPatternV2(XorStr("client.dll"), XorStr("55 8B EC 51 33 C0 C7 45"));
-	KeyValues_LoadFromBuffer = FindPatternV2("client.dll", "55 8B EC 83 E4 F8 83 EC 34 53 8B 5D 0C 89");//"55 8B EC 83 E4 F8 83 EC 34 53 8B 5D 0C 89 4C 24 04");
-	pPredSeed = *(int**)(FindPattern("client.dll", "\x8B\x0D\x00\x00\x00\x00\xBA\x00\x00\x00\x00\xE8\x00\x00\x00\x00\x83\xC4\x04", "xx????x????x????xxx") + 2);
+	KeyValues_KeyValues = FindPattern(XorStr("client.dll"), XorStr("55 8B EC 51 33 C0 C7 45"));
+	KeyValues_LoadFromBuffer = FindPattern("client.dll", "55 8B EC 83 E4 F8 83 EC 34 53 8B 5D 0C 89");//"55 8B EC 83 E4 F8 83 EC 34 53 8B 5D 0C 89 4C 24 04");
+	pPredSeed = *(int**)(FindPattern("client.dll", "8B 0D ? ? ? ? BA ? ? ? ? E8 ? ? ? ? 83 C4 04") + 2);    
 
-	//	pClientState = *(CClientState**)(FindPatternV2("engine.dll", "A1 ? ? ? ? 8B 80 ? ? ? ? C3") + 1);
+		pClientState = *(CClientState**)(FindPattern("engine.dll", "A1 ? ? ? ? 8B 80 ? ? ? ? C3") + 1);
 	//   pGameRules = *(CSGameRulesProxy***)(FindPattern("client.dll", "\xA1\x00\x00\x00\x00\x85\xC0\x0F\x84\x00\x00\x00\x00\x80\xB8\x00\x00\x00\x00\x00\x0F\x84\x00\x00\x00\x00\x0F\x10\x05", "x????xxxx????xx?????xx????xxx") + 0x1);
-	csPlayerResource = *(C_CSPlayerResource***)(FindPatternV2("client.dll", "8B 3D ? ? ? ? 85 FF 0F 84 ? ? ? ? 81 C7") + 2);// "\xA1\x00\x00\x00\x00\x57\x85\xC0\x74\x08", "x????xxxxx") + 1);
-	pD3device = **reinterpret_cast<IDirect3DDevice9***>(FindPattern("shaderapidx9.dll", "\xA1\x00\x00\x00\x00\x50\x8B\x08\xFF\x51\x0C", "x????xxxxxx") + 0x1);
+	csPlayerResource = *(C_CSPlayerResource***)(FindPattern("client.dll", "8B 3D ? ? ? ? 85 FF 0F 84 ? ? ? ? 81 C7") + 2);// "\xA1\x00\x00\x00\x00\x57\x85\xC0\x74\x08", "x????xxxxx") + 1);
+	pD3device = **reinterpret_cast<IDirect3DDevice9***>(FindPattern("shaderapidx9.dll", "A1 ? ? ? ? 50 8B 08 FF 51 0C") + 0x1);
+
+	offsets.sigs.MaterialGameEnded = FindPattern("materialsystem.dll", "80 B9 ? ? ? ? ? 74 0F" + 2);
 	
-	pMoveHelper = **(IMoveHelper***)(FindPatternV2("client.dll", "8B 0D ? ? ? ? 8B 45 ? 51 8B D4 89 02 8B 01") + 2); //test // "\x8B\x0D\x00\x00\x00\x00\x8B\x45\x00\x51\x8B\xD4\x89\x02\x8B\x01", "xx????xx?xxxxxxx") + 2);
+	offsets.sigs.LoadSky = FindPattern("engine.dll", "55 8B EC 81 EC ? ? ? ? 56 57 8B F9 C7 45");											 
+	offsets.sigs.LineGoesThroughSmoke = FindPattern("client.dll", "55 8B EC 83 EC 08 8B 15 ? ? ? ? 0F 57 C0");
+//	offsets.sigs.PaintkitSig = FindPattern("client.dll", (BYTE*)"\xE8\x00\x00\x00\x00\xFF\x76\x0C\x8D\x48\x04\xE8", "x????xxxxxxx");
+//	offsets.sigs.StickerSig = FindPattern("client.dll", (BYTE*)"\x53\x8D\x48\x04\xE8\x00\x00\x00\x00\x8B\x4D\x10", "xxxxx????xxx") + 4;
+//	offsets.sigs.LevelInit = FindPattern("client.dll", "E8 ? ? ? ? 8B 4F ? 85 C9 74 06 51") + 7;
+	pInput = *(CInput**)(FindPattern("client.dll", "B9 ? ? ? ? F3 0F 11 04 24 FF 50 10") + 1);
+
+	
+	pMoveHelper = **(IMoveHelper***)(FindPattern("client.dll", "8B 0D ? ? ? ? 8B 45 ? 51 8B D4 89 02 8B 01") + 2); //test // "\x8B\x0D\x00\x00\x00\x00\x8B\x45\x00\x51\x8B\xD4\x89\x02\x8B\x01", "xx????xx?xxxxxxx") + 2);
 	pGameMovement = (IGameMovement*)(CreateInterfaceFn(GetProcAddress(GetModuleHandleA("client.dll"), "CreateInterface"))	("GameMovement001", nullptr));
 	pPrediction = (IPrediction*)(CreateInterfaceFn(GetProcAddress(GetModuleHandleA("client.dll"), "CreateInterface"))	("VClientPrediction001", nullptr));
 	pInputSystem = (IInputSystem*)(CreateInterfaceFn(GetProcAddress(GetModuleHandleA("inputsystem.dll"), "CreateInterface"))	("InputSystemVersion001", nullptr));
@@ -93,17 +103,11 @@ DWORD WINAPI Stage1(LPVOID hInstance)
 	pEffects = (CEffects*)(CreateInterfaceFn(GetProcAddress(GetModuleHandleA("engine.dll"), "CreateInterface"))		("VEngineEffects001", nullptr));
 	//	pSound = (IEngineSound*)(CreateInterfaceFn(GetProcAddress(GetModuleHandleA("engine.dll"), "CreateInterface"))		("IEngineSoundClient003", nullptr));
 
-	offsets.sigs.MaterialGameEnded = FindPatternV2("materialsystem.dll", "80 B9 ? ? ? ? ? 74 0F" + 2);
-	//	offsets.sigs.LoadSky = FindPatternV2("engine.dll", "55 8B EC 81 EC ? ? ? ? 56 57 8B F9 C7 45");											   <= fix
-	offsets.sigs.LineGoesThroughSmoke = FindPatternV2("client.dll", "55 8B EC 83 EC 08 8B 15 ? ? ? ? 0F 57 C0");								
-	offsets.sigs.PaintkitSig = FindPatternMask("client.dll", (BYTE*)"\xE8\x00\x00\x00\x00\xFF\x76\x0C\x8D\x48\x04\xE8", "x????xxxxxxx");
-	offsets.sigs.StickerSig = FindPatternMask("client.dll", (BYTE*)"\x53\x8D\x48\x04\xE8\x00\x00\x00\x00\x8B\x4D\x10", "xxxxx????xxx") + 4;
-	offsets.sigs.LevelInit = FindPatternV2("client.dll", "E8 ? ? ? ? 8B 4F ? 85 C9 74 06 51") + 7;
-	
+
+
 	pClientMode = **(IClientMode***)((*(DWORD**)pClient)[10] + 0x5);
 	pGlobalVars = **(CGlobalVars***)((*(DWORD**)pClient)[11] + 0x10);
 
-	pInput = *(CInput**)(FindPatternV2("client.dll", "B9 ? ? ? ? F3 0F 11 04 24 FF 50 10") + 1);
 
 	//NetVarManager::DumpNetvars();
 	Offsets::GetOffsets();
@@ -134,9 +138,9 @@ DWORD WINAPI Stage1(LPVOID hInstance)
 	//SoundHook->HookFunction(Hooks::EmitSound1, 5);
 	//SoundHook->HookFunction(Hooks::EmitSound2, 5);
 
-	//RenderViewHook = std::make_unique<VMTHook>(pViewRender);
-	//RenderViewHook->HookFunction(Hooks::hRenderView, 6);
-	//RenderViewHook->HookFunction(Hooks::RenderSmokePostViewmodel, 41);
+//	RenderViewHook = std::make_unique<VMTHook>(pViewRender);
+//	RenderViewHook->HookFunction(Hooks::hRenderView, 6);
+//	RenderViewHook->HookFunction(Hooks::RenderSmokePostViewmodel, 41);
 
 	ModelRenderHook = std::make_unique<VMTHook>(pModelRender);
 
@@ -366,8 +370,8 @@ BOOL __stdcall DllMain(HINSTANCE mod, DWORD dwReason, LPVOID res)
 //
 //		if (g_pSecurity->RunSecurityChecks())
 //		{
-			ConsoleSetup();
-			std::cout << "\t[+] Hello" << std::endl;
+			/*ConsoleSetup();
+			std::cout << "\t[+] Hello" << std::endl;*/
 			_beginthread(MainThread, 0, nullptr);
 			CreateThread(nullptr, 0, DeAttach, g_hDll, 0, nullptr);
 			break;

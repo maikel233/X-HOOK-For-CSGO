@@ -293,13 +293,7 @@ namespace Hooks
 				*(int*)((uintptr_t)pCurEntity + 0xA28) = 0;//clear occlusion flags
 			}
 		}
-		else if (stage == ClientFrameStage_t::FRAME_NET_UPDATE_POSTDATAUPDATE_START)
-		{
-			//backtracking->Update(pGlobalVars->tickcount);
-			//lagcompensation::Get().update_sequence();
-		//	gLagCompensation.UpdateIncomingSequences();
-
-		}
+	
 
 		static bool Rekt = false;
 		if (!Rekt)
@@ -312,11 +306,7 @@ namespace Hooks
 			Rekt = true;
 		}
 
-	//	if (Settings::Aimbot::LegitBackTrack)
 
-	//	{
-	////		gLagCompensation.UpdateIncomingSequences();
-	//	}
 		Backtracking::FrameStageNotify(stage);
 		CustomGlow::FrameStageNotify(stage);
 		SkinChanger::FrameStageNotifyModels(stage);
@@ -730,11 +720,9 @@ namespace Hooks
 			RenderViewHook->GetOriginalFunction<NoSmokeFn>(41)(ecx);
 	}
 
-
 	//		MirrorTexture Not Set.
 	//		Tried BeginRenderTargetAllocation after game startup.If I let you do this, all users would suffer.
 	//		ImageFormat: 12
-
 
 	void __fastcall hRenderView(void* ecx, void* edx, CViewSetup &setup, CViewSetup &hudViewSetup, int nClearFlags, int whatToDraw)
 	{
