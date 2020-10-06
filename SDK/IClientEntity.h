@@ -263,7 +263,7 @@ public:
 	}
 
 	CUserCmd*& m_pCurrentCommand() {
-		static auto current_command = *(uint32_t*)(FindPatternV2("client_panorama.dll", "89 BE ? ? ? ? E8 ? ? ? ? 85 FF") + 2);
+		static auto current_command = *(uint32_t*)(FindPattern("client.dll", "89 BE ? ? ? ? E8 ? ? ? ? 85 FF") + 2);
 
 		return *(CUserCmd **)((uintptr_t)this + current_command);
 	}
@@ -388,7 +388,7 @@ public:
 	void SetOrigin(Vector origin)
 	{
 		using SetAbsOriginFn = void(__thiscall*)(void*, const Vector &origin);
-		static SetAbsOriginFn SetAbsOrigin = (SetAbsOriginFn)FindPatternV2("client_panorama.dll", "55 8B EC 83 E4 F8 51 53 56 57 8B F1 E8");
+		static SetAbsOriginFn SetAbsOrigin = (SetAbsOriginFn)FindPattern("client.dll", "55 8B EC 83 E4 F8 51 53 56 57 8B F1 E8");
 
 		SetAbsOrigin(this, origin);
 	}
@@ -396,7 +396,7 @@ public:
 	void SetAngles(const Vector &angles)
 	{
 		using SetAbsAnglesFn = void(__thiscall*)(void*, const Vector &angles);
-		static SetAbsAnglesFn SetAbsAngles = (SetAbsAnglesFn)FindPatternV2("client_panorama.dll", "55 8B EC 83 E4 F8 83 EC 64 53 56 57 8B F1 E8");
+		static SetAbsAnglesFn SetAbsAngles = (SetAbsAnglesFn)FindPattern("client.dll", "55 8B EC 83 E4 F8 83 EC 64 53 56 57 8B F1 E8");
 
 		SetAbsAngles(this, angles);
 	}
@@ -511,7 +511,7 @@ public:
 		static SetAbsOriginFn SetAbsOrigin;
 
 		if (!SetAbsOrigin)
-			SetAbsOrigin = (SetAbsOriginFn)(FindPattern("client_panorama.dll", "\x55\x8B\xEC\x83\xE4\xF8\x51\x53\x56\x57\x8B\xF1\xE8\x00\x00", "xxxxxxxxxxxxx??"));
+			SetAbsOrigin = (SetAbsOriginFn)(FindPattern("client.dll", "55 8B EC 83 E4 F8 51 53 56 57 8B F1 E8 ? ?")); //\x55\x8B\xEC\x83\xE4\xF8\x51\x53\x56\x57\x8B\xF1\xE8\x00\x00", "xxxxxxxxxxxxx??"));
 
 		SetAbsOrigin(this, origin);
 	}
@@ -522,7 +522,7 @@ public:
 		static SetAbsAngleFn SetAbsAngle;
 
 		if (!SetAbsAngle)
-			SetAbsAngle = (SetAbsAngleFn)(FindPattern("client_panorama.dll", "\x55\x8B\xEC\x83\xE4\xF8\x83\xEC\x64\x53\x56\x57\x8B\xF1\xE8", "xxxxxxxxxxxxxxx" ));
+			SetAbsAngle = (SetAbsAngleFn)(FindPattern("client.dll", "55 8B EC 83 E4 F8 83 EC 64 53 56 57 8B F1 E8"));// \x55\x8B\xEC\x83\xE4\xF8\x83\xEC\x64\x53\x56\x57\x8B\xF1\xE8", "xxxxxxxxxxxxxxx" ));
 
 		SetAbsAngle(this, Angle);
 	}
@@ -530,13 +530,13 @@ public:
 	void SetOrigin(Vector wantedpos)
 	{
 		typedef void(__thiscall* SetOriginFn)(void*, const Vector &);
-		static SetOriginFn SetOrigin = (SetOriginFn)(FindPatternV2("client_panorama.dll", "55 8B EC 83 E4 F8 51 53 56 57 8B F1 E8"));
+		static SetOriginFn SetOrigin = (SetOriginFn)(FindPattern("client.dll", "55 8B EC 83 E4 F8 51 53 56 57 8B F1 E8"));
 		SetOrigin(this, wantedpos);
 	}
 	void SetAngle2(Vector wantedang)
 	{
 		typedef void(__thiscall* SetAngleFn)(void*, const Vector &);
-		static SetAngleFn SetAngle = (SetAngleFn)((DWORD)FindPatternV2("client_panorama.dll", "55 8B EC 83 E4 F8 83 EC 64 53 56 57 8B F1"));
+		static SetAngleFn SetAngle = (SetAngleFn)((DWORD)FindPattern("client.dll", "55 8B EC 83 E4 F8 83 EC 64 53 56 57 8B F1"));
 		SetAngle(this, wantedang);
 	}
 
@@ -614,7 +614,7 @@ public:
 	
 	void UpdateAnimationState(CCSGOPlayerAnimState *state, Vector angle)
 	{
-		static auto UpdateAnimState = FindPatternV2(("client_panorama.dll"), "55 8B EC 83 E4 F8 83 EC 18 56 57 8B F9 F3 0F 11 54 24");
+		static auto UpdateAnimState = FindPattern(("client.dll"), "55 8B EC 83 E4 F8 83 EC 18 56 57 8B F9 F3 0F 11 54 24");
 		if (!UpdateAnimState)
 			return;
 
@@ -632,7 +632,7 @@ public:
 	void ResetAnimationState(CCSGOPlayerAnimState *state)
 	{
 		using ResetAnimState_t = void(__thiscall*)(CCSGOPlayerAnimState*);
-		static auto ResetAnimState = (ResetAnimState_t)FindPatternV2(("client_panorama.dll"), "56 6A 01 68 ? ? ? ? 8B F1");
+		static auto ResetAnimState = (ResetAnimState_t)FindPattern(("client.dll"), "56 6A 01 68 ? ? ? ? 8B F1");
 		if (!ResetAnimState)
 			return;
 
@@ -642,7 +642,7 @@ public:
 	void CreateAnimationState(CCSGOPlayerAnimState *state)
 	{
 		using CreateAnimState_t = void(__thiscall*)(CCSGOPlayerAnimState*, C_BasePlayer*);
-		static auto CreateAnimState = (CreateAnimState_t)FindPatternV2("client_panorama.dll", "55 8B EC 56 8B F1 B9 ? ? ? ? C7 46");
+		static auto CreateAnimState = (CreateAnimState_t)FindPattern("client.dll", "55 8B EC 56 8B F1 B9 ? ? ? ? C7 46");
 		if (!CreateAnimState)
 			return;
 
@@ -1085,7 +1085,7 @@ public:
 
 	CSWeaponType GetWeaponType()
 	{
-		return *(CSWeaponType*)((uintptr_t)this + 0x00CC);
+		return *(CSWeaponType*)((uintptr_t)this + 0x00C8);
 	}
 
 	bool IsFullAuto()
