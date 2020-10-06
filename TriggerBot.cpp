@@ -84,7 +84,7 @@ void Triggerbot::CreateMove(CUserCmd *cmd)
 	if (!player)
 		return;
 
-	if (player->GetClientClass()->m_ClassID != EClassIds::CCSPlayer)
+	if (player->GetClientClass()->m_ClassID != EClassIds::ccsplayer)
 		return;
 
 	if (player == localplayer
@@ -135,7 +135,7 @@ void Triggerbot::CreateMove(CUserCmd *cmd)
 		return;
 
 	ItemDefinitionIndex itemDefinitionIndex = *activeWeapon->GetItemDefinitionIndex();
-	if (itemDefinitionIndex == ItemDefinitionIndex::WEAPON_KNIFE || itemDefinitionIndex >= ItemDefinitionIndex::WEAPON_KNIFE_BAYONET)
+	if (itemDefinitionIndex == ItemDefinitionIndex::WEAPON_KNIFE || itemDefinitionIndex >= ItemDefinitionIndex::WEAPON_BAYONET)
 		return;
 
 	CSWeaponType weaponType = activeWeapon->GetCSWpnData()->GetWeaponType();

@@ -111,7 +111,7 @@ void AutoKnife::CreateMove(CUserCmd *cmd)
 	if (!player)
 		return;
 
-	if (player->GetClientClass()->m_ClassID != EClassIds::CCSPlayer)
+	if (player->GetClientClass()->m_ClassID != EClassIds::ccsplayer)
 		return;
 
 	if (player == localplayer

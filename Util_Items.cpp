@@ -66,7 +66,7 @@ namespace Util
 			{ ItemDefinitionIndexMap.at(i::WEAPON_KNIFE_GYPSY_JACKKNIFE).entityName,	i::WEAPON_KNIFE_GYPSY_JACKKNIFE },
 			{ ItemDefinitionIndexMap.at(i::WEAPON_KNIFE_STILETTO).entityName,			i::WEAPON_KNIFE_STILETTO },
 			{ ItemDefinitionIndexMap.at(i::WEAPON_KNIFE_WIDOWMAKER).entityName,			i::WEAPON_KNIFE_WIDOWMAKER },
-			{ ItemDefinitionIndexMap.at(i::STUDDED_BLOODHOUND_GLOVES).entityName, 	i::STUDDED_BLOODHOUND_GLOVES },
+			{ ItemDefinitionIndexMap.at(i::GLOVE_STUDDED_BLOODHOUND).entityName, 	i::GLOVE_STUDDED_BLOODHOUND },
 			{ ItemDefinitionIndexMap.at(i::GLOVE_CT_SIDE).entityName,				i::GLOVE_CT_SIDE },
 			{ ItemDefinitionIndexMap.at(i::GLOVE_T_SIDE).entityName,				i::GLOVE_T_SIDE },
 			{ ItemDefinitionIndexMap.at(i::GLOVE_SPORTY).entityName,				i::GLOVE_SPORTY },
@@ -171,7 +171,7 @@ namespace Util
 		{
 			switch (index)
 			{
-			case ItemDefinitionIndex::STUDDED_BLOODHOUND_GLOVES:
+			case ItemDefinitionIndex::GLOVE_STUDDED_BLOODHOUND:
 			case ItemDefinitionIndex::GLOVE_SPECIALIST:
 			case ItemDefinitionIndex::GLOVE_CT_SIDE:
 			case ItemDefinitionIndex::GLOVE_T_SIDE:

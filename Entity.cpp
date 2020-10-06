@@ -196,7 +196,7 @@ bool Entity::IsPlanting(C_BasePlayer* player)
 	if (!clientClass)
 		return false;
 
-	if (clientClass->m_ClassID != EClassIds::CC4)
+	if (clientClass->m_ClassID != EClassIds::cc4)
 		return false;
 
 	return ((C_WeaponC4*)activeWeapon)->GetStartedArming();

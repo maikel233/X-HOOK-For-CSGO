@@ -941,7 +941,6 @@ void Aimbot::CreateMove(CUserCmd* cmd) {
 	if (!localplayer || !localplayer->GetAlive())
 		return;
 
-	
 	Aimbot::UpdateValues();
 
 	if (!Settings::Aimbot::enabled)

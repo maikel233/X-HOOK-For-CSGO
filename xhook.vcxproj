@@ -184,8 +184,9 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='test|Win32'">
     <TargetName>x-hookv32</TargetName>
     <TargetExt>.dll</TargetExt>
-    <IncludePath>C:\Users\Maikel\Desktop\Nieuwe map %285%29\X-HOOK\DX9 SDK\Include;C:\Users\Maikel\Desktop\Nieuwe map %285%29\X-HOOK\Lua\src;C:\Users\Maikel\Desktop\Nieuwe map %285%29\X-HOOK\ImGui\examples\directx9_example;C:\Users\Maikel\Desktop\Nieuwe map %285%29\X-HOOK\ImGui;C:\Users\Maikel\Desktop\Nieuwe map %285%29\X-HOOK\Debug;C:\Users\Maikel\Desktop\Programming stuff\xhook loader php files\X-HOOK;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Users\Maikel\Desktop\Nieuwe map %285%29\X-HOOK\DX9 SDK\Lib\x86;$(LibraryPath)</LibraryPath>
+    <IncludePath>D:\Recente bureaublad\X-HOOK-For-CSGO-master\SDK;D:\Recente bureaublad\X-HOOK-For-CSGO-master\DX9 SDK\Include;D:\Recente bureaublad\X-HOOK-For-CSGO-master\Lua\src;D:\Recente bureaublad\X-HOOK-For-CSGO-master\ImGui\examples\directx9_example;D:\Recente bureaublad\X-HOOK-For-CSGO-master\ImGui;D:\Recente bureaublad\X-HOOK-For-CSGO-master\Debug;D:\Recente bureaublad\X-HOOK-For-CSGO-master;$(IncludePath)</IncludePath>
+    <LibraryPath>D:\Recente bureaublad\X-HOOK-For-CSGO-master\DX9 SDK\Lib\x86;$(LibraryPath)</LibraryPath>
+    <LinkIncremental>true</LinkIncremental>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -199,7 +200,7 @@
       <IntrinsicFunctions>false</IntrinsicFunctions>
       <WholeProgramOptimization>false</WholeProgramOptimization>
       <BasicRuntimeChecks>Default</BasicRuntimeChecks>
-      <DebugInformationFormat>None</DebugInformationFormat>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <MinimalRebuild>false</MinimalRebuild>
       <FavorSizeOrSpeed>Neither</FavorSizeOrSpeed>
       <OmitFramePointers>false</OmitFramePointers>
@@ -338,7 +339,10 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <WarningLevel>TurnOffAllWarnings</WarningLevel>
       <SDLCheck>false</SDLCheck>
+      <SupportJustMyCode>true</SupportJustMyCode>
+      <AdditionalOptions>/JMC /MP /GS /analyze- /W0 /Zc:wchar_t /Zi /Gm- /Od /Ob0 /sdl- /Fd"Debug\vc142.pdb" /Zc:inline /fp:precise /D "_WINDLL" /D "_MBCS" /errorReport:prompt /WX- /Zc:forScope /Gd /Oy- /MD /FC /Fa"Debug\" /EHsc /nologo /Fo"Debug\" /Fp"Debug\X-HOOKV32.pch" /diagnostics:column </AdditionalOptions>
     </ClCompile>
+    <Link />
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="AimBot.h" />
@@ -598,6 +602,7 @@
     <ClCompile Include="resolverinfo.cpp" />
     <ClCompile Include="SDK\Color.cpp" />
     <ClCompile Include="SDK\ICvar.cpp" />
+    <ClCompile Include="SDK\KeyValues.cpp" />
     <ClCompile Include="SDK\materialconfig.cpp" />
     <ClCompile Include="SDK\NetvarManager.cpp" />
     <ClCompile Include="SDK\Offsets.cpp" />

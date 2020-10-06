@@ -636,13 +636,13 @@ void Resolver::CreateMove(CUserCmd* cmd) {
 	for (int x = 1; x < pEngine->GetMaxClients(); ++x) {
 		C_BasePlayer* target = (C_BasePlayer*)pEntityList->GetClientEntity(x);
 
-		if (!target
-			|| target == pEntityList->GetClientEntity(pEngine->GetLocalPlayer())
-			|| target->GetDormant()
-			|| !target->GetAlive()
-			|| target->GetImmune()
-			|| target->GetTeam() == pEntityList->GetClientEntity(pEngine->GetLocalPlayer())->GetTeam())
-			continue;
+		//if (!target
+		//	|| target == pEntityList->GetClientEntity(pEngine->GetLocalPlayer())
+		//	|| target->GetDormant()
+		//	|| !target->GetAlive()
+		//	|| target->GetImmune()
+		////	|| target->GetTeam() == pEntityList->GetClientEntity(pEngine->GetLocalPlayer())->GetTeam())
+		//	continue;
 
 		Resolver::StoreVars(target);
 

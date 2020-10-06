@@ -27,7 +27,7 @@ void AutoDefuse::CreateMove(CUserCmd *cmd)
 		if (!entity)
 			continue;
 
-		if (entity->GetClientClass()->m_ClassID == EClassIds::CPlantedC4)
+		if (entity->GetClientClass()->m_ClassID == EClassIds::cplantedc4)
 		{
 			bomb = (C_PlantedC4*)entity;
 			break;

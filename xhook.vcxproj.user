@@ -24,4 +24,9 @@
     <LocalDebuggerCommandArguments>-window -noborder -novid -game csgo -insecure +sv_cheats 1 +mp_warmuptime 99999 +exec autoexec.cfg -port 27015</LocalDebuggerCommandArguments>
     <LocalDebuggerWorkingDirectory>C:\Program Files (x86)\Steam\steamapps\common\Counter-Strike Global Offensive</LocalDebuggerWorkingDirectory>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='test|Win32'">
+    <LocalDebuggerCommand>C:\Program Files (x86)\Steam\steamapps\common\Counter-Strike Global Offensive\csgo.exe</LocalDebuggerCommand>
+    <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
+    <LocalDebuggerCommandArguments>-window -noborder -novid -game csgo -insecure +sv_cheats 1 +mp_warmuptime 99999 +exec autoexec.cfg -port 27015</LocalDebuggerCommandArguments>
+  </PropertyGroup>
 </Project>

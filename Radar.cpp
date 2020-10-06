@@ -174,7 +174,8 @@ void Radar::RenderWindow()
 
 		for (int i = 1; i < pEntityList->GetHighestEntityIndex(); i++)
 		{
-			C_BaseEntity* entity = pEntityList->GetClientEntity(i);
+			C_BaseEntity* entity = reinterpret_cast<C_BaseEntity*>(pEntityList->GetClientEntity(i));
+		
 			if (!entity)
 				continue;
 
@@ -184,7 +185,7 @@ void Radar::RenderWindow()
 			ImColor color;
 			int shape = -1;
 
-			if (classId == EClassIds::CCSPlayer)
+			if (classId == EClassIds::ccsplayer)
 			{
 				C_BasePlayer* player = (C_BasePlayer*)entity;
 
@@ -258,7 +259,7 @@ void Radar::RenderWindow()
 			
 											
 			}
-			else if (classId == EClassIds::CC4)
+			else if (classId == EClassIds::cc4)
 			{
 				if (!Settings::Radar::bomb)
 					continue;
@@ -269,7 +270,7 @@ void Radar::RenderWindow()
 				color = Settings::Radar::bombColor.Color();
 				shape = EntityShape_t::SHAPE_SQUARE;
 			}
-			else if (classId == EClassIds::CPlantedC4)
+			else if (classId == EClassIds::cplantedc4)
 			{
 				if (!Settings::Radar::bomb)
 					continue;
@@ -282,7 +283,7 @@ void Radar::RenderWindow()
 				color = bomb->GetBombDefuser() != -1 || bomb->IsBombDefused() ? Settings::Radar::bombDefusingColor.Color() : Settings::Radar::bombColor.Color();
 				shape = EntityShape_t::SHAPE_SQUARE;
 			}
-			else if (classId == EClassIds::CBaseAnimating)
+			else if (classId == EClassIds::cbaseanimating)
 			{
 				if (!Settings::Radar::defuser)
 					continue;
@@ -349,7 +350,8 @@ void Radar::BeginFrame()
 
 	for (int i = 1; i < pEngine->GetMaxClients(); i++)
 	{
-		C_BaseEntity* entity = pEntityList->GetClientEntity(i);
+		
+		C_BaseEntity* entity = reinterpret_cast<C_BaseEntity*>(pEntityList->GetClientEntity(i));
 		if (!entity)
 			continue;
 

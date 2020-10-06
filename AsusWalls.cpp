@@ -7,15 +7,9 @@ float r = 0.0f, g = 0.0f, b = 0.0f, a = 0.0f;
 std::unordered_map<MaterialHandle_t, ImColor> worldMaterials;
 std::unordered_map<MaterialHandle_t, ImColor> worldMaterials2;
 
-void ASUSWalls::FrameStageNotify(ClientFrameStage_t stage)
-{
-	if (!Settings::ASUSWalls::enabled)
-		return;
-
-	if (!pEngine->IsInGame() && worldMaterials.size() > 0)
-	{
-		for (const auto& it : worldMaterials)
-		{
+void ASUSWalls::FrameStageNotify(ClientFrameStage_t stage) {
+	if (!pEngine->IsInGame() && worldMaterials.size() > 0) {
+		for (const auto& it : worldMaterials) {
 			IMaterial* mat = pMaterial->GetMaterial(it.first);
 
 			if (!mat)
@@ -30,6 +24,7 @@ void ASUSWalls::FrameStageNotify(ClientFrameStage_t stage)
 
 		worldMaterials.clear();
 		worldMaterials2.clear();
+	
 	}
 
 	if (stage != ClientFrameStage_t::FRAME_NET_UPDATE_POSTDATAUPDATE_END)
@@ -55,7 +50,7 @@ void ASUSWalls::FrameStageNotify(ClientFrameStage_t stage)
 			if (worldMaterials.at(i) != color)
 			{
 
-				mat->ColorModulate(color.Value.x, color.Value.y, color.Value.z);
+				mat->ColorModulate(color);
 				mat->AlphaModulate(color.Value.w);
 
 				worldMaterials.at(i) = color;

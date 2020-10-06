@@ -1048,9 +1048,9 @@ static void CollectFootstep(int iEntIndex, const char* pSample) {
 		return;
 
 	Footstep footstep;
-	footstep.entityId = iEntIndex;
-	footstep.position = pEntityList->GetClientEntity(iEntIndex)->GetVecOrigin();
-	footstep.expiration = Util::GetEpochTime() + Settings::ESP::Sounds::time;
+//	footstep.entityId = iEntIndex;
+//	footstep.position = pEntityList->GetClientEntity(iEntIndex)->GetVecOrigin();
+//	footstep.expiration = Util::GetEpochTime() + Settings::ESP::Sounds::time;
 
 	footsteps.push_back(footstep);
 }
@@ -1317,7 +1317,7 @@ static void DrawGlow()
 		ClientClass* client = glow_object.m_pEntity->GetClientClass();
 		bool shouldGlow = true;
 
-		if (client->m_ClassID == EClassIds::CCSPlayer)
+		if (client->m_ClassID == EClassIds::ccsplayer)
 		{
 			C_BasePlayer* player = (C_BasePlayer*)glow_object.m_pEntity;
 
@@ -1341,24 +1341,24 @@ static void DrawGlow()
 					color = Settings::ESP::Glow::allyColor.Color(player);
 			}
 		}
-		else if (client->m_ClassID != EClassIds::CBaseWeaponWorldModel &&
-			(strstr(client->m_pNetworkName, "Weapon") || client->m_ClassID == EClassIds::CDEagle || client->m_ClassID == EClassIds::CAK47))
+		else if (client->m_ClassID != EClassIds::cbaseweaponworldmodel &&
+			(strstr(client->m_pNetworkName, "Weapon") || client->m_ClassID == EClassIds::cdeagle || client->m_ClassID == EClassIds::cak47))
 		{
 			color = Settings::ESP::Glow::weaponColor.Color();
 		}
-		else if (client->m_ClassID == EClassIds::CBaseCSGrenadeProjectile || client->m_ClassID == EClassIds::CDecoyProjectile ||
-			client->m_ClassID == EClassIds::CMolotovProjectile || client->m_ClassID == EClassIds::CSmokeGrenadeProjectile)
+		else if (client->m_ClassID == EClassIds::cbasecsgrenadeprojectile || client->m_ClassID == EClassIds::cdecoyprojectile ||
+			client->m_ClassID == EClassIds::cmolotovprojectile || client->m_ClassID == EClassIds::csmokegrenadeprojectile)
 		{
 			color = Settings::ESP::Glow::grenadeColor.Color();
 		}
-		else if (client->m_ClassID == EClassIds::CBaseAnimating)
+		else if (client->m_ClassID == EClassIds::cbaseanimating)
 		{
 			color = Settings::ESP::Glow::defuserColor.Color();
 
 			if (localplayer->HasDefuser() || localplayer->GetTeam() == TeamID::TEAM_TERRORIST)
 				shouldGlow = false;
 		}
-		else if (client->m_ClassID == EClassIds::CChicken)
+		else if (client->m_ClassID == EClassIds::cchicken)
 		{
 			color = Settings::ESP::Glow::chickenColor.Color();
 
@@ -1476,6 +1476,7 @@ static void DrawPlayer(int index, C_BasePlayer* player, IEngineClient::player_in
 	if (player != localplayer && player->GetTeam() == localplayer->GetTeam() && !Settings::ESP::Filters::allies)
 		return;
 
+
 	bool bIsVisible = false;
 	if (Settings::ESP::Filters::visibilityCheck || Settings::ESP::Filters::legit)
 	{
@@ -1483,6 +1484,8 @@ static void DrawPlayer(int index, C_BasePlayer* player, IEngineClient::player_in
 		if (!bIsVisible && Settings::ESP::Filters::legit)
 			return;
 	}
+
+	//crash gebeurt hierna...
 
 	ImColor playerColor = ESP::GetESPPlayerColor(player, bIsVisible);
 
@@ -1820,7 +1823,7 @@ void ESP::Paint()
 
 		ClientClass* client = entity->GetClientClass();
 
-		if (client->m_ClassID == EClassIds::CCSPlayer && (Settings::ESP::Filters::enemies || Settings::ESP::Filters::allies || (Settings::ESP::Filters::localplayer && Settings::ThirdPerson::enabled)))
+		if (client->m_ClassID == EClassIds::ccsplayer && (Settings::ESP::Filters::enemies || Settings::ESP::Filters::allies || (Settings::ESP::Filters::localplayer && Settings::ThirdPerson::enabled)))
 		{
 			C_BasePlayer* player = (C_BasePlayer*)entity;
 
@@ -1831,34 +1834,34 @@ void ESP::Paint()
 			if (pEngine->GetPlayerInfo(i, &playerInfo))
 				DrawPlayer(i, player, playerInfo);
 		}
-		if ((client->m_ClassID != EClassIds::CBaseWeaponWorldModel && (strstr(client->m_pNetworkName, "Weapon") || client->m_ClassID == EClassIds::CDEagle || client->m_ClassID == EClassIds::CAK47)) && Settings::ESP::Filters::weapons)
+		if ((client->m_ClassID != EClassIds::cbaseweaponworldmodel && (strstr(client->m_pNetworkName, "Weapon") || client->m_ClassID == EClassIds::cdeagle || client->m_ClassID == EClassIds::cak47)) && Settings::ESP::Filters::weapons)
 		{
 			C_BaseCombatWeapon* weapon = (C_BaseCombatWeapon*)entity;
 			DrawDroppedWeapons(weapon);
 		}
-		else if (client->m_ClassID == EClassIds::CC4 && Settings::ESP::Filters::bomb)
+		else if (client->m_ClassID == EClassIds::cc4 && Settings::ESP::Filters::bomb)
 		{
 			C_BaseCombatWeapon* bomb = (C_BaseCombatWeapon*)entity;
 			DrawBomb(bomb);
 		}
-		else if (client->m_ClassID == EClassIds::CPlantedC4 && Settings::ESP::Filters::bomb)
+		else if (client->m_ClassID == EClassIds::cplantedc4 && Settings::ESP::Filters::bomb)
 		{
 			C_PlantedC4* pC4 = (C_PlantedC4*)entity;
 			DrawPlantedBomb(pC4);
 		}
-		else if (client->m_ClassID == EClassIds::CHostage && Settings::ESP::Filters::hostages)
+		else if (client->m_ClassID == EClassIds::chostage && Settings::ESP::Filters::hostages)
 		{
 			DrawHostage(entity);
 		}
-		else if (client->m_ClassID == EClassIds::CBaseAnimating && Settings::ESP::Filters::defusers)
+		else if (client->m_ClassID == EClassIds::cbaseanimating && Settings::ESP::Filters::defusers)
 		{
 			DrawDefuseKit(entity);
 		}
-		else if (client->m_ClassID == EClassIds::CChicken && Settings::ESP::Filters::chickens)
+		else if (client->m_ClassID == EClassIds::cchicken && Settings::ESP::Filters::chickens)
 		{
 			DrawChicken(entity);
 		}
-		else if (client->m_ClassID == EClassIds::CFish && Settings::ESP::Filters::fishes)
+		else if (client->m_ClassID == EClassIds::cfish && Settings::ESP::Filters::fishes)
 		{
 			DrawFish(entity);
 		}

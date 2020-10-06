@@ -30,21 +30,18 @@ static std::string GetTimeString()
 
 void Info()
 {
-
-	//Draw::Text(1, -1, "XHOOK.XYZ V1.2 for Counter-Strike Global offensive", esp_font, Color(255, 255, 255, 255));
-
 	//	if (pEngine->IsInGame() && (*pGameRules) && (*pGameRules)->IsValveDS())
 	//		Draw::Text(200, -1, "VAC Server", esp_font, Color(0, 255, 0, 255));
 
 	if (Settings::HWID::LoggedIn)
 	{
 
-		if (!Settings::UI::Watermark::showwatermark)
-			return;
+		//if (!Settings::UI::Watermark::showwatermark)
+		//	return;
 
-		if (pEngine->IsInGame() && !Settings::UI::Watermark::displayIngame) {
-			return;
-		}
+		//if (pEngine->IsInGame() && !Settings::UI::Watermark::displayIngame) {
+		//	return;
+		//}
 
 		//Draw::Text(1, -1, "XHOOK.XYZ V1.3 for Counter-Strike Global offensive", esp_font, Color(255, 255, 255, 255));
 		time_t rawtime;

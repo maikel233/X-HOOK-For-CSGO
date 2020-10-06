@@ -32,6 +32,9 @@ namespace Hooks
 
 		DWORD dwOld_D3DRS_COLORWRITEENABLE;
 
+		////Menu();
+
+
 		return Present(pDevice, pSourceRect, pDestRect, hDestWindowOverride, pDirtyRegion);
 	}
 
@@ -54,9 +57,9 @@ namespace Hooks
 	void __stdcall hPaintTraverse(unsigned int VGUIPanel, bool forcerepaint, bool allowforce)
 	{
 
-		C_BasePlayer* localplayer = (C_BasePlayer*)pEntityList->GetClientEntity(pEngine->GetLocalPlayer());
-		if (pEngine->IsInGame() && strstr(XorStr("HudZoom"), pPanel->GetName(VGUIPanel)) && Settings::NoScopeBorder::enabled && localplayer && localplayer->IsScoped())
-			return;
+		//C_BasePlayer* localplayer = (C_BasePlayer*)pEntityList->GetClientEntity(pEngine->GetLocalPlayer());
+		//if (pEngine->IsInGame() && strstr(XorStr("HudZoom"), pPanel->GetName(VGUIPanel)) && Settings::NoScopeBorder::enabled && localplayer && localplayer->IsScoped())
+		//	return;
 
 		PanelHook->GetOriginalFunction<PaintTraverseFn>(41)(pPanel, VGUIPanel, forcerepaint, allowforce);
 
@@ -70,15 +73,14 @@ namespace Hooks
 		if (VGUIPanel != drawPanel)
 			return;
 
-		//Anti ss
+		////Anti ss
 		if (Settings::ScreenshotCleaner::enabled && pEngine->IsTakingScreenshot())
 			return;
 
-
 		Info();
-		Dlights::Paint();
+	//	Dlights::Paint();
 		ESP::Paint();
-		GrenadeHelper::Paint();
+		/*GrenadeHelper::Paint();
 		GrenadePrediction::Paint();
 		SniperCrosshair::Paint();
 		Recoilcrosshair::Paint();
@@ -87,7 +89,7 @@ namespace Hooks
 		Walkbot::update();
 
 		lbyindicator::Paint();
-		AngleIndicator::Paint();
+		AngleIndicator::Paint();*/
 		//SpeedIndicator::Paint();
 	}
 
@@ -141,28 +143,29 @@ namespace Hooks
 
 	int __fastcall Hooks::SendDatagram(INetChannel* netchan, void*, void *datagram)
 	{
-		if (datagram)
-		{
-			return NetChannelHook->GetOriginalFunction<SendDatagramFn>(46)(netchan, datagram);
-		}
+		//if (datagram)
+		//{
+		//	return NetChannelHook->GetOriginalFunction<SendDatagramFn>(46)(netchan, datagram);
+		//}
 
-		int instate = netchan->m_nInReliableState;
-		int insequencenr = netchan->m_nInSequenceNr;
+		//int instate = netchan->m_nInReliableState;
+		//int insequencenr = netchan->m_nInSequenceNr;
 
-		float ammount = Settings::FakeLag::fakelatency;
+		//float ammount = Settings::FakeLag::fakelatency;
 
-		if (Settings::FakeLag::enablefakelatency)
-			gLagCompensation.AddLatencyToNetchan(netchan, ammount);
+		//if (Settings::FakeLag::enablefakelatency)
+		//	gLagCompensation.AddLatencyToNetchan(netchan, ammount);
 
-		
+		//
 
-		netchan->m_nInReliableState = instate;
-		netchan->m_nInSequenceNr = insequencenr;
+		//netchan->m_nInReliableState = instate;
+		//netchan->m_nInSequenceNr = insequencenr;
 
 
-		
-		return NetChannelHook->GetOriginalFunction<SendDatagramFn>(46)(netchan, datagram);
+		//
+		//return NetChannelHook->GetOriginalFunction<SendDatagramFn>(46)(netchan, datagram);
 
+		return 0;
 	}
 
 
@@ -282,7 +285,8 @@ namespace Hooks
 			for (int i = 1; i <= pGlobalVars->maxClients; i++)
 			{
 				if (i == pEngine->GetLocalPlayer()) continue;
-				IClientEntity* pCurEntity = pEntityList->GetClientEntity(i);
+				IClientEntity* pCurEntity = reinterpret_cast<IClientEntity*>(pEntityList->GetClientEntity(i));
+
 				if (!pCurEntity) continue;
 
 				*(int*)((uintptr_t)pCurEntity + 0xA30) = pGlobalVars->framecount; //we'll skip occlusion checks now
@@ -294,7 +298,7 @@ namespace Hooks
 			//backtracking->Update(pGlobalVars->tickcount);
 			//lagcompensation::Get().update_sequence();
 		//	gLagCompensation.UpdateIncomingSequences();
-			
+
 		}
 
 		static bool Rekt = false;
@@ -308,11 +312,11 @@ namespace Hooks
 			Rekt = true;
 		}
 
-		if (Settings::Aimbot::LegitBackTrack)
+	//	if (Settings::Aimbot::LegitBackTrack)
 
-		{
-	//		gLagCompensation.UpdateIncomingSequences();
-		}
+	//	{
+	////		gLagCompensation.UpdateIncomingSequences();
+	//	}
 		Backtracking::FrameStageNotify(stage);
 		CustomGlow::FrameStageNotify(stage);
 		SkinChanger::FrameStageNotifyModels(stage);
@@ -327,8 +331,8 @@ namespace Hooks
 
 		if (SkinChanger::forceFullUpdate)
 		{
-			pClientState->m_nDeltaTick = -1;
-			SkinChanger::forceFullUpdate = false;
+		//	pClientState->m_nDeltaTick = -1;
+		//	SkinChanger::forceFullUpdate = false;
 		}
 
 		ClientHook->GetOriginalFunction<FrameStageNotifyFn>(37)(ecx, stage);
@@ -340,7 +344,7 @@ namespace Hooks
 	bool InitImages = true;
 	static int width = 0;
 	static int height = 0;
-	
+
 
 	HRESULT WINAPI hkEndScene(IDirect3DDevice9* device)
 	{
@@ -352,59 +356,60 @@ namespace Hooks
 
 
 
-		if (!Settings::Background::enable)
-		{
-			if (Once == true)
-			{
+		//if (!Settings::Background::enable)
+		//{
+		//	if (Once == true)
+		//	{
 
-				if (D3DXCreateTextureFromFile(pD3device, "C://xhook//Pictures//bg.jpg", &BackgroundTexture) != D3D_OK) {
-					ImGui::OpenPopup("Success###Picture loaded!");
+		//		if (D3DXCreateTextureFromFile(pD3device, "C://xhook//Pictures//bg.jpg", &BackgroundTexture) != D3D_OK) {
+		//			ImGui::OpenPopup("Success###Picture loaded!");
 
-				}
-				Once = false;
-			}
-		}
+		//		}
+		//		Once = false;
+		//	}
+		//}
 
-		if (InitImages == true)
-		{
+		//if (InitImages == true)
+		//{
 
-			if (width == 0) {
-				pEngine->GetScreenSize(width, height);
-			}
+		//	if (width == 0) {
+		//		pEngine->GetScreenSize(width, height);
+		//	}
 
 
-			if (UsericoTexture == nullptr)D3DXCreateTextureFromFileInMemoryEx(pD3device
-				, &userico, sizeof(userico),
-				16, 16, D3DX_DEFAULT, 0, D3DFMT_UNKNOWN, D3DPOOL_MANAGED, D3DX_DEFAULT, D3DX_DEFAULT, 0, NULL, NULL, &UsericoTexture);
-			if (gasTexture == nullptr)D3DXCreateTextureFromFileInMemoryEx(pD3device
-				, &gas, sizeof(gas),
-				(width * 0.05f), (height * 0.75f), D3DX_DEFAULT, 0, D3DFMT_UNKNOWN, D3DPOOL_MANAGED, D3DX_DEFAULT, D3DX_DEFAULT, 0, NULL, NULL, &gasTexture);
+		//	if (UsericoTexture == nullptr)D3DXCreateTextureFromFileInMemoryEx(pD3device
+		//		, &userico, sizeof(userico),
+		//		16, 16, D3DX_DEFAULT, 0, D3DFMT_UNKNOWN, D3DPOOL_MANAGED, D3DX_DEFAULT, D3DX_DEFAULT, 0, NULL, NULL, &UsericoTexture);
+		//	if (gasTexture == nullptr)D3DXCreateTextureFromFileInMemoryEx(pD3device
+		//		, &gas, sizeof(gas),
+		//		(width * 0.05f), (height * 0.75f), D3DX_DEFAULT, 0, D3DFMT_UNKNOWN, D3DPOOL_MANAGED, D3DX_DEFAULT, D3DX_DEFAULT, 0, NULL, NULL, &gasTexture);
 
-			if (needleTexture == nullptr)D3DXCreateTextureFromFileInMemoryEx(pD3device
-				, &needle, sizeof(needle),
-				(width * 0.05f) + 90, (height * 0.75f) + 113, D3DX_DEFAULT, 0, D3DFMT_UNKNOWN, D3DPOOL_MANAGED, D3DX_DEFAULT, D3DX_DEFAULT, 0, NULL, NULL, &needleTexture);
+		//	if (needleTexture == nullptr)D3DXCreateTextureFromFileInMemoryEx(pD3device
+		//		, &needle, sizeof(needle),
+		//		(width * 0.05f) + 90, (height * 0.75f) + 113, D3DX_DEFAULT, 0, D3DFMT_UNKNOWN, D3DPOOL_MANAGED, D3DX_DEFAULT, D3DX_DEFAULT, 0, NULL, NULL, &needleTexture);
 
-			if (oilTexture == nullptr)D3DXCreateTextureFromFileInMemoryEx(pD3device
-				, &oil, sizeof(oil),
-				(width * 0.95f) - 225, (height * 0.75f), D3DX_DEFAULT, 0, D3DFMT_UNKNOWN, D3DPOOL_MANAGED, D3DX_DEFAULT, D3DX_DEFAULT, 0, NULL, NULL, &oilTexture);
+		//	if (oilTexture == nullptr)D3DXCreateTextureFromFileInMemoryEx(pD3device
+		//		, &oil, sizeof(oil),
+		//		(width * 0.95f) - 225, (height * 0.75f), D3DX_DEFAULT, 0, D3DFMT_UNKNOWN, D3DPOOL_MANAGED, D3DX_DEFAULT, D3DX_DEFAULT, 0, NULL, NULL, &oilTexture);
 
-			if (rearmirror == nullptr)D3DXCreateTextureFromFileInMemoryEx(pD3device
-				, &rearmirror, sizeof(rearmirror),
-				(width / 2) - 266, 0, D3DX_DEFAULT, 0, D3DFMT_UNKNOWN, D3DPOOL_MANAGED, D3DX_DEFAULT, D3DX_DEFAULT, 0, NULL, NULL, &rearmirrorTexture);
+		//	if (rearmirror == nullptr)D3DXCreateTextureFromFileInMemoryEx(pD3device
+		//		, &rearmirror, sizeof(rearmirror),
+		//		(width / 2) - 266, 0, D3DX_DEFAULT, 0, D3DFMT_UNKNOWN, D3DPOOL_MANAGED, D3DX_DEFAULT, D3DX_DEFAULT, 0, NULL, NULL, &rearmirrorTexture);
 
-			if (speedoTexture == nullptr)D3DXCreateTextureFromFileInMemoryEx(pD3device
-				, &speedometer, sizeof(speedometer),
-				(width * 0.70f), (height * 0.75f), D3DX_DEFAULT, 0, D3DFMT_UNKNOWN, D3DPOOL_MANAGED, D3DX_DEFAULT, D3DX_DEFAULT, 0, NULL, NULL, &speedoTexture);
+		//	if (speedoTexture == nullptr)D3DXCreateTextureFromFileInMemoryEx(pD3device
+		//		, &speedometer, sizeof(speedometer),
+		//		(width * 0.70f), (height * 0.75f), D3DX_DEFAULT, 0, D3DFMT_UNKNOWN, D3DPOOL_MANAGED, D3DX_DEFAULT, D3DX_DEFAULT, 0, NULL, NULL, &speedoTexture);
 
-			if (wheelTexture == nullptr)D3DXCreateTextureFromFileInMemoryEx(pD3device
-				, &wheel, sizeof(wheel),
-				(width * 0.5f) - (width / 8), height - (width / 8), D3DX_DEFAULT, 0, D3DFMT_UNKNOWN, D3DPOOL_MANAGED, D3DX_DEFAULT, D3DX_DEFAULT, 0, NULL, NULL, &wheelTexture);
+		//	if (wheelTexture == nullptr)D3DXCreateTextureFromFileInMemoryEx(pD3device
+		//		, &wheel, sizeof(wheel),
+		//		(width * 0.5f) - (width / 8), height - (width / 8), D3DX_DEFAULT, 0, D3DFMT_UNKNOWN, D3DPOOL_MANAGED, D3DX_DEFAULT, D3DX_DEFAULT, 0, NULL, NULL, &wheelTexture);
 
-			InitImages = false;
-		}
+		//	InitImages = false;
+		//}
+
 
 		Menu();
-		
+
 		device->SetRenderState(D3DRS_COLORWRITEENABLE, dwOld_D3DRS_COLORWRITEENABLE);
 
 		return oEndScene(device);

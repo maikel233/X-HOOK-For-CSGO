@@ -13,7 +13,7 @@ void CustomGlow::FrameStageNotify(ClientFrameStage_t stage)
 		C_BaseEntity* entity = (C_BaseEntity*)pEntityList->GetClientEntity(i);
 
 		// Register custom entities into the glow object definitions array.
-		if (pEngine->IsInGame() && entity && entity->GetClientClass()->m_ClassID == EClassIds::CBaseAnimating)
+		if (pEngine->IsInGame() && entity && entity->GetClientClass()->m_ClassID == EClassIds::cbaseanimating)
 		{
 			if (!pGlowManager->HasGlowEffect(entity))
 			{
