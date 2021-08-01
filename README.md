@@ -9,4 +9,4 @@ Use at your risk.
 
 Place google/protobuf in the xhook/protobuf map.
 
-Build X86 Debug Inject with a UNDETECTED injector. Enjoy :)
+Build Debug X86 Inject with a UNDETECTED injector. Enjoy :)
