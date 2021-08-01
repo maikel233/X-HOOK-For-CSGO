@@ -1,0 +1,963 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="json.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Hooks.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SDK\ICvar.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Interfaces.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SDK\Color.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Config.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DllMain.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SDK\KeyValues.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="modsupport.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SDK\NetvarManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SDK\Offsets.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Renderer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Settings.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Shortcuts2.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SkinChanger.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="skinparser.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="stickers.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Hacks\AirStuck.cpp">
+      <Filter>Source Files\Hacks</Filter>
+    </ClCompile>
+    <ClCompile Include="Hacks\AsusWalls.cpp">
+      <Filter>Source Files\Hacks</Filter>
+    </ClCompile>
+    <ClCompile Include="Hacks\AutoAccept.cpp">
+      <Filter>Source Files\Hacks</Filter>
+    </ClCompile>
+    <ClCompile Include="Hacks\AutoBlock.cpp">
+      <Filter>Source Files\Hacks</Filter>
+    </ClCompile>
+    <ClCompile Include="Hacks\AutoDefuse.cpp">
+      <Filter>Source Files\Hacks</Filter>
+    </ClCompile>
+    <ClCompile Include="Hacks\AutoStrafe.cpp">
+      <Filter>Source Files\Hacks</Filter>
+    </ClCompile>
+    <ClCompile Include="Hacks\FOVChanger.cpp">
+      <Filter>Source Files\Hacks</Filter>
+    </ClCompile>
+    <ClCompile Include="Hacks\NoFlash.cpp">
+      <Filter>Source Files\Hacks</Filter>
+    </ClCompile>
+    <ClCompile Include="Hacks\NoSmoke.cpp">
+      <Filter>Source Files\Hacks</Filter>
+    </ClCompile>
+    <ClCompile Include="Hacks\NoSky.cpp">
+      <Filter>Source Files\Hacks</Filter>
+    </ClCompile>
+    <ClCompile Include="Hacks\nofog.cpp">
+      <Filter>Source Files\Hacks</Filter>
+    </ClCompile>
+    <ClCompile Include="Hacks\autoknife.cpp">
+      <Filter>Source Files\Hacks</Filter>
+    </ClCompile>
+    <ClCompile Include="Hacks\BunnyHop.cpp">
+      <Filter>Source Files\Hacks</Filter>
+    </ClCompile>
+    <ClCompile Include="Hacks\EdgeJump.cpp">
+      <Filter>Source Files\Hacks</Filter>
+    </ClCompile>
+    <ClCompile Include="Hacks\ClanTagChanger.cpp">
+      <Filter>Source Files\Hacks</Filter>
+    </ClCompile>
+    <ClCompile Include="Hacks\NameChanger.cpp">
+      <Filter>Source Files\Hacks</Filter>
+    </ClCompile>
+    <ClCompile Include="Hacks\NameStealer.cpp">
+      <Filter>Source Files\Hacks</Filter>
+    </ClCompile>
+    <ClCompile Include="Hacks\RecoilCrosshair.cpp">
+      <Filter>Source Files\Hacks</Filter>
+    </ClCompile>
+    <ClCompile Include="Hacks\SniperCrosshair.cpp">
+      <Filter>Source Files\Hacks</Filter>
+    </ClCompile>
+    <ClCompile Include="Hacks\Noduckcooldown.cpp">
+      <Filter>Source Files\Hacks</Filter>
+    </ClCompile>
+    <ClCompile Include="Hacks\GrenadeHelper.cpp">
+      <Filter>Source Files\Hacks</Filter>
+    </ClCompile>
+    <ClCompile Include="Hacks\grenadeprediction.cpp">
+      <Filter>Source Files\Hacks</Filter>
+    </ClCompile>
+    <ClCompile Include="Hacks\JumpThrow.cpp">
+      <Filter>Source Files\Hacks</Filter>
+    </ClCompile>
+    <ClCompile Include="ProtoUtils\Protobuffs.cpp">
+      <Filter>Header Files\Protobuff</Filter>
+    </ClCompile>
+    <ClCompile Include="Hacks\Tickbase.cpp">
+      <Filter>Header Files\Hacks</Filter>
+    </ClCompile>
+    <ClCompile Include="Hacks\ReportBot.cpp">
+      <Filter>Source Files\Hacks</Filter>
+    </ClCompile>
+    <ClCompile Include="Hacks\LagComp.cpp">
+      <Filter>Source Files\Hacks</Filter>
+    </ClCompile>
+    <ClCompile Include="Hacks\ShowRanks.cpp">
+      <Filter>Source Files\Hacks</Filter>
+    </ClCompile>
+    <ClCompile Include="Hacks\ShowSpectators.cpp">
+      <Filter>Source Files\Hacks</Filter>
+    </ClCompile>
+    <ClCompile Include="Hacks\Spammer.cpp">
+      <Filter>Source Files\Hacks</Filter>
+    </ClCompile>
+    <ClCompile Include="Hacks\moonwalk.cpp">
+      <Filter>Source Files\Hacks</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGui\imgui.cpp">
+      <Filter>Source Files\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGui\imgui_demo.cpp">
+      <Filter>Source Files\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGui\imgui_draw.cpp">
+      <Filter>Source Files\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGui\examples\directx9_example\imgui_impl_dx9.cpp">
+      <Filter>Source Files\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui\imguiCustom.cpp">
+      <Filter>Source Files\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="protobuf\base_gcmessages.pb.cc">
+      <Filter>Header Files\ProtoBuff_All</Filter>
+    </ClCompile>
+    <ClCompile Include="protobuf\cstrike15_gcmessages.pb.cc">
+      <Filter>Header Files\ProtoBuff_All</Filter>
+    </ClCompile>
+    <ClCompile Include="protobuf\econ_gcmessages.pb.cc">
+      <Filter>Header Files\ProtoBuff_All</Filter>
+    </ClCompile>
+    <ClCompile Include="protobuf\engine_gcmessages.pb.cc">
+      <Filter>Header Files\ProtoBuff_All</Filter>
+    </ClCompile>
+    <ClCompile Include="protobuf\fatdemo.pb.cc">
+      <Filter>Header Files\ProtoBuff_All</Filter>
+    </ClCompile>
+    <ClCompile Include="protobuf\gcsdk_gcmessages.pb.cc">
+      <Filter>Header Files\ProtoBuff_All</Filter>
+    </ClCompile>
+    <ClCompile Include="protobuf\gcsystemmsgs.pb.cc">
+      <Filter>Header Files\ProtoBuff_All</Filter>
+    </ClCompile>
+    <ClCompile Include="protobuf\netmessages.pb.cc">
+      <Filter>Header Files\ProtoBuff_All</Filter>
+    </ClCompile>
+    <ClCompile Include="protobuf\network_connection.pb.cc">
+      <Filter>Header Files\ProtoBuff_All</Filter>
+    </ClCompile>
+    <ClCompile Include="protobuf\Protobuffs.cpp">
+      <Filter>Header Files\ProtoBuff_All</Filter>
+    </ClCompile>
+    <ClCompile Include="protobuf\steamdatagram_messages.pb.cc">
+      <Filter>Header Files\ProtoBuff_All</Filter>
+    </ClCompile>
+    <ClCompile Include="protobuf\steammessages.pb.cc">
+      <Filter>Header Files\ProtoBuff_All</Filter>
+    </ClCompile>
+    <ClCompile Include="Hacks\CustomGlow.cpp">
+      <Filter>Source Files\Hacks</Filter>
+    </ClCompile>
+    <ClCompile Include="Hacks\DLights.cpp">
+      <Filter>Source Files\Hacks</Filter>
+    </ClCompile>
+    <ClCompile Include="Hacks\FakeLag.cpp">
+      <Filter>Source Files\Hacks</Filter>
+    </ClCompile>
+    <ClCompile Include="Hacks\FakeWalk.cpp">
+      <Filter>Source Files\Hacks</Filter>
+    </ClCompile>
+    <ClCompile Include="Hacks\lbyindicator.cpp">
+      <Filter>Source Files\Hacks</Filter>
+    </ClCompile>
+    <ClCompile Include="Hacks\Resolver.cpp">
+      <Filter>Source Files\Hacks</Filter>
+    </ClCompile>
+    <ClCompile Include="Hacks\Tracer.cpp">
+      <Filter>Source Files\Hacks</Filter>
+    </ClCompile>
+    <ClCompile Include="Hacks\WalkBot.cpp">
+      <Filter>Source Files\Hacks</Filter>
+    </ClCompile>
+    <ClCompile Include="GUI\Menu.cpp">
+      <Filter>Source Files\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="GUI\Tabs\aimtab.cpp">
+      <Filter>Source Files\GUI\Tabs</Filter>
+    </ClCompile>
+    <ClCompile Include="GUI\Tabs\HvHTab.cpp">
+      <Filter>Source Files\GUI\Tabs</Filter>
+    </ClCompile>
+    <ClCompile Include="GUI\Tabs\ModelsTab.cpp">
+      <Filter>Source Files\GUI\Tabs</Filter>
+    </ClCompile>
+    <ClCompile Include="GUI\Tabs\SkinsTab.cpp">
+      <Filter>Source Files\GUI\Tabs</Filter>
+    </ClCompile>
+    <ClCompile Include="GUI\Tabs\AimTabs\AimBotTab.cpp">
+      <Filter>Source Files\GUI\Tabs\AimTabs</Filter>
+    </ClCompile>
+    <ClCompile Include="GUI\Tabs\AimTabs\TriggerBotTab.cpp">
+      <Filter>Source Files\GUI\Tabs\AimTabs</Filter>
+    </ClCompile>
+    <ClCompile Include="GUI\Tabs\HvHTabs\airbornehvhtab.cpp">
+      <Filter>Source Files\GUI\Tabs\HvHTabs</Filter>
+    </ClCompile>
+    <ClCompile Include="GUI\Tabs\HvHTabs\MiscHvHTab.cpp">
+      <Filter>Source Files\GUI\Tabs\HvHTabs</Filter>
+    </ClCompile>
+    <ClCompile Include="GUI\Tabs\HvHTabs\movinghvhtab.cpp">
+      <Filter>Source Files\GUI\Tabs\HvHTabs</Filter>
+    </ClCompile>
+    <ClCompile Include="GUI\Tabs\HvHTabs\standinghvhtab.cpp">
+      <Filter>Source Files\GUI\Tabs\HvHTabs</Filter>
+    </ClCompile>
+    <ClCompile Include="GUI\Windows\configs.cpp">
+      <Filter>Source Files\GUI\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="GUI\Windows\resolverinfo.cpp">
+      <Filter>Source Files\GUI\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="GUI\Windows\skinmodelchanger.cpp">
+      <Filter>Source Files\GUI\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="GUI\Windows\FPSWindow.cpp">
+      <Filter>Source Files\GUI\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="GUI\Windows\eventlogger.cpp">
+      <Filter>Source Files\GUI\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="Hacks\AimBot.cpp">
+      <Filter>Source Files\Hacks</Filter>
+    </ClCompile>
+    <ClCompile Include="Hacks\angleindicator.cpp">
+      <Filter>Source Files\Hacks</Filter>
+    </ClCompile>
+    <ClCompile Include="Hacks\disablepostprocessing.cpp">
+      <Filter>Source Files\Hacks</Filter>
+    </ClCompile>
+    <ClCompile Include="Hacks\HitMarkers.cpp">
+      <Filter>Source Files\Hacks</Filter>
+    </ClCompile>
+    <ClCompile Include="Hacks\ThirdPerson.cpp">
+      <Filter>Source Files\Hacks</Filter>
+    </ClCompile>
+    <ClCompile Include="Hacks\TriggerBot.cpp">
+      <Filter>Source Files\Hacks</Filter>
+    </ClCompile>
+    <ClCompile Include="Hacks\AutoWall.cpp">
+      <Filter>Source Files\Hacks</Filter>
+    </ClCompile>
+    <ClCompile Include="Hacks\ESP.cpp">
+      <Filter>Source Files\Hacks</Filter>
+    </ClCompile>
+    <ClCompile Include="Hacks\Chams.cpp">
+      <Filter>Source Files\Hacks</Filter>
+    </ClCompile>
+    <ClCompile Include="Hacks\AntiAim.cpp">
+      <Filter>Source Files\Hacks</Filter>
+    </ClCompile>
+    <ClCompile Include="Utils\Draw.cpp">
+      <Filter>Source Files\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="Utils\Entity.cpp">
+      <Filter>Source Files\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="Utils\FindPattern.cpp">
+      <Filter>Source Files\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="Utils\Skins.cpp">
+      <Filter>Source Files\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="Utils\Util_Items.cpp">
+      <Filter>Source Files\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="Utils\Util_SDK.cpp">
+      <Filter>Source Files\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="Utils\Util.cpp">
+      <Filter>Source Files\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="Utils\Math.cpp">
+      <Filter>Source Files\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="Hacks\LobbyMod.cpp">
+      <Filter>Source Files\Hacks</Filter>
+    </ClCompile>
+    <ClCompile Include="GUI\Tabs\LobbyChanger.cpp">
+      <Filter>Source Files\GUI\Tabs</Filter>
+    </ClCompile>
+    <ClCompile Include="Hacks\speedindicator.cpp">
+      <Filter>Source Files\Hacks</Filter>
+    </ClCompile>
+    <ClCompile Include="Hacks\Radar.cpp">
+      <Filter>Source Files\Hacks</Filter>
+    </ClCompile>
+    <ClCompile Include="Hacks\PredictionSystem.cpp">
+      <Filter>Source Files\Hacks</Filter>
+    </ClCompile>
+    <ClCompile Include="Hacks\View.cpp">
+      <Filter>Source Files\Hacks</Filter>
+    </ClCompile>
+    <ClCompile Include="Hacks\valvedscheck.cpp">
+      <Filter>Source Files\Hacks</Filter>
+    </ClCompile>
+    <ClCompile Include="SDK\CGlobalVars.cpp">
+      <Filter>Source Files\SDK</Filter>
+    </ClCompile>
+    <ClCompile Include="SDK\materialconfig.cpp">
+      <Filter>Source Files\SDK</Filter>
+    </ClCompile>
+    <ClCompile Include="ProfileChanger\valve_parser.cpp">
+      <Filter>Header Files\ProfileChanger_Utils</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="SDK\Definitions.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SDK\Color.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Config.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SDK\CView.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DllMain.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Features.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SDK\getvfunc.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SDK\GlowObject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Hooks.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Interfaces.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="json.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="modsupport.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SDK\NetvarManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="nofog.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SDK\Offsets.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Settings.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Shared.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Shortcuts2.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SkinChanger.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="skinparser.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGui\stb_rect_pack.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGui\stb_textedit.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGui\stb_truetype.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="stickers.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SDK\Vector.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SDK\VMTHook.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="xhook.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SDK\IClientEntity.h">
+      <Filter>Header Files\SDK</Filter>
+    </ClInclude>
+    <ClInclude Include="SDK\IClientEntityList.h">
+      <Filter>Header Files\SDK</Filter>
+    </ClInclude>
+    <ClInclude Include="SDK\IClientMode.h">
+      <Filter>Header Files\SDK</Filter>
+    </ClInclude>
+    <ClInclude Include="SDK\ICvar.h">
+      <Filter>Header Files\SDK</Filter>
+    </ClInclude>
+    <ClInclude Include="SDK\IEngineClient.h">
+      <Filter>Header Files\SDK</Filter>
+    </ClInclude>
+    <ClInclude Include="SDK\IEngineTrace.h">
+      <Filter>Header Files\SDK</Filter>
+    </ClInclude>
+    <ClInclude Include="SDK\IGameEventManager.h">
+      <Filter>Header Files\SDK</Filter>
+    </ClInclude>
+    <ClInclude Include="SDK\IInputSystem.h">
+      <Filter>Header Files\SDK</Filter>
+    </ClInclude>
+    <ClInclude Include="SDK\iLocalize.h">
+      <Filter>Header Files\SDK</Filter>
+    </ClInclude>
+    <ClInclude Include="SDK\IMaterial.h">
+      <Filter>Header Files\SDK</Filter>
+    </ClInclude>
+    <ClInclude Include="SDK\IMaterialSystem.h">
+      <Filter>Header Files\SDK</Filter>
+    </ClInclude>
+    <ClInclude Include="SDK\IPhysicalSurfaceProps.h">
+      <Filter>Header Files\SDK</Filter>
+    </ClInclude>
+    <ClInclude Include="SDK\IPrediction.h">
+      <Filter>Header Files\SDK</Filter>
+    </ClInclude>
+    <ClInclude Include="SDK\ISurface.h">
+      <Filter>Header Files\SDK</Filter>
+    </ClInclude>
+    <ClInclude Include="SDK\IVDebugOverlay.h">
+      <Filter>Header Files\SDK</Filter>
+    </ClInclude>
+    <ClInclude Include="SDK\IVModelInfo.h">
+      <Filter>Header Files\SDK</Filter>
+    </ClInclude>
+    <ClInclude Include="SDK\IVModelRender.h">
+      <Filter>Header Files\SDK</Filter>
+    </ClInclude>
+    <ClInclude Include="SDK\IVPanel.h">
+      <Filter>Header Files\SDK</Filter>
+    </ClInclude>
+    <ClInclude Include="SDK\SDK.h">
+      <Filter>Header Files\SDK</Filter>
+    </ClInclude>
+    <ClInclude Include="SDK\IBaseClientDll.h">
+      <Filter>Header Files\SDK</Filter>
+    </ClInclude>
+    <ClInclude Include="SDK\IAppSystem.h">
+      <Filter>Header Files\SDK</Filter>
+    </ClInclude>
+    <ClInclude Include="SDK\CPlayerResource.h">
+      <Filter>Header Files\SDK</Filter>
+    </ClInclude>
+    <ClInclude Include="SDK\CNetworkStringTable.h">
+      <Filter>Header Files\SDK</Filter>
+    </ClInclude>
+    <ClInclude Include="SDK\CGlobalVars.h">
+      <Filter>Header Files\SDK</Filter>
+    </ClInclude>
+    <ClInclude Include="SDK\CEffects.h">
+      <Filter>Header Files\SDK</Filter>
+    </ClInclude>
+    <ClInclude Include="SDK\CClientState.h">
+      <Filter>Header Files\SDK</Filter>
+    </ClInclude>
+    <ClInclude Include="CBaseClientState.h">
+      <Filter>Header Files\SDK</Filter>
+    </ClInclude>
+    <ClInclude Include="SDK\KeyValues.h">
+      <Filter>Header Files\SDK</Filter>
+    </ClInclude>
+    <ClInclude Include="ai_activity.h">
+      <Filter>Header Files\SDK</Filter>
+    </ClInclude>
+    <ClInclude Include="Hacks\AirStuck.h">
+      <Filter>Header Files\Hacks</Filter>
+    </ClInclude>
+    <ClInclude Include="Hacks\AsusWalls.h">
+      <Filter>Header Files\Hacks</Filter>
+    </ClInclude>
+    <ClInclude Include="NetworkChannel.h">
+      <Filter>Source Files\SDK</Filter>
+    </ClInclude>
+    <ClInclude Include="Pad.h">
+      <Filter>Source Files\SDK</Filter>
+    </ClInclude>
+    <ClInclude Include="materialsystem_config.h" />
+    <ClInclude Include="SDK\VirtualMethod.h">
+      <Filter>Source Files\SDK</Filter>
+    </ClInclude>
+    <ClInclude Include="Hacks\AutoAccept.h">
+      <Filter>Header Files\Hacks</Filter>
+    </ClInclude>
+    <ClInclude Include="Hacks\AutoBlock.h">
+      <Filter>Header Files\Hacks</Filter>
+    </ClInclude>
+    <ClInclude Include="Hacks\AutoDefuse.h">
+      <Filter>Header Files\Hacks</Filter>
+    </ClInclude>
+    <ClInclude Include="Hacks\AutoStrafe.h">
+      <Filter>Header Files\Hacks</Filter>
+    </ClInclude>
+    <ClInclude Include="Hacks\FOVChanger.h">
+      <Filter>Header Files\Hacks</Filter>
+    </ClInclude>
+    <ClInclude Include="Hacks\NoFlash.h">
+      <Filter>Header Files\Hacks</Filter>
+    </ClInclude>
+    <ClInclude Include="Hacks\NoSky.h">
+      <Filter>Header Files\Hacks</Filter>
+    </ClInclude>
+    <ClInclude Include="Hacks\NoSmoke.h">
+      <Filter>Header Files\Hacks</Filter>
+    </ClInclude>
+    <ClInclude Include="Hacks\nofog.h">
+      <Filter>Header Files\Hacks</Filter>
+    </ClInclude>
+    <ClInclude Include="Hacks\autoknife.h">
+      <Filter>Header Files\Hacks</Filter>
+    </ClInclude>
+    <ClInclude Include="Hacks\BunnyHop.h">
+      <Filter>Header Files\Hacks</Filter>
+    </ClInclude>
+    <ClInclude Include="Hacks\EdgeJump.h">
+      <Filter>Header Files\Hacks</Filter>
+    </ClInclude>
+    <ClInclude Include="Hacks\NameChanger.h">
+      <Filter>Header Files\Hacks</Filter>
+    </ClInclude>
+    <ClInclude Include="Hacks\NameStealer.h">
+      <Filter>Header Files\Hacks</Filter>
+    </ClInclude>
+    <ClInclude Include="Hacks\RecoilCrosshair.h">
+      <Filter>Header Files\Hacks</Filter>
+    </ClInclude>
+    <ClInclude Include="Hacks\SniperCrosshair.h">
+      <Filter>Header Files\Hacks</Filter>
+    </ClInclude>
+    <ClInclude Include="Hacks\ClanTagChanger.h">
+      <Filter>Header Files\Hacks</Filter>
+    </ClInclude>
+    <ClInclude Include="Hacks\Noduckcooldown.h">
+      <Filter>Header Files\Hacks</Filter>
+    </ClInclude>
+    <ClInclude Include="Hacks\GrenadeHelper.h">
+      <Filter>Header Files\Hacks</Filter>
+    </ClInclude>
+    <ClInclude Include="Hacks\grenadeprediction.h">
+      <Filter>Header Files\Hacks</Filter>
+    </ClInclude>
+    <ClInclude Include="Hacks\JumpThrow.h">
+      <Filter>Header Files\Hacks</Filter>
+    </ClInclude>
+    <ClInclude Include="ProtoUtils\Protobuffs.h">
+      <Filter>Header Files\Protobuff</Filter>
+    </ClInclude>
+    <ClInclude Include="ProtoUtils\ProtobufReader.h">
+      <Filter>Header Files\Protobuff</Filter>
+    </ClInclude>
+    <ClInclude Include="ProtoUtils\ProtoField.h">
+      <Filter>Header Files\Protobuff</Filter>
+    </ClInclude>
+    <ClInclude Include="ProtoUtils\ProtoWriter.h">
+      <Filter>Header Files\Protobuff</Filter>
+    </ClInclude>
+    <ClInclude Include="SDK\materialsystem_config.h">
+      <Filter>Header Files\SDK</Filter>
+    </ClInclude>
+    <ClInclude Include="SDK\materialconfig.h">
+      <Filter>Header Files\SDK</Filter>
+    </ClInclude>
+    <ClInclude Include="Hacks\Tickbase.h">
+      <Filter>Header Files\Hacks</Filter>
+    </ClInclude>
+    <ClInclude Include="Hacks\LagComp.h">
+      <Filter>Header Files\Hacks</Filter>
+    </ClInclude>
+    <ClInclude Include="Hacks\ShowRanks.h">
+      <Filter>Header Files\Hacks</Filter>
+    </ClInclude>
+    <ClInclude Include="Hacks\ShowSpectators.h">
+      <Filter>Header Files\Hacks</Filter>
+    </ClInclude>
+    <ClInclude Include="Hacks\Spammer.h">
+      <Filter>Header Files\Hacks</Filter>
+    </ClInclude>
+    <ClInclude Include="Hacks\moonwalk.h">
+      <Filter>Header Files\Hacks</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGui\imgui.h">
+      <Filter>Header Files\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGui\examples\directx9_example\imgui_impl_dx9.h">
+      <Filter>Header Files\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGui\imgui_internal.h">
+      <Filter>Header Files\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\imguiCustom.h">
+      <Filter>Header Files\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="protobuf\base_gcmessages.pb.h">
+      <Filter>Header Files\ProtoBuff_All</Filter>
+    </ClInclude>
+    <ClInclude Include="protobuf\cstrike15_gcmessages.pb.h">
+      <Filter>Header Files\ProtoBuff_All</Filter>
+    </ClInclude>
+    <ClInclude Include="protobuf\econ_gcmessages.pb.h">
+      <Filter>Header Files\ProtoBuff_All</Filter>
+    </ClInclude>
+    <ClInclude Include="protobuf\engine_gcmessages.pb.h">
+      <Filter>Header Files\ProtoBuff_All</Filter>
+    </ClInclude>
+    <ClInclude Include="protobuf\fatdemo.pb.h">
+      <Filter>Header Files\ProtoBuff_All</Filter>
+    </ClInclude>
+    <ClInclude Include="protobuf\gcsdk_gcmessages.pb.h">
+      <Filter>Header Files\ProtoBuff_All</Filter>
+    </ClInclude>
+    <ClInclude Include="protobuf\gcsystemmsgs.pb.h">
+      <Filter>Header Files\ProtoBuff_All</Filter>
+    </ClInclude>
+    <ClInclude Include="protobuf\Messages.h">
+      <Filter>Header Files\ProtoBuff_All</Filter>
+    </ClInclude>
+    <ClInclude Include="protobuf\netmessages.pb.h">
+      <Filter>Header Files\ProtoBuff_All</Filter>
+    </ClInclude>
+    <ClInclude Include="protobuf\network_connection.pb.h">
+      <Filter>Header Files\ProtoBuff_All</Filter>
+    </ClInclude>
+    <ClInclude Include="protobuf\Protobuffs.h">
+      <Filter>Header Files\ProtoBuff_All</Filter>
+    </ClInclude>
+    <ClInclude Include="protobuf\ProtobufReader.h">
+      <Filter>Header Files\ProtoBuff_All</Filter>
+    </ClInclude>
+    <ClInclude Include="protobuf\ProtoField.h">
+      <Filter>Header Files\ProtoBuff_All</Filter>
+    </ClInclude>
+    <ClInclude Include="protobuf\ProtoWriter.h">
+      <Filter>Header Files\ProtoBuff_All</Filter>
+    </ClInclude>
+    <ClInclude Include="protobuf\SteamClient.h">
+      <Filter>Header Files\ProtoBuff_All</Filter>
+    </ClInclude>
+    <ClInclude Include="protobuf\steamdatagram_messages.pb.h">
+      <Filter>Header Files\ProtoBuff_All</Filter>
+    </ClInclude>
+    <ClInclude Include="protobuf\SteamID.h">
+      <Filter>Header Files\ProtoBuff_All</Filter>
+    </ClInclude>
+    <ClInclude Include="protobuf\steammessages.pb.h">
+      <Filter>Header Files\ProtoBuff_All</Filter>
+    </ClInclude>
+    <ClInclude Include="Hacks\CustomGlow.h">
+      <Filter>Header Files\Hacks</Filter>
+    </ClInclude>
+    <ClInclude Include="Hacks\DLights.h">
+      <Filter>Header Files\Hacks</Filter>
+    </ClInclude>
+    <ClInclude Include="Hacks\FakeLag.h">
+      <Filter>Header Files\Hacks</Filter>
+    </ClInclude>
+    <ClInclude Include="Hacks\FakeWalk.h">
+      <Filter>Header Files\Hacks</Filter>
+    </ClInclude>
+    <ClInclude Include="Hacks\lbyindicator.h">
+      <Filter>Header Files\Hacks</Filter>
+    </ClInclude>
+    <ClInclude Include="Hacks\Resolver.h">
+      <Filter>Header Files\Hacks</Filter>
+    </ClInclude>
+    <ClInclude Include="Hacks\Tracer.h">
+      <Filter>Header Files\Hacks</Filter>
+    </ClInclude>
+    <ClInclude Include="Hacks\WalkBot.h">
+      <Filter>Header Files\Hacks</Filter>
+    </ClInclude>
+    <ClInclude Include="GUI\Menu.h">
+      <Filter>Header Files\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="GUI\Tabs\aimtab.h">
+      <Filter>Header Files\GUI\Tabs</Filter>
+    </ClInclude>
+    <ClInclude Include="GUI\Tabs\ModelsTab.h">
+      <Filter>Header Files\GUI\Tabs</Filter>
+    </ClInclude>
+    <ClInclude Include="GUI\Tabs\SkinsTab.h">
+      <Filter>Header Files\GUI\Tabs</Filter>
+    </ClInclude>
+    <ClInclude Include="GUI\Tabs\AimTabs\AimBotTab.h">
+      <Filter>Header Files\GUI\Tabs\AimTabs</Filter>
+    </ClInclude>
+    <ClInclude Include="GUI\Tabs\AimTabs\TriggerBotTab.h">
+      <Filter>Header Files\GUI\Tabs\AimTabs</Filter>
+    </ClInclude>
+    <ClInclude Include="GUI\Tabs\HvHTabs\airbornehvhtab.h">
+      <Filter>Header Files\GUI\Tabs\HvHTabs</Filter>
+    </ClInclude>
+    <ClInclude Include="GUI\Tabs\HvHTabs\MiscHvHTab.h">
+      <Filter>Header Files\GUI\Tabs\HvHTabs</Filter>
+    </ClInclude>
+    <ClInclude Include="GUI\Tabs\HvHTabs\movinghvhtab.h">
+      <Filter>Header Files\GUI\Tabs\HvHTabs</Filter>
+    </ClInclude>
+    <ClInclude Include="GUI\Tabs\HvHTabs\standinghvhtab.h">
+      <Filter>Header Files\GUI\Tabs\HvHTabs</Filter>
+    </ClInclude>
+    <ClInclude Include="GUI\Windows\configs.h">
+      <Filter>Header Files\GUI\Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="GUI\Windows\resolverinfo.h">
+      <Filter>Header Files\GUI\Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="GUI\Windows\skinmodelchanger.h">
+      <Filter>Header Files\GUI\Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="GUI\Tabs\HvHTab.h">
+      <Filter>Header Files\GUI\Tabs</Filter>
+    </ClInclude>
+    <ClInclude Include="GUI\Windows\FPSWindow.h">
+      <Filter>Header Files\GUI\Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="GUI\Windows\eventlogger.h">
+      <Filter>Header Files\GUI\Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="Hacks\AimBot.h">
+      <Filter>Header Files\Hacks</Filter>
+    </ClInclude>
+    <ClInclude Include="Hacks\angleindicator.h">
+      <Filter>Header Files\Hacks</Filter>
+    </ClInclude>
+    <ClInclude Include="Hacks\disablepostprocessing.h">
+      <Filter>Header Files\Hacks</Filter>
+    </ClInclude>
+    <ClInclude Include="Hacks\ThirdPerson.h">
+      <Filter>Header Files\Hacks</Filter>
+    </ClInclude>
+    <ClInclude Include="Hacks\TriggerBot.h">
+      <Filter>Header Files\Hacks</Filter>
+    </ClInclude>
+    <ClInclude Include="Hacks\HitMarkers.h">
+      <Filter>Header Files\Hacks</Filter>
+    </ClInclude>
+    <ClInclude Include="Hacks\AutoWall.h">
+      <Filter>Header Files\Hacks</Filter>
+    </ClInclude>
+    <ClInclude Include="Hacks\ESP.h">
+      <Filter>Header Files\Hacks</Filter>
+    </ClInclude>
+    <ClInclude Include="Hacks\Chams.h">
+      <Filter>Header Files\Hacks</Filter>
+    </ClInclude>
+    <ClInclude Include="Hacks\AntiAim.h">
+      <Filter>Header Files\Hacks</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils\Draw.h">
+      <Filter>Header Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils\Entity.h">
+      <Filter>Header Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils\FindPattern.h">
+      <Filter>Header Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils\pstring.h">
+      <Filter>Header Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils\recvproxyhook.h">
+      <Filter>Header Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils\Skins.h">
+      <Filter>Header Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils\Util_Items.h">
+      <Filter>Header Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils\Util_SDK.h">
+      <Filter>Header Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils\XorStr.hpp">
+      <Filter>Header Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils\Util.h">
+      <Filter>Header Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils\Math.h">
+      <Filter>Header Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils\memmem.h">
+      <Filter>Header Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Hacks\LobbyMod.h">
+      <Filter>Header Files\Hacks</Filter>
+    </ClInclude>
+    <ClInclude Include="GUI\Tabs\LobbyChanger.h">
+      <Filter>Header Files\GUI\Tabs</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils\Singleton.hpp">
+      <Filter>Header Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="SDK\ICommandLine.h">
+      <Filter>Header Files\SDK</Filter>
+    </ClInclude>
+    <ClInclude Include="SDK\IGameMovement.h">
+      <Filter>Header Files\SDK</Filter>
+    </ClInclude>
+    <ClInclude Include="Hacks\Radar.h">
+      <Filter>Header Files\Hacks</Filter>
+    </ClInclude>
+    <ClInclude Include="Hacks\speedindicator.h">
+      <Filter>Header Files\Hacks</Filter>
+    </ClInclude>
+    <ClInclude Include="Hacks\PredictionSystem.h">
+      <Filter>Header Files\Hacks</Filter>
+    </ClInclude>
+    <ClInclude Include="Hacks\View.h">
+      <Filter>Header Files\Hacks</Filter>
+    </ClInclude>
+    <ClInclude Include="Hacks\valvedscheck.h">
+      <Filter>Header Files\Hacks</Filter>
+    </ClInclude>
+    <ClInclude Include="ProfileChanger\valve_parser.h">
+      <Filter>Header Files\ProfileChanger_Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="ProfileChanger\Messages.h">
+      <Filter>Header Files\ProfileChanger_Utils</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{a63816a6-be38-4380-aab2-70c43bb5cd29}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{eebced9b-f7ef-4665-b3da-3b62a22310ce}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\SDK">
+      <UniqueIdentifier>{770d62e9-1fb9-48c5-a2ae-a2953f254ebe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\SDK">
+      <UniqueIdentifier>{0d08f2af-63f1-4234-8c53-6530d9957e35}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Hacks">
+      <UniqueIdentifier>{8d703021-494b-4ac6-863b-8cbc61506539}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Hacks">
+      <UniqueIdentifier>{b4ba0267-d407-4f52-9a1d-ec651c2ee931}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Protobuff">
+      <UniqueIdentifier>{9be96870-2018-491c-92ba-9ba010312ca3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\ImGui">
+      <UniqueIdentifier>{2165f6a9-aac4-4526-9ddb-9cb8188ec7e0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\ImGui">
+      <UniqueIdentifier>{e9e1b6d5-8907-4897-830a-0388ca9b5927}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\GUI">
+      <UniqueIdentifier>{76b8718d-73d2-408b-8493-398b1c4ed981}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\GUI\Tabs">
+      <UniqueIdentifier>{c62a18f1-a24a-4a71-bfa2-590f0d4d0d66}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\GUI\Tabs\AimTabs">
+      <UniqueIdentifier>{65e48cf9-760f-49e3-8e93-9d6c8744f81a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\GUI\Tabs\HvHTabs">
+      <UniqueIdentifier>{c1f7e706-2b70-4f5c-a57c-8fd6dfa4463c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GUI">
+      <UniqueIdentifier>{9261734c-ee75-455e-bf95-e5441e202c10}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GUI\Tabs">
+      <UniqueIdentifier>{4cc90c07-08e3-4cb6-a304-99d52ff2ae71}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GUI\Tabs\AimTabs">
+      <UniqueIdentifier>{84151cb1-775a-4b9c-b147-3e2f36ed94e0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GUI\Tabs\HvHTabs">
+      <UniqueIdentifier>{c1c7964f-2266-4688-8e21-df8b0360ef9e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GUI\Windows">
+      <UniqueIdentifier>{41383acb-9382-4632-844d-ed9fd8ed85cd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\GUI\Windows">
+      <UniqueIdentifier>{37ba2921-fb5e-4919-8d37-513fc9565dc8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Utils">
+      <UniqueIdentifier>{0748b758-9da0-4c03-959f-f8137b058616}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utils">
+      <UniqueIdentifier>{4ee9e824-f497-4da0-8759-91f656710868}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\ProtoBuff_All">
+      <UniqueIdentifier>{5593d982-c555-49ec-83cb-f504ed32d94e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\ProfileChanger_Utils">
+      <UniqueIdentifier>{2326f26a-c9a7-442d-af6d-575f990a2a4c}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="protobuf\libprotobuf.lib">
+      <Filter>Header Files\ProtoBuff_All</Filter>
+    </Library>
+    <Library Include="protobuf\libprotoc.lib">
+      <Filter>Header Files\ProtoBuff_All</Filter>
+    </Library>
+  </ItemGroup>
+</Project>

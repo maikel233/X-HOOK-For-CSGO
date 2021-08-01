@@ -1,0 +1,654 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug PC|Win32">
+      <Configuration>Debug PC</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug PC|x64">
+      <Configuration>Debug PC</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release2|Win32">
+      <Configuration>Release2</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release2|x64">
+      <Configuration>Release2</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="test|Win32">
+      <Configuration>test</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="test|x64">
+      <Configuration>test</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>15.0</VCProjectVersion>
+    <ProjectGuid>{70D85314-E552-47E6-86D8-E7AE764BCD82}</ProjectGuid>
+    <RootNamespace>xhook</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>x-hook revamped</ProjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>false</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v142</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug PC|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>false</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v142</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release2|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>false</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v142</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug PC|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release2|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='test|Win32'">
+    <PlatformToolset>v142</PlatformToolset>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='test|x64'">
+    <PlatformToolset>v142</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug PC|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release2|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug PC|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release2|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <IncludePath>C:\Users\Maikel\Desktop\Programming stuff\xhook loader php files\X-HOOK\protobuf;C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include;C:\Users\Maikel\Desktop\Programming stuff\xhook loader php files\X-HOOK\SDK;C:\Users\Maikel\Desktop\Programming stuff\xhook loader php files\X-HOOK\DX9 SDK\Include;C:\Users\Maikel\Desktop\Programming stuff\xhook loader php files\X-HOOK\ImGui\examples\directx9_example;C:\Users\Maikel\Desktop\Programming stuff\xhook loader php files\X-HOOK\ImGui;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Users\Maikel\Desktop\Programming stuff\xhook loader php files\X-HOOK\SDL\lib\x86;C:\Users\Maikel\Desktop\Programming stuff\xhook loader php files\X-HOOK\DX9 SDK\Lib\x86;$(LibraryPath)</LibraryPath>
+    <TargetName>x-hookv32</TargetName>
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug PC|Win32'">
+    <IncludePath>C:\Users\Maikel\Desktop\Programming stuff\xhook loader php files\X-HOOK\protobuf;C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include;C:\Users\Maikel\Desktop\Programming stuff\xhook loader php files\X-HOOK\SDK;C:\Users\Maikel\Desktop\Programming stuff\xhook loader php files\X-HOOK\DX9 SDK\Include;C:\Users\Maikel\Desktop\Programming stuff\xhook loader php files\X-HOOK\ImGui\examples\directx9_example;C:\Users\Maikel\Desktop\Programming stuff\xhook loader php files\X-HOOK\ImGui;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Users\Maikel\Desktop\Programming stuff\xhook loader php files\X-HOOK\SDL\lib\x86;C:\Users\Maikel\Desktop\Programming stuff\xhook loader php files\X-HOOK\DX9 SDK\Lib\x86;$(LibraryPath)</LibraryPath>
+    <TargetName>x-hookv32</TargetName>
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release2|Win32'">
+    <IncludePath>C:\Users\Maikel\Desktop\Programming stuff\xhook loader php files\X-HOOK\protobuf;C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include;C:\Users\Maikel\Desktop\Programming stuff\xhook loader php files\X-HOOK\SDK;C:\Users\Maikel\Desktop\Programming stuff\xhook loader php files\X-HOOK\DX9 SDK\Include;C:\Users\Maikel\Desktop\Programming stuff\xhook loader php files\X-HOOK\ImGui\examples\directx9_example;C:\Users\Maikel\Desktop\Programming stuff\xhook loader php files\X-HOOK\ImGui;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Users\Maikel\Desktop\Programming stuff\xhook loader php files\X-HOOK\SDL\lib\x86;C:\Users\Maikel\Desktop\Programming stuff\xhook loader php files\X-HOOK\DX9 SDK\Lib\x86;$(LibraryPath)</LibraryPath>
+    <TargetName>x-hookv32</TargetName>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <IncludePath>
+    </IncludePath>
+    <LibraryPath>
+    </LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug PC|x64'">
+    <IncludePath>
+    </IncludePath>
+    <LibraryPath>
+    </LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release2|x64'">
+    <IncludePath>
+    </IncludePath>
+    <LibraryPath>
+    </LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <IncludePath>$(ProjectDir)\protobuf\google\protobuf\stubs;$(ProjectDir)\protobuf;$(ProjectDir)\protobuf\google\protobuf;C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include;$(ProjectDir)\SDK;$(ProjectDir)\DX9 SDK\Include;$(ProjectDir)\ImGui\examples\directx9_example;$(ProjectDir)\ImGui;$(IncludePath)</IncludePath>
+    <LibraryPath>\protobuf;$(ProjectDir)\DX9 SDK\Lib\x86;C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Lib\x86;$(LibraryPath)</LibraryPath>
+    <TargetName>X-HOOKV32</TargetName>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='test|Win32'">
+    <TargetName>x-hookv32</TargetName>
+    <TargetExt>.dll</TargetExt>
+    <IncludePath>D:\Recente bureaublad\X-HOOK-For-CSGO-master\SDK;D:\Recente bureaublad\X-HOOK-For-CSGO-master\DX9 SDK\Include;D:\Recente bureaublad\X-HOOK-For-CSGO-master\Lua\src;D:\Recente bureaublad\X-HOOK-For-CSGO-master\ImGui\examples\directx9_example;D:\Recente bureaublad\X-HOOK-For-CSGO-master\ImGui;D:\Recente bureaublad\X-HOOK-For-CSGO-master\Debug;D:\Recente bureaublad\X-HOOK-For-CSGO-master;$(IncludePath)</IncludePath>
+    <LibraryPath>D:\Recente bureaublad\X-HOOK-For-CSGO-master\DX9 SDK\Lib\x86;$(LibraryPath)</LibraryPath>
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>TurnOffAllWarnings</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>false</SDLCheck>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <InlineFunctionExpansion>Disabled</InlineFunctionExpansion>
+      <IntrinsicFunctions>false</IntrinsicFunctions>
+      <WholeProgramOptimization>false</WholeProgramOptimization>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <MinimalRebuild>false</MinimalRebuild>
+      <FavorSizeOrSpeed>Neither</FavorSizeOrSpeed>
+      <OmitFramePointers>false</OmitFramePointers>
+      <EnableFiberSafeOptimizations>false</EnableFiberSafeOptimizations>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <LinkTimeCodeGeneration>Default</LinkTimeCodeGeneration>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>TurnOffAllWarnings</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>false</IntrinsicFunctions>
+      <SDLCheck>false</SDLCheck>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <CompileAs>CompileAsCpp</CompileAs>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <FloatingPointExceptions>
+      </FloatingPointExceptions>
+      <EnableEnhancedInstructionSet>NotSet</EnableEnhancedInstructionSet>
+      <CreateHotpatchableImage>
+      </CreateHotpatchableImage>
+      <MinimalRebuild>false</MinimalRebuild>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+      <ControlFlowGuard>
+      </ControlFlowGuard>
+      <EnableParallelCodeGeneration>
+      </EnableParallelCodeGeneration>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <BufferSecurityCheck>true</BufferSecurityCheck>
+    </ClCompile>
+    <Link>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <SubSystem>Windows</SubSystem>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+    <BuildLog>
+      <Path>XHOOK_BUILD.log</Path>
+    </BuildLog>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug PC|Win32'">
+    <ClCompile>
+      <WarningLevel>TurnOffAllWarnings</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>false</IntrinsicFunctions>
+      <SDLCheck>false</SDLCheck>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <CompileAs>CompileAsCpp</CompileAs>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+    </ClCompile>
+    <Link>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <SubSystem>Windows</SubSystem>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+    <BuildLog>
+      <Path>XHOOK_BUILD.log</Path>
+    </BuildLog>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release2|Win32'">
+    <ClCompile>
+      <WarningLevel>TurnOffAllWarnings</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>false</SDLCheck>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <CompileAs>CompileAsCpp</CompileAs>
+    </ClCompile>
+    <Link>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <SubSystem>Windows</SubSystem>
+    </Link>
+    <BuildLog>
+      <Path>XHOOK_BUILD.log</Path>
+    </BuildLog>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>TurnOffAllWarnings</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>false</SDLCheck>
+    </ClCompile>
+    <Link>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <SubSystem>Windows</SubSystem>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug PC|x64'">
+    <ClCompile>
+      <WarningLevel>TurnOffAllWarnings</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>false</SDLCheck>
+    </ClCompile>
+    <Link>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <SubSystem>Windows</SubSystem>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release2|x64'">
+    <ClCompile>
+      <WarningLevel>TurnOffAllWarnings</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>false</SDLCheck>
+    </ClCompile>
+    <Link>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <SubSystem>Windows</SubSystem>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='test|Win32'">
+    <ClCompile>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <WarningLevel>TurnOffAllWarnings</WarningLevel>
+      <SDLCheck>false</SDLCheck>
+      <SupportJustMyCode>true</SupportJustMyCode>
+      <AdditionalOptions>/JMC /MP /GS /analyze- /W0 /Zc:wchar_t /Zi /Gm- /Od /Ob0 /sdl- /Fd"Debug\vc142.pdb" /Zc:inline /fp:precise /D "_WINDLL" /D "_MBCS" /errorReport:prompt /WX- /Zc:forScope /Gd /Oy- /MD /FC /Fa"Debug\" /EHsc /nologo /Fo"Debug\" /Fp"Debug\X-HOOKV32.pch" /diagnostics:column </AdditionalOptions>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+    </ClCompile>
+    <Link />
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="ai_activity.h" />
+    <ClInclude Include="CBaseClientState.h" />
+    <ClInclude Include="Config.h" />
+    <ClInclude Include="DllMain.h" />
+    <ClInclude Include="Features.h" />
+    <ClInclude Include="GUI\Menu.h" />
+    <ClInclude Include="GUI\Tabs\aimtab.h" />
+    <ClInclude Include="GUI\Tabs\AimTabs\AimBotTab.h" />
+    <ClInclude Include="GUI\Tabs\AimTabs\TriggerBotTab.h" />
+    <ClInclude Include="GUI\Tabs\HvHTab.h" />
+    <ClInclude Include="GUI\Tabs\HvHTabs\airbornehvhtab.h" />
+    <ClInclude Include="GUI\Tabs\HvHTabs\MiscHvHTab.h" />
+    <ClInclude Include="GUI\Tabs\HvHTabs\movinghvhtab.h" />
+    <ClInclude Include="GUI\Tabs\HvHTabs\standinghvhtab.h" />
+    <ClInclude Include="GUI\Tabs\LobbyChanger.h" />
+    <ClInclude Include="GUI\Tabs\ModelsTab.h" />
+    <ClInclude Include="GUI\Tabs\SkinsTab.h" />
+    <ClInclude Include="GUI\Windows\configs.h" />
+    <ClInclude Include="GUI\Windows\eventlogger.h" />
+    <ClInclude Include="GUI\Windows\FPSWindow.h" />
+    <ClInclude Include="GUI\Windows\resolverinfo.h" />
+    <ClInclude Include="GUI\Windows\skinmodelchanger.h" />
+    <ClInclude Include="Hacks\AimBot.h" />
+    <ClInclude Include="Hacks\AirStuck.h" />
+    <ClInclude Include="Hacks\angleindicator.h" />
+    <ClInclude Include="Hacks\AntiAim.h" />
+    <ClInclude Include="Hacks\AsusWalls.h" />
+    <ClInclude Include="Hacks\AutoAccept.h" />
+    <ClInclude Include="Hacks\AutoBlock.h" />
+    <ClInclude Include="Hacks\AutoDefuse.h" />
+    <ClInclude Include="Hacks\autoknife.h" />
+    <ClInclude Include="Hacks\AutoStrafe.h" />
+    <ClInclude Include="Hacks\AutoWall.h" />
+    <ClInclude Include="Hacks\BunnyHop.h" />
+    <ClInclude Include="Hacks\Chams.h" />
+    <ClInclude Include="Hacks\ClanTagChanger.h" />
+    <ClInclude Include="Hacks\CustomGlow.h" />
+    <ClInclude Include="Hacks\disablepostprocessing.h" />
+    <ClInclude Include="Hacks\DLights.h" />
+    <ClInclude Include="Hacks\EdgeJump.h" />
+    <ClInclude Include="Hacks\ESP.h" />
+    <ClInclude Include="Hacks\FakeLag.h" />
+    <ClInclude Include="Hacks\FakeWalk.h" />
+    <ClInclude Include="Hacks\FOVChanger.h" />
+    <ClInclude Include="Hacks\GrenadeHelper.h" />
+    <ClInclude Include="Hacks\grenadeprediction.h" />
+    <ClInclude Include="Hacks\HitMarkers.h" />
+    <ClInclude Include="Hacks\JumpThrow.h" />
+    <ClInclude Include="Hacks\LagComp.h" />
+    <ClInclude Include="Hacks\lbyindicator.h" />
+    <ClInclude Include="Hacks\LobbyMod.h" />
+    <ClInclude Include="Hacks\moonwalk.h" />
+    <ClInclude Include="Hacks\NameChanger.h" />
+    <ClInclude Include="Hacks\NameStealer.h" />
+    <ClInclude Include="Hacks\Noduckcooldown.h" />
+    <ClInclude Include="Hacks\NoFlash.h" />
+    <ClInclude Include="Hacks\nofog.h" />
+    <ClInclude Include="Hacks\NoSky.h" />
+    <ClInclude Include="Hacks\NoSmoke.h" />
+    <ClInclude Include="Hacks\PredictionSystem.h" />
+    <ClInclude Include="Hacks\Radar.h" />
+    <ClInclude Include="Hacks\RecoilCrosshair.h" />
+    <ClInclude Include="Hacks\Resolver.h" />
+    <ClInclude Include="Hacks\ShowRanks.h" />
+    <ClInclude Include="Hacks\ShowSpectators.h" />
+    <ClInclude Include="Hacks\SniperCrosshair.h" />
+    <ClInclude Include="Hacks\Spammer.h" />
+    <ClInclude Include="Hacks\speedindicator.h" />
+    <ClInclude Include="Hacks\ThirdPerson.h" />
+    <ClInclude Include="Hacks\Tickbase.h" />
+    <ClInclude Include="Hacks\Tracer.h" />
+    <ClInclude Include="Hacks\TriggerBot.h" />
+    <ClInclude Include="Hacks\valvedscheck.h" />
+    <ClInclude Include="Hacks\View.h" />
+    <ClInclude Include="Hacks\WalkBot.h" />
+    <ClInclude Include="Hooks.h" />
+    <ClInclude Include="ImGui\examples\directx9_example\imgui_impl_dx9.h" />
+    <ClInclude Include="ImGui\imgui.h" />
+    <ClInclude Include="imgui\imguiCustom.h" />
+    <ClInclude Include="ImGui\imgui_internal.h" />
+    <ClInclude Include="ImGui\stb_rect_pack.h" />
+    <ClInclude Include="ImGui\stb_textedit.h" />
+    <ClInclude Include="ImGui\stb_truetype.h" />
+    <ClInclude Include="Interfaces.h" />
+    <ClInclude Include="json.h" />
+    <ClInclude Include="materialsystem_config.h" />
+    <ClInclude Include="modsupport.h" />
+    <ClInclude Include="NetworkChannel.h" />
+    <ClInclude Include="nofog.h" />
+    <ClInclude Include="Pad.h" />
+    <ClInclude Include="ProfileChanger\Messages.h" />
+    <ClInclude Include="ProfileChanger\valve_parser.h" />
+    <ClInclude Include="protobuf\base_gcmessages.pb.h" />
+    <ClInclude Include="protobuf\cstrike15_gcmessages.pb.h" />
+    <ClInclude Include="protobuf\econ_gcmessages.pb.h" />
+    <ClInclude Include="protobuf\engine_gcmessages.pb.h" />
+    <ClInclude Include="protobuf\fatdemo.pb.h" />
+    <ClInclude Include="protobuf\gcsdk_gcmessages.pb.h" />
+    <ClInclude Include="protobuf\gcsystemmsgs.pb.h" />
+    <ClInclude Include="protobuf\Messages.h" />
+    <ClInclude Include="protobuf\netmessages.pb.h" />
+    <ClInclude Include="protobuf\network_connection.pb.h" />
+    <ClInclude Include="protobuf\Protobuffs.h" />
+    <ClInclude Include="protobuf\ProtobufReader.h" />
+    <ClInclude Include="protobuf\ProtoField.h" />
+    <ClInclude Include="protobuf\ProtoWriter.h" />
+    <ClInclude Include="protobuf\SteamClient.h" />
+    <ClInclude Include="protobuf\steamdatagram_messages.pb.h" />
+    <ClInclude Include="protobuf\SteamID.h" />
+    <ClInclude Include="protobuf\steammessages.pb.h" />
+    <ClInclude Include="ProtoUtils\Protobuffs.h" />
+    <ClInclude Include="ProtoUtils\ProtobufReader.h" />
+    <ClInclude Include="ProtoUtils\ProtoField.h" />
+    <ClInclude Include="ProtoUtils\ProtoWriter.h" />
+    <ClInclude Include="Renderer.h" />
+    <ClInclude Include="SDK\CClientState.h" />
+    <ClInclude Include="SDK\CEffects.h" />
+    <ClInclude Include="SDK\CGlobalVars.h" />
+    <ClInclude Include="SDK\CNetworkStringTable.h" />
+    <ClInclude Include="SDK\Color.h" />
+    <ClInclude Include="SDK\CPlayerResource.h" />
+    <ClInclude Include="SDK\CView.h" />
+    <ClInclude Include="SDK\Definitions.h" />
+    <ClInclude Include="SDK\getvfunc.h" />
+    <ClInclude Include="SDK\GlowObject.h" />
+    <ClInclude Include="SDK\IAppSystem.h" />
+    <ClInclude Include="SDK\IBaseClientDll.h" />
+    <ClInclude Include="SDK\IClientEntity.h" />
+    <ClInclude Include="SDK\IClientEntityList.h" />
+    <ClInclude Include="SDK\IClientMode.h" />
+    <ClInclude Include="SDK\ICommandLine.h" />
+    <ClInclude Include="SDK\ICvar.h" />
+    <ClInclude Include="SDK\IEngineClient.h" />
+    <ClInclude Include="SDK\IEngineTrace.h" />
+    <ClInclude Include="SDK\IGameEventManager.h" />
+    <ClInclude Include="SDK\IGameMovement.h" />
+    <ClInclude Include="SDK\IInputSystem.h" />
+    <ClInclude Include="SDK\iLocalize.h" />
+    <ClInclude Include="SDK\IMaterial.h">
+      <SubType>Designer</SubType>
+    </ClInclude>
+    <ClInclude Include="SDK\IMaterialSystem.h" />
+    <ClInclude Include="SDK\IPhysicalSurfaceProps.h" />
+    <ClInclude Include="SDK\IPrediction.h" />
+    <ClInclude Include="SDK\ISurface.h" />
+    <ClInclude Include="SDK\IVDebugOverlay.h" />
+    <ClInclude Include="SDK\IVModelInfo.h" />
+    <ClInclude Include="SDK\IVModelRender.h" />
+    <ClInclude Include="SDK\IVPanel.h" />
+    <ClInclude Include="SDK\KeyValues.h" />
+    <ClInclude Include="SDK\materialconfig.h" />
+    <ClInclude Include="SDK\materialsystem_config.h" />
+    <ClInclude Include="SDK\NetvarManager.h" />
+    <ClInclude Include="SDK\Offsets.h" />
+    <ClInclude Include="SDK\SDK.h" />
+    <ClInclude Include="SDK\Vector.h" />
+    <ClInclude Include="SDK\VirtualMethod.h" />
+    <ClInclude Include="SDK\VMTHook.h" />
+    <ClInclude Include="Settings.h" />
+    <ClInclude Include="Shared.h" />
+    <ClInclude Include="Shortcuts2.h" />
+    <ClInclude Include="SkinChanger.h" />
+    <ClInclude Include="skinparser.h" />
+    <ClInclude Include="stickers.h" />
+    <ClInclude Include="Utils\Draw.h" />
+    <ClInclude Include="Utils\Entity.h" />
+    <ClInclude Include="Utils\FindPattern.h" />
+    <ClInclude Include="Utils\Math.h" />
+    <ClInclude Include="Utils\memmem.h" />
+    <ClInclude Include="Utils\pstring.h" />
+    <ClInclude Include="Utils\recvproxyhook.h" />
+    <ClInclude Include="Utils\Singleton.hpp" />
+    <ClInclude Include="Utils\Skins.h" />
+    <ClInclude Include="Utils\Util.h" />
+    <ClInclude Include="Utils\Util_Items.h" />
+    <ClInclude Include="Utils\Util_SDK.h" />
+    <ClInclude Include="Utils\XorStr.hpp" />
+    <ClInclude Include="xhook.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Config.cpp" />
+    <ClCompile Include="DllMain.cpp" />
+    <ClCompile Include="GUI\Menu.cpp" />
+    <ClCompile Include="GUI\Tabs\aimtab.cpp" />
+    <ClCompile Include="GUI\Tabs\AimTabs\AimBotTab.cpp" />
+    <ClCompile Include="GUI\Tabs\AimTabs\TriggerBotTab.cpp" />
+    <ClCompile Include="GUI\Tabs\HvHTab.cpp" />
+    <ClCompile Include="GUI\Tabs\HvHTabs\airbornehvhtab.cpp" />
+    <ClCompile Include="GUI\Tabs\HvHTabs\MiscHvHTab.cpp" />
+    <ClCompile Include="GUI\Tabs\HvHTabs\movinghvhtab.cpp" />
+    <ClCompile Include="GUI\Tabs\HvHTabs\standinghvhtab.cpp" />
+    <ClCompile Include="GUI\Tabs\LobbyChanger.cpp" />
+    <ClCompile Include="GUI\Tabs\ModelsTab.cpp" />
+    <ClCompile Include="GUI\Tabs\SkinsTab.cpp" />
+    <ClCompile Include="GUI\Windows\configs.cpp" />
+    <ClCompile Include="GUI\Windows\eventlogger.cpp" />
+    <ClCompile Include="GUI\Windows\FPSWindow.cpp" />
+    <ClCompile Include="GUI\Windows\resolverinfo.cpp" />
+    <ClCompile Include="GUI\Windows\skinmodelchanger.cpp" />
+    <ClCompile Include="Hacks\AimBot.cpp" />
+    <ClCompile Include="Hacks\AirStuck.cpp" />
+    <ClCompile Include="Hacks\angleindicator.cpp" />
+    <ClCompile Include="Hacks\AntiAim.cpp" />
+    <ClCompile Include="Hacks\AsusWalls.cpp" />
+    <ClCompile Include="Hacks\AutoAccept.cpp" />
+    <ClCompile Include="Hacks\AutoBlock.cpp" />
+    <ClCompile Include="Hacks\AutoDefuse.cpp" />
+    <ClCompile Include="Hacks\autoknife.cpp" />
+    <ClCompile Include="Hacks\AutoStrafe.cpp" />
+    <ClCompile Include="Hacks\AutoWall.cpp" />
+    <ClCompile Include="Hacks\BunnyHop.cpp" />
+    <ClCompile Include="Hacks\Chams.cpp" />
+    <ClCompile Include="Hacks\ClanTagChanger.cpp" />
+    <ClCompile Include="Hacks\CustomGlow.cpp" />
+    <ClCompile Include="Hacks\disablepostprocessing.cpp" />
+    <ClCompile Include="Hacks\DLights.cpp" />
+    <ClCompile Include="Hacks\EdgeJump.cpp" />
+    <ClCompile Include="Hacks\ESP.cpp" />
+    <ClCompile Include="Hacks\FakeLag.cpp" />
+    <ClCompile Include="Hacks\FakeWalk.cpp" />
+    <ClCompile Include="Hacks\FOVChanger.cpp" />
+    <ClCompile Include="Hacks\GrenadeHelper.cpp" />
+    <ClCompile Include="Hacks\grenadeprediction.cpp" />
+    <ClCompile Include="Hacks\HitMarkers.cpp" />
+    <ClCompile Include="Hacks\JumpThrow.cpp" />
+    <ClCompile Include="Hacks\LagComp.cpp" />
+    <ClCompile Include="Hacks\lbyindicator.cpp" />
+    <ClCompile Include="Hacks\LobbyMod.cpp" />
+    <ClCompile Include="Hacks\moonwalk.cpp" />
+    <ClCompile Include="Hacks\NameChanger.cpp" />
+    <ClCompile Include="Hacks\NameStealer.cpp" />
+    <ClCompile Include="Hacks\Noduckcooldown.cpp" />
+    <ClCompile Include="Hacks\NoFlash.cpp" />
+    <ClCompile Include="Hacks\nofog.cpp" />
+    <ClCompile Include="Hacks\NoSky.cpp" />
+    <ClCompile Include="Hacks\NoSmoke.cpp" />
+    <ClCompile Include="Hacks\PredictionSystem.cpp" />
+    <ClCompile Include="Hacks\Radar.cpp" />
+    <ClCompile Include="Hacks\RecoilCrosshair.cpp" />
+    <ClCompile Include="Hacks\ReportBot.cpp" />
+    <ClCompile Include="Hacks\Resolver.cpp" />
+    <ClCompile Include="Hacks\ShowRanks.cpp" />
+    <ClCompile Include="Hacks\ShowSpectators.cpp" />
+    <ClCompile Include="Hacks\SniperCrosshair.cpp" />
+    <ClCompile Include="Hacks\Spammer.cpp" />
+    <ClCompile Include="Hacks\speedindicator.cpp" />
+    <ClCompile Include="Hacks\ThirdPerson.cpp" />
+    <ClCompile Include="Hacks\Tickbase.cpp" />
+    <ClCompile Include="Hacks\Tracer.cpp" />
+    <ClCompile Include="Hacks\TriggerBot.cpp" />
+    <ClCompile Include="Hacks\valvedscheck.cpp" />
+    <ClCompile Include="Hacks\View.cpp" />
+    <ClCompile Include="Hacks\WalkBot.cpp" />
+    <ClCompile Include="Hooks.cpp" />
+    <ClCompile Include="ImGui\examples\directx9_example\imgui_impl_dx9.cpp" />
+    <ClCompile Include="ImGui\imgui.cpp" />
+    <ClCompile Include="imgui\imguiCustom.cpp" />
+    <ClCompile Include="ImGui\imgui_demo.cpp" />
+    <ClCompile Include="ImGui\imgui_draw.cpp" />
+    <ClCompile Include="Interfaces.cpp" />
+    <ClCompile Include="json.cpp" />
+    <ClCompile Include="modsupport.cpp" />
+    <ClCompile Include="ProfileChanger\valve_parser.cpp" />
+    <ClCompile Include="protobuf\base_gcmessages.pb.cc" />
+    <ClCompile Include="protobuf\cstrike15_gcmessages.pb.cc" />
+    <ClCompile Include="protobuf\econ_gcmessages.pb.cc" />
+    <ClCompile Include="protobuf\engine_gcmessages.pb.cc" />
+    <ClCompile Include="protobuf\fatdemo.pb.cc" />
+    <ClCompile Include="protobuf\gcsdk_gcmessages.pb.cc" />
+    <ClCompile Include="protobuf\gcsystemmsgs.pb.cc" />
+    <ClCompile Include="protobuf\netmessages.pb.cc" />
+    <ClCompile Include="protobuf\network_connection.pb.cc" />
+    <ClCompile Include="protobuf\Protobuffs.cpp" />
+    <ClCompile Include="protobuf\steamdatagram_messages.pb.cc" />
+    <ClCompile Include="protobuf\steammessages.pb.cc" />
+    <ClCompile Include="ProtoUtils\Protobuffs.cpp" />
+    <ClCompile Include="Renderer.cpp" />
+    <ClCompile Include="SDK\CGlobalVars.cpp" />
+    <ClCompile Include="SDK\Color.cpp" />
+    <ClCompile Include="SDK\ICvar.cpp" />
+    <ClCompile Include="SDK\KeyValues.cpp" />
+    <ClCompile Include="SDK\materialconfig.cpp" />
+    <ClCompile Include="SDK\NetvarManager.cpp" />
+    <ClCompile Include="SDK\Offsets.cpp" />
+    <ClCompile Include="Settings.cpp" />
+    <ClCompile Include="Shortcuts2.cpp" />
+    <ClCompile Include="SkinChanger.cpp" />
+    <ClCompile Include="skinparser.cpp" />
+    <ClCompile Include="stickers.cpp" />
+    <ClCompile Include="Utils\Draw.cpp" />
+    <ClCompile Include="Utils\Entity.cpp" />
+    <ClCompile Include="Utils\FindPattern.cpp" />
+    <ClCompile Include="Utils\Math.cpp" />
+    <ClCompile Include="Utils\Skins.cpp" />
+    <ClCompile Include="Utils\Util.cpp" />
+    <ClCompile Include="Utils\Util_Items.cpp" />
+    <ClCompile Include="Utils\Util_SDK.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="protobuf\libprotobuf.lib" />
+    <Library Include="protobuf\libprotoc.lib" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
