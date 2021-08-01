@@ -626,7 +626,6 @@
     <ClCompile Include="SDK\CGlobalVars.cpp" />
     <ClCompile Include="SDK\Color.cpp" />
     <ClCompile Include="SDK\ICvar.cpp" />
-    <ClCompile Include="SDK\KeyValues.cpp" />
     <ClCompile Include="SDK\materialconfig.cpp" />
     <ClCompile Include="SDK\NetvarManager.cpp" />
     <ClCompile Include="SDK\Offsets.cpp" />

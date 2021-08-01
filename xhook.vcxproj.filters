@@ -22,9 +22,6 @@
     <ClCompile Include="DllMain.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SDK\KeyValues.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="modsupport.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
