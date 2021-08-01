@@ -1,2 +1,0 @@
-helpers.o: helpers.c helpers.h
-xdo.o: xdo.c helpers.h xdo.h
