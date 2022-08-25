@@ -24,3 +24,17 @@
 #include "Config.h"
 
 clock_t Timer;
+
+//.DLL
+#define CLIENT "client.dll"
+#define ENGINE "engine.dll"
+#define MATERIALSYSTEM "materialsystem.dll"
+#define VGUI2 "vgui2.dll"
+#define VPHYSICS "vphysics.dll"
+#define MATCHMAKING "matchmaking.dll"
+#define LOCALIZE "localize.dll"
+#define VGUIMATSURFACE "vguimatsurface.dll"
+#define INPUTSYSTEM "inputsystem.dll"
+#define XHOOKCURRGAME "Counter-Strike: Global Offensive"
+#define XHOOKCURRGAMEX "XHOOK for Counter-Strike: Global Offensive"
+#define XHOOKCURRVERSION "V1.35"
