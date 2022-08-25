@@ -14,14 +14,11 @@
 #define FLOW_INCOMING	1
 #define MAX_FLOWS		2
 
-
-
-
+class IWeaponSystem;
 class AnimationLayer;
 class CBasePlayerAnimState;
 class CCSPlayerAnimState;
 class CCSGOPlayerAnimState;
-
 
 
 enum class LifeState
@@ -296,6 +293,8 @@ public:
 			CALL DWORD PTR DS : [EAX + 0x2C]
 		}
 	}
+
+
 };
 
 class IClientThinkable
@@ -844,6 +843,22 @@ public:
 	}
 };
 
+class C_EconItemView
+{
+private:
+	using str_32 = char[32];
+public:
+
+	int16_t ItemDefinitionIndex()
+	{
+		return *(int16_t*)((uintptr_t)this + offsets.DT_BaseAttributableItem.m_iItemDefinitionIndex);
+	}
+
+};
+
+
+
+
 class C_BaseAttributableItem : public C_BaseEntity
 {
 public:
@@ -906,6 +921,13 @@ public:
 	int* GetAccountID()
 	{
 		return (int*)((uintptr_t)this + offsets.DT_BaseAttributableItem.m_iAccountID);
+	}
+
+	C_EconItemView& m_Item()
+	{
+		// Cheating. It should be this + m_Item netvar but then the netvars inside C_EconItemView wont work properly.
+		// A real fix for this requires a rewrite of the netvar manager
+		return *(C_EconItemView*)this;
 	}
 };
 
@@ -982,37 +1004,47 @@ public:
 	CHudTexture* iconZoomedAutoaim;
 	CHudTexture* iconSmall;
 };
-
+#pragma pack(push, 1)
 class CCSWeaponInfo : public FileWeaponInfo_t
 {
 public:
-	char* GetConsoleName()
-	{
-		return *(char**)((uintptr_t)this + 0x0004);
-	}
+	int8_t pad0[20];
+	int32_t GetClipSize;
+	int8_t pad1[12];
+	int32_t iMaxReservedAmmo; // 0x0024
+	int8_t pad2[96];
+	char* szHudName;
+	char* szWeaponName;
+	int8_t pad3[56];
+	int32_t GetWeaponType;
+	int8_t pad4[4];
+	int32_t GetWeaponPrice;
+	int32_t iKillAward;
+	int8_t pad5[20];
+	uint8_t IsFullAuto;
+	int8_t pad6[3];
+	int32_t GetDamage;
+	float_t GetWeaponArmorRatio;
+	int32_t iBullets;
+	float_t GetPenetration;
+	int8_t pad7[12];
+	float_t GetRange;
+	float_t GetRangeModifier;
+	int8_t pad8[16];
+	uint8_t bHasSilencer;
+	int8_t pad9[15];
+	float_t GetSpread;
+	float_t flSpreadAlt;
+	int8_t pad10[76];
+	int32_t iRecoilSeed;
+	int8_t pad11[32];
 
-	int GetClipSize() {
-		return *(int*)((uintptr_t) // DefaultCLip1
-			this + 0x38);  // Default clip 2 0x0020
-	}
 
-	//__int32 m_iWeaponType; //0x00C8 
-	//__int32 m_iWeaponType2; //0x00CC 
 
-	CSWeaponType GetWeaponType()
-	{
-		return *(CSWeaponType*)((uintptr_t)this + 0x00C8);
-	}
-
-	bool IsFullAuto()
-	{
-		return *(bool*)((uintptr_t)this + 0x00EC);
-	}
-
-	float GetWeaponArmorRatio()
-	{
-		return *(float*)((uintptr_t)this + 0x00F4);
-	}
+	//char* GetConsoleName()
+	//{
+	//	return *(char**)((uintptr_t)this + 0x0004);
+	//}
 
 	float GetMaxPlayerSpeed()
 	{
@@ -1022,31 +1054,6 @@ public:
 	float GetMaxPlayerSpeedAlt()
 	{
 		return *(float*)((uintptr_t)this + 0x0134);
-	}
-
-	float GetPenetration()
-	{
-		return *(float*)((uintptr_t)this + 0x00FC);
-	}
-
-	int GetDamage()
-	{
-		return *(int*)((uintptr_t)this + 0x00F0); // 0x00EC
-	}
-
-	float GetRange()
-	{
-		return *(float*)((uintptr_t)this + 0x0108); // 0x0104
-	}
-
-	float GetRangeModifier()
-	{
-		return *(float*)((uintptr_t)this + 0x010C); // 0x0108
-	}
-
-	float GetSpread()
-	{
-		return *(float*)((uintptr_t)this + 0x0138); // 0x0134
 	}
 
 	int GetZoomLevels()
@@ -1063,7 +1070,8 @@ public:
 	}
 
 };
-
+#pragma pack(pop)
+inline IWeaponSystem* pWeaponSystem = nullptr;
 class C_BaseCombatWeapon : public C_BaseAttributableItem
 {
 public:
@@ -1088,7 +1096,6 @@ public:
 		return *(float*)((uintptr_t)this + offsets.DT_BaseCombatWeapon.m_flNextPrimaryAttack);
 	}
 
-
 	bool GetInReload()
 	{
 		return *(bool*)((uintptr_t)this + 0x32A5);
@@ -1104,16 +1111,21 @@ public:
 			this + offsets.DT_WeaponCSBase.m_flPostponeFireReadyTime);
 	}
 
-	CCSWeaponInfo* GetCSWpnData()
-	{
-		typedef CCSWeaponInfo* (__thiscall*oGetCSWpnData)(void*);
-		return getvfunc<oGetCSWpnData>(this, 460)(this); // OLD 452
+	//CCSWeaponInfo* GetCSWeaponData()
+	//{
+	//	typedef CCSWeaponInfo* (__thiscall*oGetCSWpnData)(void*);
+	//	return getvfunc<oGetCSWpnData>(this, 460)(this); // OLD 452
+	//}
+	CCSWeaponInfo* C_BaseCombatWeapon::GetCSWeaponData() {
+		return pWeaponSystem->GetWpnData(this->m_Item().ItemDefinitionIndex());
 	}
+
+	//updated below
 
 	float GetInaccuracy()
 	{
 		typedef float(__thiscall*oGetInaccuracy)(void*);
-		return getvfunc<oGetInaccuracy>(this, 482)(this);  // OLD 476
+		return getvfunc<oGetInaccuracy>(this, 483)(this);  
 	}
 
 	float GetSpread()
@@ -1125,8 +1137,75 @@ public:
 	void UpdateAccuracyPenalty()
 	{
 		typedef void(__thiscall*oUpdateAccuracyPenalty)(void*);
-		return getvfunc<oUpdateAccuracyPenalty>(this, 483)(this); 
+		return getvfunc<oUpdateAccuracyPenalty>(this, 484)(this); 
 	}
+
+	bool IsGrenade()
+	{
+		return GetCSWeaponData()->GetWeaponType != CSWeaponType::WEAPONTYPE_GRENADE;
+	}
+
+	bool IsGun()
+	{
+		switch (GetCSWeaponData()->GetWeaponType)
+		{
+		case CSWeaponType::WEAPONTYPE_C4:
+			return false;
+		case CSWeaponType::WEAPONTYPE_GRENADE:
+			return false;
+		case CSWeaponType::WEAPONTYPE_KNIFE:
+			return false;
+		case CSWeaponType::WEAPONTYPE_UNKNOWN:
+			return false;
+		default:
+			return true;
+		}
+	}
+
+	bool IsKnife()
+	{
+		if (this->m_Item().ItemDefinitionIndex() == (int)ItemDefinitionIndex::WEAPON_TASER) return false;
+		return GetCSWeaponData()->GetWeaponType == CSWeaponType::WEAPONTYPE_KNIFE;
+	}
+
+	bool IsRifle()
+	{
+		switch (GetCSWeaponData()->GetWeaponType)
+		{
+		case CSWeaponType::WEAPONTYPE_RIFLE:
+			return true;
+		case CSWeaponType::WEAPONTYPE_SUBMACHINEGUN:
+			return true;
+		case CSWeaponType::WEAPONTYPE_SHOTGUN:
+			return true;
+		case CSWeaponType::WEAPONTYPE_MACHINEGUN:
+			return true;
+		default:
+			return false;
+		}
+	}
+
+	bool IsPistol()
+	{
+		switch (GetCSWeaponData()->GetWeaponType)
+		{
+		case CSWeaponType::WEAPONTYPE_PISTOL:
+			return true;
+		default:
+			return false;
+		}
+	}
+	bool IsSniper()
+	{
+		switch (GetCSWeaponData()->GetWeaponType)
+		{
+		case CSWeaponType::WEAPONTYPE_SNIPER_RIFLE:
+			return true;
+		default:
+			return false;
+		}
+	}
+
 };
 
 
@@ -1171,6 +1250,4 @@ public:
 		return *(float*)((uintptr_t)this + offsets.DT_BaseCSGrenade.m_flThrowStrength);
 	}
 };
-
-
 
