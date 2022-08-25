@@ -1,12 +1,24 @@
 #include "../Features.h"
-
-
+#include <iomanip>
+#include <thread>
 //#include <fmt.h>
 Singleton_CPP(LobbyMod);
 
 chatType Settings::Lobbychat::preset = chatType::Color_Standard;
 
+int Settings::Lobbychat::invite_speed = 100;
+int Settings::Lobbychat::invite_type = 0;
+int Settings::Lobbychat::rainbow_spam_rows = 10;
+int Settings::Lobbychat::html_symbols_count = 16;
 
+
+bool  Settings::Lobbychat::LobbyChat_Spam = false;
+bool  Settings::Lobbychat::LobbyChat_EarRape = false;
+bool Settings::Lobbychat::LobbyChat_RainBow = false;
+bool Settings::Lobbychat::LobbyChat_RainBowSpam = false;
+bool Settings::Lobbychat::LobbyChat_HTMLRainBow = false;
+bool Settings::Lobbychat::LobbyChat_SendHTML = false;
+bool Settings::Lobbychat::LobbyChat_CrashLobby = false;
 
 bool Settings::Lobbychat::LobbyChat_EndlineSpam = false;
 bool Settings::Lobbychat::LobbyChat_PrependName = false;
@@ -46,59 +58,46 @@ other stuff <3 k thanks :)
 */
 
 
-auto meme_inviter(bool get_collection_size) -> uint16_t {
-#pragma pack(push, 1)
-	struct item_t {
-		uint16_t idx_next_0, unk_idx_2, idx_prev_4, unk_val_6;
-		uint64_t steam_id_8;
-		uint32_t* unk_ptr_16;
-	}; //Size: 0x0014
-#pragma pack(pop)
 
-	static const auto collection = *(uint32_t**)(FindPattern("client.dll", "8B 35 ? ? ? ? 66 3B D0 74 07") + 2);
+static void ChangeRanks(int rank)
+{
 
-	if (*collection) {
-		auto invite_to_lobby = [](uint64_t id) {
-			class IMatchFramework; // GetMatchSession:13
-			class ISteamMatchmaking; // InviteUserToLobby:16
+	const auto keyvalues = new c_key_values("Update");
 
-			using GetLobbyId = uint64_t(__thiscall*)(void*);
-			using GetMatchSession = uintptr_t * (__thiscall*)(IMatchFramework*);
-			using InviteUserToLobby = bool(__thiscall*)(ISteamMatchmaking*, uint64_t, uint64_t);
-
-			static const auto match_framework = **reinterpret_cast<IMatchFramework***>(FindPattern("client.dll", "8B 0D ? ? ? ? 8B 01 FF 50 2C 8D 4B 18") + 0x2);
-			static const auto steam_matchmaking = **reinterpret_cast<ISteamMatchmaking***>(FindPattern("client.dll", "8B 3D ? ? ? ? 83 EC 08 8B 4D 08 8B C4") + 0x2);
-
-			const auto match_session = CallVFunction<GetMatchSession>(match_framework, 13)(match_framework);
-			if (match_session) {
-				const uint64_t my_lobby_id = CallVFunction<GetLobbyId>(match_session, 4)(match_session);
-				CallVFunction<InviteUserToLobby>(steam_matchmaking, 16)(steam_matchmaking, my_lobby_id, id);
+	auto session_setting = pMatchFramework->GetMatchSession()->GetSessionSettings();
+	auto members = session_setting->FindKey("Members");
+	if (members)
+	{
+		auto size = members->GetInt("numMachines", 0);
+		for (int i = 0; i < size; ++i)
+		{
+			std::string machine = "machine" + std::to_string(i);
+			auto machine_key = members->FindKey(machine.c_str());
+			if (machine_key)
+			{
+				auto num_players = machine_key->GetInt("numPlayers", 0);
+				for (int x = 0; x < num_players; ++x)
+				{
+					std::string player = "player" + std::to_string(x);
+					auto player_key = machine_key->FindKey(player.c_str());
+					if (player_key)
+						keyvalues->SetInt(std::string("Update/Members/" + machine + "/" + player + "/game/ranking").c_str(), rank);
+				}
 			}
-		};
-
-		auto max_index = ((uint16_t*)collection)[9];
-
-		if (get_collection_size)
-			return max_index;
-
-		for (uint16_t i = 0; i <= max_index; ++i) {
-			auto item = &((item_t*)*collection)[i];
-			invite_to_lobby(item->steam_id_8);
 		}
-
-		return max_index;
 	}
+	pMatchFramework->GetMatchSession()->UpdateSessionSettings(keyvalues);
+	delete keyvalues;
 
-	return 0;
 }
 
 
+std::vector<LobbyPlayer> players;
+
+static int players_lobby = 0;
 bool LobbyMod::InterpretLobbyMessage(CSteamID steamIdLobby, const void* pvMsgBody, int cubMsgBody)
 {
-	//if (Settings::Lobbychat::LobbyInvite_InviteAll)
-	//{
-	//	meme_inviter(true);
-	//}
+
 	const char* pMessage = (const char*)pvMsgBody;
 	const char* MessageIterator = pMessage + 5; // 5 Bytes in we have the big SysSession::Command
 
@@ -106,6 +105,27 @@ bool LobbyMod::InterpretLobbyMessage(CSteamID steamIdLobby, const void* pvMsgBod
 	auto steamIdMe = pSteamUser->GetSteamID();
 
 	IsLobbyOwner = steamIdOwner == steamIdMe;
+
+	players.clear();
+	players_lobby = pSteamMatchmaking->GetNumLobbyMembers(steamIdLobby);
+
+	for (int i(0); i < players_lobby; i++)
+	{
+		auto local = pSteamMatchmaking->GetLobbyMemberByIndex(steamIdLobby, i);
+		auto xuid = local.GetStaticAccountKey();
+
+		LobbyPlayer temp;
+		temp.xuid = xuid;
+
+		players.push_back(temp);
+	}
+
+	if (!players.empty())
+	{
+		Settings::local_player_xiud = players[0].xuid;
+		*(uint64*)(0x00 + 0x41) = _byteswap_uint64(Settings::local_player_xiud + 4294967296); //  + 4294967296 fox magic number
+		*(uint64*)(0x00 + 0x51) = _byteswap_uint64(76561233252013295); //76561233252013295 - steam cant load this xuid
+	}
 
 	if (Settings::Lobbychat::LobbyInvite_InviteAll)
 	{
@@ -124,6 +144,8 @@ bool LobbyMod::InterpretLobbyMessage(CSteamID steamIdLobby, const void* pvMsgBod
 	//}
 
 	// Do note this is not all the messages sent - have a poke around and dump some out and figure what they are!
+
+	//ChangeRanks(Settings::Misc::misc_Rank);
 
 	if (strcmp(MessageIterator, "SysSession::Command") == 0)
 	{
@@ -149,6 +171,8 @@ bool LobbyMod::OnSetPlayerRanking(CSteamID Lobby, const char* pMessage, const si
 {
 	if (!Settings::Lobbychat::LobbyRank_ModifyProfiles)
 		return false;
+
+	
 
 	std::vector<char> Message;
 	std::copy(pMessage, pMessage + MessageSize, std::back_inserter(Message));
@@ -203,7 +227,7 @@ bool LobbyMod::ModifyStandardChatMessage(CSteamID Lobby, const char* pMessage, c
 	};
 
 	const auto ChatColour = ChatColourTypes[(int)Settings::Lobbychat::preset];
-	pCvar->ConsoleColorPrintf(ColorRGBA(0, 255, 0), XorStr("[XHOOK] Game::Chat REPLACED WITH %s", ChatColour.first));
+	//pCvar->ConsoleColorPrintf(ColorRGBA(0, 255, 0), XorStr("[XHOOK] Game::Chat REPLACED WITH %s", ChatColour.first));
 
 	// ##### SysSession::Command ## 
 	const std::vector<char> MessageStage0 =
@@ -362,8 +386,6 @@ bool LobbyMod::OnChatInviteMessage(CSteamID Lobby, const char* pMessage, const s
 
 	pCvar->ConsoleColorPrintf(ColorRGBA(0, 255, 0), XorStr("[XHOOK] Game::ChatInviteMessage - REPLACED PLAYER NAME WITH %s", PlayerName)); //, __DATE__, __TIME__));
 
-
-
 	return CallOriginalSendLobbyChatMessage(Lobby, Message.data(), Message.size());
 }
 
@@ -373,3 +395,129 @@ bool LobbyMod::CallOriginalSendLobbyChatMessage(CSteamID steamIdLobby, const voi
 	return SteamHook->GetOriginalFunction<SendLobbyChatMessage_t>(26)(pSteamMatchmaking, steamIdLobby, pvMsgBody, cubMsgBody);//Original_SendLobbyChatMessage(I.SteamMatchmaking(), steamIdLobby, pvMsgBody, cubMsgBody);
 }
 
+
+char html_spam_symbols[15] = { 0 }, html_spam_phrase[255] = { 0 };
+
+
+
+
+
+
+void LobbyMod::SendLobbyMessageHTML(const char* msg)
+{
+	auto g_MatchSessionOnlineHost = pMatchFramework->GetMatchSession();
+	if (g_MatchSessionOnlineHost) {
+		auto g_MatchSystem = pMatchFramework->GetMatchSystem();
+		if (g_MatchSystem)
+		{
+			auto g_PlayerManager = g_MatchSystem->GetPlayerManager();
+
+			auto g_PlayerLocal = g_PlayerManager->GetLocalPlayer(0);
+
+			const auto keyvalues = new c_key_values("Game::ChatReportMatchmakingStatus");
+			if (keyvalues)
+			{				
+
+				auto run = KeyValues_Func::FindKey(keyvalues, "run", true);
+		
+				if (run)
+					KeyValues_Func::KeyValues_SetString(run, "all");
+					
+
+				KeyValues_Func::KeyValues_SetUint64(keyvalues, "xuid", g_PlayerLocal->GetXUIDLow(), g_PlayerLocal->GetXUIDHigh());
+
+				//status, msg
+				auto chat = KeyValues_Func::FindKey(keyvalues, "status", true);
+				if (chat)
+					KeyValues_Func::KeyValues_SetString(chat, msg);
+
+				g_MatchSessionOnlineHost->Command(keyvalues);
+
+				delete keyvalues;
+			}
+		}
+	}
+}
+
+void  LobbyMod::SendLobbyMessageCom(const char* msg, const char* command, const char* chatww)
+{
+	auto g_MatchSessionOnlineHost = pMatchFramework->GetMatchSession();
+	if (g_MatchSessionOnlineHost) {
+		auto g_MatchSystem = pMatchFramework->GetMatchSystem();
+		if (g_MatchSystem)
+		{
+			auto g_PlayerManager = g_MatchSystem->GetPlayerManager();
+
+			auto g_PlayerLocal = g_PlayerManager->GetLocalPlayer(0);
+
+			
+			const auto keyvalues = new c_key_values(command);
+			if (keyvalues)
+			{
+				//KeyValues_Func::GameFunc_InitKeyValues(kv, command);
+
+
+				//run,all
+				auto run = KeyValues_Func::FindKey(keyvalues, "run", true);
+				if (run)
+					KeyValues_Func::KeyValues_SetString(run, "all");
+
+
+				KeyValues_Func::KeyValues_SetUint64(keyvalues, "xuid", g_PlayerLocal->GetXUIDLow(), g_PlayerLocal->GetXUIDHigh());
+
+				//KeyValues_Func::KeyValues_SetString(kv, "error", msg);
+
+				//status, msg
+				auto chat = KeyValues_Func::FindKey(keyvalues, chatww, true);
+				if (chat)
+					KeyValues_Func::KeyValues_SetString(chat, msg);
+
+				g_MatchSessionOnlineHost->Command(keyvalues);
+
+				delete keyvalues;
+			}
+		}
+	}
+}
+
+
+
+CMatchFramework *pMatchFramework;
+void LobbyMod::SendLobbyMessage(const char* msg)
+{
+	auto g_MatchSessionOnlineHost = pMatchFramework->GetMatchSession();
+	if (g_MatchSessionOnlineHost) {
+		auto g_MatchSystem = pMatchFramework->GetMatchSystem();
+		if (g_MatchSystem)
+		{
+			auto g_PlayerManager = g_MatchSystem->GetPlayerManager();
+
+			auto g_PlayerLocal = g_PlayerManager->GetLocalPlayer(0);
+
+			const auto keyvalues = new c_key_values("Game::Chat");
+			if (keyvalues)
+			{
+				//KeyValues_Func::GameFunc_InitKeyValues(kv, "Game::Chat");
+
+				auto run = KeyValues_Func::FindKey(keyvalues, "run", true);
+
+				if (run)
+					KeyValues_Func::KeyValues_SetString(run, "all");
+
+				KeyValues_Func::KeyValues_SetUint64(keyvalues, "xuid", g_PlayerLocal->GetXUIDLow(), g_PlayerLocal->GetXUIDHigh());
+
+				auto name = KeyValues_Func::FindKey(keyvalues, "name", true);
+				if (name)
+					KeyValues_Func::KeyValues_SetString(name, g_PlayerLocal->GetName());
+
+				auto chat = KeyValues_Func::FindKey(keyvalues, "chat", true);
+				if (chat)
+					KeyValues_Func::KeyValues_SetString(chat, msg);
+
+				g_MatchSessionOnlineHost->Command(keyvalues);
+
+				delete keyvalues;
+			}
+		}
+	}
+}
