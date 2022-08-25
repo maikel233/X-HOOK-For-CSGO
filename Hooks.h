@@ -17,7 +17,11 @@ typedef bool(__thiscall* SendLobbyChatMessage_t)(ISteamMatchmaking*, CSteamID, c
 typedef long(__stdcall* EndSceneFn)(IDirect3DDevice9* device);
 typedef long(__stdcall* ResetFn)(IDirect3DDevice9* device, D3DPRESENT_PARAMETERS* pp);
 typedef long(__stdcall* PresentFn)(IDirect3DDevice9* device, const RECT* pSourceRect, const RECT* pDestRect, HWND hDestWindowOverride, const RGNDATA* pDirtyRegion);
-typedef bool(__thiscall* CreateMoveFn)(IClientMode*, float, CUserCmd*);
+//typedef bool(__thiscall* CreateMoveFn)(IBaseClientDLL*, float, CUserCmd*);
+
+
+
+
 typedef void(__thiscall* RunCommand_t)(IPrediction*, IClientEntity*, CUserCmd*, void*);
 typedef void(__thiscall* PaintTraverseFn)(void*, unsigned int, bool, bool);
 typedef void(__thiscall* DrawModelExecuteFn)(void*, void*, const DrawModelState_t&, const ModelRenderInfo_t&, matrix3x4_t*);
@@ -43,6 +47,8 @@ typedef void(__thiscall* PlaySoundFn)(ISurface*, const char*);
 typedef void(__thiscall* LockCursor)(void*);
 
 typedef int(__thiscall* SendDatagramFn)(void*, void*);
+
+typedef int(__thiscall* CreateMoveProxyFn)(void*, int, float, bool);
 
 
 
@@ -73,10 +79,15 @@ namespace Hooks
 	HRESULT __stdcall hkEndScene(IDirect3DDevice9* device);
 
 
-	bool __stdcall hCreateMove(float frametime, CUserCmd* cmd);
+
+	void __stdcall hkCreateMove(int sequence_number, float frametime, bool active, bool& bSendPacket);
+	void __stdcall hk_create_move_proxy(int sequence, float frame_time, bool is_active);
+
+	//bool __stdcall hCreateMove(float frametime, CUserCmd* cmd);
 	void __stdcall hPaintTraverse(unsigned int VGUIPanel, bool forcerepaint, bool allowforce);
 	void __stdcall hDrawModelExecute(IMatRenderContext* matctx, const DrawModelState_t& state, const ModelRenderInfo_t& pInfo, matrix3x4_t* pCustomBoneToWorld);
-	bool __stdcall Hooked_SendLobbyChatMessage(CSteamID steamIdLobby, const void* pvMsgBody, int cubMsgBody);
+	bool __stdcall Hooked_SendLobbyChatMessage(CSteamID 
+		, const void* pvMsgBody, int cubMsgBody);
 	void __fastcall hFrameStageNotify(void* ecx, void* edx, ClientFrameStage_t Stage);
 	//bool __fastcall hWriteUsercmdDeltaToBuffer(void* ecx, void* edx, int slot, void* buffer, int from, int to, bool isnewcommand) noexcept;
 	bool __fastcall hFireEventClientSide(void* ecx, void* edx, IGameEvent* pEvent);

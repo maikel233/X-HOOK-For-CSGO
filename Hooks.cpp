@@ -146,17 +146,41 @@ namespace Hooks
 		return NetDataGram->GetOriginalFunction<SendDatagramFn>(46)(OrigNet, OrigData);
 	}
 
+	__declspec(naked) void __stdcall hk_create_move_proxy(int sequence, float frame_time, bool is_active) {
+		__asm
+		{
+			push ebp
+			mov ebp, esp
+			push ebx
+			lea ecx, [esp]
+			push ecx
+			push dword ptr[ebp + 10h]
+			push dword ptr[ebp + 0Ch]
+			push dword ptr[ebp + 8]
+			call Hooks::hkCreateMove
+			pop ebx
+			pop ebp
+			retn 0Ch
+		}
+	}
 
-	bool __stdcall hCreateMove(float frametime, CUserCmd* cmd) {
+	void __stdcall hkCreateMove(int sequence_number, float frametime, bool active, bool& bSendPacket)
+	{
 
-		auto result = ClientModeHook->GetOriginalFunction<CreateMoveFn>(24)(pClientMode, frametime, cmd);
+		auto result = ClientHook->GetOriginalFunction<CreateMoveProxyFn>(22);
+		result(pClient, sequence_number, frametime, active);
 
-		if (!cmd->command_number)
-			return result;
+		auto cmd = pInput->GetUserCmd(sequence_number);
+		auto verified = pInput->GetVerifiedUserCmd(sequence_number);
 
-		uintptr_t* framePointer;
-		__asm mov framePointer, ebp;
-		bool& sendPacket = *reinterpret_cast<bool*>(*framePointer - 0x1C);
+		if (!cmd || !cmd->command_number)
+			return;
+
+
+		//if (G::is_renderer_active) {
+		//	cmd->buttons &= ~IN_ATTACK;
+		//}
+
 
 		pGlobalVars->serverTime(cmd);
 
@@ -166,60 +190,67 @@ namespace Hooks
 		//Resolver::CreateMove(cmd);
 
 		if (Settings::Misc::AntiAfk && cmd->command_number % 2)
-		{ cmd->buttons |= 1 << 26; }	
-			static void* oldPointer = nullptr;
-			C_BasePlayer* localplayer = (C_BasePlayer*)pEntityList->GetClientEntity(pEngine->GetLocalPlayer());
-			auto network = pEngine->GetNetChannelInfo();
-			if (oldPointer != network && network && localplayer)
-			{
-				oldPointer = network;
-				Backtrack::UpdateIncomingSequences(true);
-				NetDataGram = std::make_unique<VMTHook>(network);
-				NetDataGram->HookFunction(SendDatagram, 46);
+		{
+			cmd->buttons |= 1 << 26;
+		}
+		static void* oldPointer = nullptr;
+		C_BasePlayer* localplayer = (C_BasePlayer*)pEntityList->GetClientEntity(pEngine->GetLocalPlayer());
+		G::LocalPlayer = localplayer;
+		auto network = pEngine->GetNetChannelInfo();
+		if (oldPointer != network && network && localplayer) {
+			oldPointer = network;
+			Backtrack::UpdateIncomingSequences(true);
+			NetDataGram = std::make_unique<VMTHook>(network);
+			NetDataGram->HookFunction(SendDatagram, 46);
+		}
 
-			}
-			Backtrack::UpdateIncomingSequences();
-		
-			GrenadeHelper::CreateMove(cmd);
-			GrenadePrediction::CreateMove(cmd);
+		Backtrack::UpdateIncomingSequences();
 
-			Backtrack::run(cmd);
-			Aimbot::CreateMove(cmd);
-			Triggerbot::CreateMove(cmd);
+		GrenadeHelper::CreateMove(cmd);
+		GrenadePrediction::CreateMove(cmd);
 
-			lbyindicator::CreateMove(cmd);		
-			ReportBot::run();	
-			ShowRanks::CreateMove(cmd);
-			AutoDefuse::CreateMove(cmd);
-			JumpThrow::CreateMove(cmd);
-			EdgeJump::PrePredictionCreateMove(cmd);
-			NoDuckCooldown::CreateMove(cmd);
-			PredictionSystem::StartPrediction(cmd);
-			Autoblock::CreateMove(cmd);
-			NameChanger::fakeBan();
-			AutoKnife::CreateMove(cmd);
-			AntiAim::CreateMove(cmd);
-			Airstuck::CreateMove(cmd);
-			Fakewalk::CreateMove(cmd);
-			MoonWalk::CreateMove(cmd);
+		Backtrack::run(cmd);
+		Aimbot::CreateMove(cmd);
+		Triggerbot::CreateMove(cmd);
 
-			Walkbot::CreateMove(cmd);
-			FakeLag::CreateMove(cmd);
-			ESP::CreateMove(cmd);
-			PredictionSystem::EndPrediction();
-			
-			AngleIndicator::PostPredictionCreateMove(cmd);
-			EdgeJump::PostPredictionCreateMove(cmd);
-	
-		return false;
+		lbyindicator::CreateMove(cmd);
+		ReportBot::run();
+		ShowRanks::CreateMove(cmd);
+		AutoDefuse::CreateMove(cmd);
+		JumpThrow::CreateMove(cmd);
+		EdgeJump::PrePredictionCreateMove(cmd);
+		NoDuckCooldown::CreateMove(cmd);
+		PredictionSystem::StartPrediction(cmd);
+		Autoblock::CreateMove(cmd);
+		NameChanger::fakeBan();
+		AutoKnife::CreateMove(cmd);
+		AntiAim::CreateMove(cmd);
+		Airstuck::CreateMove(cmd);
+		Fakewalk::CreateMove(cmd);
+		MoonWalk::CreateMove(cmd);
+
+		Walkbot::CreateMove(cmd);
+		FakeLag::CreateMove(cmd);
+		ESP::CreateMove(cmd);
+		PredictionSystem::EndPrediction();
+
+		AngleIndicator::PostPredictionCreateMove(cmd);
+		EdgeJump::PostPredictionCreateMove(cmd);
+
+		verified->m_cmd = *cmd;
+		verified->m_crc = cmd->get_checksum();
 	}
+
+
+
 
 	bool __stdcall Hooked_SendLobbyChatMessage(CSteamID steamIdLobby, const void* pvMsgBody, int cubMsgBody)
 	{
 		typedef bool(__thiscall* SendLobbyChatMessage_t)(ISteamMatchmaking*, CSteamID, const void*, int);
 		static SendLobbyChatMessage_t Original_SendLobbyChatMessage = SteamHook->GetOriginalFunction<SendLobbyChatMessage_t>(26);
 
-		
+		Settings::steamIdLobby = steamIdLobby;
+
 		if (!LobbyMod::Get()->InterpretLobbyMessage(steamIdLobby, pvMsgBody, cubMsgBody))
 			return Original_SendLobbyChatMessage(pSteamMatchmaking, steamIdLobby, pvMsgBody, cubMsgBody);//Original_SendLobbyChatMessage(I.SteamMatchmaking(), steamIdLobby, pvMsgBody, cubMsgBody);
 

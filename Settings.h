@@ -472,7 +472,7 @@ public:
 namespace Settings
 {
 	extern CSteamID steamIdLobby;
-
+	extern uint64 local_player_xiud;
 	namespace NoDuckCooldown
 	{
 		extern bool enabled;
@@ -584,8 +584,6 @@ namespace Settings
 		extern bool fakeLat;
 
 
-		extern bool TickBaseManipulation;
-		extern int TickBaseDoubleTap;
 		extern bool btaim;
 		extern bool enabled;
 		extern bool silent;
@@ -1076,10 +1074,6 @@ namespace Settings
 			extern bool FPS;
 		}
 
-		namespace PlayerIndicator
-		{
-			extern bool enabled;
-		}
 
 		namespace Skeleton
 		{
@@ -1088,7 +1082,6 @@ namespace Settings
 		}
 
 		
-
 		namespace SkeletonBacktrack
 		{
 			extern bool enabled;
@@ -1429,8 +1422,22 @@ namespace Settings
 	namespace Lobbychat
 	{
 		extern chatType preset;
+
+		extern int invite_speed;
+		extern int invite_type;
+		extern int rainbow_spam_rows;
+		extern int html_symbols_count;
+
 		extern bool LobbyChat_EndlineSpam;
 		extern bool LobbyChat_PrependName;
+		extern bool LobbyChat_Spam;
+		extern bool LobbyChat_EarRape;
+		extern bool LobbyChat_RainBow;
+		extern bool LobbyChat_RainBowSpam;
+		extern bool LobbyChat_HTMLRainBow;
+		extern bool LobbyChat_SendHTML;
+		extern bool LobbyChat_CrashLobby;
+
 		extern float LobbyChat_RepeatExponent;
 		extern char LobbyChat_Format[256];
 
