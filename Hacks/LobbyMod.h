@@ -2,12 +2,26 @@
 
 #include "../Utils/Singleton.hpp"
 
+struct LobbyPlayer
+{
+
+	uint64 xuid;
+};
+
+extern std::vector<LobbyPlayer> players;
+
+
 class LobbyMod
 {
 public:
 	// returns true if message has been overwritten
 	bool InterpretLobbyMessage(CSteamID steamIdLobby, const void* pvMsgBody, int cubMsgBody);
 	bool DoesOwnCurrentLobby() const { return IsLobbyOwner; }
+	void SendLobbyMessageHTML(const char* msg);
+	void SendLobbyMessage(const char* msg);
+	void SendLobbyMessageCom(const char* msg, const char* command, const char* chatww);
+
+
 private:
 	// a few easy things to get around the file fast AF
 	const char* FindStringEnd(const char* Message);
@@ -22,6 +36,9 @@ private:
 
 	bool IsLobbyOwner = false;
 
+
+
+	
 
 private:
 	Singletons(LobbyMod);
