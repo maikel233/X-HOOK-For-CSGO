@@ -79,12 +79,11 @@ void Fakewalk::CreateMove(CUserCmd* cmd) {
 
 		C_BaseCombatWeapon* activeWeapon = (C_BaseCombatWeapon*)pEntityList->GetClientEntityFromHandle(
 			localplayer->GetActiveWeapon());
+
 		if (!activeWeapon || activeWeapon->GetInReload())
 			return;
 
-		CSWeaponType weaponType = activeWeapon->GetCSWpnData()->GetWeaponType();
-		if (weaponType == CSWeaponType::WEAPONTYPE_C4 || weaponType == CSWeaponType::WEAPONTYPE_GRENADE ||
-			weaponType == CSWeaponType::WEAPONTYPE_KNIFE)
+		if (!activeWeapon->IsGun())
 			return;
 
 

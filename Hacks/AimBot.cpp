@@ -133,7 +133,7 @@ bool Aimbot::HitChance(const Vector& point, bool teamCheck, C_BasePlayer* localp
 			return false;
 
 		// if you think this is wrong enable console spam and test your new math before pushing an updated -.-
-		float range = activeWeapon->GetCSWpnData()->GetRange();
+		float range = activeWeapon->GetCSWeaponData()->GetRange;
 		float a = (float)M_PI * 2.0f * ((float)(rand() % 1000) / 1000.0f);
 		float b = activeWeapon->GetSpread() * ((float)(rand() % 1000) / 1000.0f) * 90.0f;
 		float c = (float)M_PI * 2.0f * ((float)(rand() % 1000) / 1000.0f);
@@ -822,7 +822,7 @@ AutoSlow(C_BasePlayer* player, float& forward, float& sideMove, float& bestDamag
 		}
 	}
 	else if
-		(localplayer->GetVelocity().Length() > (activeWeapon->GetCSWpnData()->GetMaxPlayerSpeed() / 3)) // https://youtu.be/ZgjYxBRuagA
+		(localplayer->GetVelocity().Length() > (activeWeapon->GetCSWeaponData()->GetMaxPlayerSpeed() / 3)) // https://youtu.be/ZgjYxBRuagA
 	{
 		cmd->buttons |= IN_WALK;
 		forward = 0;
@@ -835,8 +835,8 @@ static void AutoPistol(C_BaseCombatWeapon* activeWeapon, CUserCmd* cmd)
 {
 	if (!Settings::Aimbot::AutoPistol::enabled)
 		return;
-
-	if (!activeWeapon || activeWeapon->GetCSWpnData()->GetWeaponType() != CSWeaponType::WEAPONTYPE_PISTOL)
+	
+	if (!activeWeapon || activeWeapon->GetCSWeaponData()->GetWeaponType != CSWeaponType::WEAPONTYPE_PISTOL)
 		return;
 
 	if (activeWeapon->GetNextPrimaryAttack() < pGlobalVars->curtime)
@@ -860,23 +860,23 @@ static void AutoShoot(C_BasePlayer* player, Vector spot, C_BaseCombatWeapon* act
 	if (!player || activeWeapon->GetAmmo() == 0)
 		return;
 
-	CSWeaponType weaponType = activeWeapon->GetCSWpnData()->GetWeaponType();
-	if (weaponType == CSWeaponType::WEAPONTYPE_KNIFE || weaponType == CSWeaponType::WEAPONTYPE_C4 ||
-		weaponType == CSWeaponType::WEAPONTYPE_GRENADE)
+
+	if (!activeWeapon->IsGun())
 		return;
 
 	if (cmd->buttons & IN_USE)
 		return;
 
+
 	C_BasePlayer* localplayer = (C_BasePlayer*)pEntityList->GetClientEntity(pEngine->GetLocalPlayer());
 
-	if (Settings::Aimbot::AutoShoot::autoscope && activeWeapon->GetCSWpnData()->GetZoomLevels() > 0 &&
+	if (Settings::Aimbot::AutoShoot::autoscope && activeWeapon->GetCSWeaponData()->GetZoomLevels() > 0 &&
 		!localplayer->IsScoped())
 
 		cmd->buttons |= IN_ATTACK2;
 
 	if (Settings::Aimbot::velocityCheck::enabled &&
-		localplayer->GetVelocity().Length() > (activeWeapon->GetCSWpnData()->GetMaxPlayerSpeed() / 3))
+		localplayer->GetVelocity().Length() > (activeWeapon->GetCSWeaponData()->GetMaxPlayerSpeed() / 3))
 		return;
 	if (Settings::Aimbot::SpreadLimit::enabled &&
 		((activeWeapon->GetSpread() + activeWeapon->GetInaccuracy()) > Settings::Aimbot::SpreadLimit::value))
@@ -887,8 +887,6 @@ static void AutoShoot(C_BasePlayer* player, Vector spot, C_BaseCombatWeapon* act
 
 	float nextPrimaryAttack = activeWeapon->GetNextPrimaryAttack();
 
-
-
 	if (nextPrimaryAttack > pGlobalVars->curtime) {
 		if (*activeWeapon->GetItemDefinitionIndex() == ItemDefinitionIndex::WEAPON_REVOLVER)
 			cmd->buttons &= ~IN_ATTACK2;
@@ -897,7 +895,7 @@ static void AutoShoot(C_BasePlayer* player, Vector spot, C_BaseCombatWeapon* act
 
 	}
 	else {
-		if (Settings::Aimbot::AutoShoot::autoscope && activeWeapon->GetCSWpnData()->GetZoomLevels() > 0 &&
+		if (Settings::Aimbot::AutoShoot::autoscope && activeWeapon->GetCSWeaponData()->GetZoomLevels() > 0 &&
 			!localplayer->IsScoped())
 			cmd->buttons |= IN_ATTACK2;
 		else if (*activeWeapon->GetItemDefinitionIndex() == ItemDefinitionIndex::WEAPON_REVOLVER)
@@ -997,9 +995,9 @@ void Aimbot::CreateMove(CUserCmd* cmd) {
 	if (!activeWeapon || activeWeapon->GetInReload())
 		return;
 
-	CSWeaponType weaponType = activeWeapon->GetCSWpnData()->GetWeaponType();
-	if (weaponType == CSWeaponType::WEAPONTYPE_C4 || weaponType == CSWeaponType::WEAPONTYPE_GRENADE ||
-		weaponType == CSWeaponType::WEAPONTYPE_KNIFE)
+
+	//Crashed prev time
+	if (!activeWeapon->IsGun())
 		return;
 
 	Vector aimSpot = { 0, 0, 0 };

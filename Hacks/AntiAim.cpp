@@ -1384,7 +1384,7 @@ void AntiAim::CreateMove(CUserCmd* cmd) {
 		return;
 	}
 
-	if (activeWeapon->GetCSWpnData()->GetWeaponType() == CSWeaponType::WEAPONTYPE_GRENADE) {
+	if (activeWeapon->IsGrenade()) {
 		C_BaseCSGrenade* csGrenade = (C_BaseCSGrenade*)activeWeapon;
 
 		if (csGrenade->GetThrowTime() > 0.0f) {
@@ -1429,17 +1429,17 @@ void AntiAim::CreateMove(CUserCmd* cmd) {
 
 	//// Knife
 	if (Settings::AntiAim::Misc::AutoDisable::knifeHeld && pLocal->GetAlive() &&
-		activeWeapon->GetCSWpnData()->GetWeaponType() == CSWeaponType::WEAPONTYPE_KNIFE) {
+		activeWeapon->IsKnife()) {
 		AntiAim::fakeTp = true;
 		return;
 	}
 
 	// Bomb
-	if (Settings::AntiAim::Misc::AutoDisable::bombHeld && pLocal->GetAlive() &&
-		activeWeapon->GetCSWpnData()->GetWeaponType() == CSWeaponType::WEAPONTYPE_C4) {
-		AntiAim::fakeTp = true;
-		return;
-	}
+	//if (Settings::AntiAim::Misc::AutoDisable::bombHeld && pLocal->GetAlive() &&
+	//	activeWeapon->IsC4()) {
+	//	AntiAim::fakeTp = true;
+	//	return;
+	//}
 
 	//// No Enemy
 	//if (Settings::AntiAim::Misc::AutoDisable::noEnemy && pLocal->GetAlive() && !HasViableEnemy()) {

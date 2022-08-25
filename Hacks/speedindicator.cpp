@@ -136,7 +136,7 @@ void SpeedIndicator::Paint() {
 
 		//if (activeWeapon) // 117, 1
 		//	ImRotateEnd(DEG2RAD(183 -
-		//	((66.0f / activeWeapon->GetCSWpnData()->GetClipSize()) * activeWeapon->GetAmmo())));
+		//	((66.0f / activeWeapon->GetCSWeaponData()->GetClipSize()) * activeWeapon->GetAmmo())));
 		//else
 		//	ImRotateEnd(DEG2RAD(183));
 
@@ -269,14 +269,15 @@ void SpeedIndicator::RenderView(void* thisptr, CViewSetup& setup, CViewSetup& hu
 			"}\n" << std::flush;
 
 		std::string materialName = XorStr("KisakSucks");
-		KeyValues* keyValues = new KeyValues(XorStr("UnlitGeneric"));
+		//KeyValues* keyValues = new KeyValues(XorStr("UnlitGeneric"));
+		//Util::InitKeyValues(keyValues, XorStr("UnlitGeneric"),0 ,0);
+		//Util::LoadFromBuffer(keyValues, materialName.c_str(), materialData.str().c_str(), nullptr, NULL, nullptr);
 
+		const auto key_values = new c_key_values(XorStr("UnlitGeneric"));
 
+		key_values->load_from_buffer(materialName.c_str(), materialData.str().c_str());
 
-		Util::InitKeyValues(keyValues, XorStr("UnlitGeneric"));
-		Util::LoadFromBuffer(keyValues, materialName.c_str(), materialData.str().c_str(), nullptr, NULL, nullptr);
-
-		rearViewMat = pMaterial->CreateMaterial(materialName.c_str(), keyValues);
+		rearViewMat = pMaterial->CreateMaterial(materialName.c_str(), key_values);
 		rearViewMat->AlphaModulate(1.0f);
 
 		if (!rearViewMat) {

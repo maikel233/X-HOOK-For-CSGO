@@ -26,8 +26,7 @@ void Recoilcrosshair::Paint()
 	if (!activeWeapon)
 		return;
 
-	CSWeaponType weaponType = activeWeapon->GetCSWpnData()->GetWeaponType();
-	if (weaponType != CSWeaponType::WEAPONTYPE_RIFLE && weaponType != CSWeaponType::WEAPONTYPE_SUBMACHINEGUN && weaponType != CSWeaponType::WEAPONTYPE_MACHINEGUN)
+	if (!activeWeapon->IsRifle())
 		return;
 
 	Vector punchAngle = *localplayer->GetAimPunchAngle();

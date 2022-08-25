@@ -138,8 +138,8 @@ void Triggerbot::CreateMove(CUserCmd *cmd)
 	if (itemDefinitionIndex == ItemDefinitionIndex::WEAPON_KNIFE || itemDefinitionIndex >= ItemDefinitionIndex::WEAPON_BAYONET)
 		return;
 
-	CSWeaponType weaponType = activeWeapon->GetCSWpnData()->GetWeaponType();
-	if (weaponType == CSWeaponType::WEAPONTYPE_C4 || weaponType == CSWeaponType::WEAPONTYPE_GRENADE)
+	//CSWeaponType weaponType = activeWeapon->GetCSWpnData()->GetWeaponType();
+	if (!activeWeapon->IsGun())
 		return;
 
 	bool can_shoot = true;

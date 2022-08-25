@@ -1,13 +1,13 @@
 #include "grenadeprediction.h"
-
+#include "GrenadeHelper.h"
 
 bool Settings::GrenadePrediction::enabled = false;
 ColorVar Settings::GrenadePrediction::color = ImColor(26, 104, 173, 255);
 
 std::vector<Vector> grenadePath;
-int grenadeType = 0;
+int16_t grenadeType = 0;
 int grenadeAct = 0;
-
+bool firegrenade_didnt_hit = false;
 void GrenadePrediction::CreateMove(CUserCmd* cmd) {
     if (!Settings::GrenadePrediction::enabled)
         return;
@@ -32,11 +32,14 @@ void GrenadePrediction::OverrideView(ViewSetup* Setup) {
     C_BaseCombatWeapon* activeWeapon = (C_BaseCombatWeapon*)pEntityList->GetClientEntityFromHandle(
         pLocal->GetActiveWeapon());
 
-    if (activeWeapon && activeWeapon->GetCSWpnData()->GetWeaponType() == CSWeaponType::WEAPONTYPE_GRENADE &&
-        grenadeAct != ACT_NONE) {
+    if (!activeWeapon)
+        return;
+
+    if (activeWeapon->IsGrenade() && grenadeAct != ACT_NONE) {
+
         ItemDefinitionIndex itemDefinitionIndex = *activeWeapon->GetItemDefinitionIndex();
 
-        grenadeType = (int)itemDefinitionIndex;
+        grenadeType = (int16_t)itemDefinitionIndex;
         Simulate(Setup);
     }
     else {
@@ -44,7 +47,22 @@ void GrenadePrediction::OverrideView(ViewSetup* Setup) {
     }
 
 }
+inline float CSGO_Armor(float flDamage, int ArmorValue) {
+    float flArmorRatio = 0.5f;
+    float flArmorBonus = 0.5f;
+    if (ArmorValue > 0) {
+        float flNew = flDamage * flArmorRatio;
+        float flArmor = (flDamage - flNew) * flArmorBonus;
 
+        if (flArmor > static_cast<float>(ArmorValue)) {
+            flArmor = static_cast<float>(ArmorValue) * (1.f / flArmorBonus);
+            flNew = flDamage - flArmor;
+        }
+
+        flDamage = flNew;
+    }
+    return flDamage;
+}
 void GrenadePrediction::Paint() {
     if (!Settings::ESP::enabled)
         return;
@@ -70,8 +88,107 @@ void GrenadePrediction::Paint() {
             Draw::Line((int)nadeStart.x, (int)nadeStart.y, (int)nadeEnd.x, (int)nadeEnd.y,
                 Color::FromImColor(Settings::GrenadePrediction::color.Color()));
         }
+
+
+        std::string EntName;
+        auto bestdmg = 0;
+        static Color redcol = { 255, 0, 0, 255 };
+        static Color greencol = { 25, 255, 25, 255 };
+        static Color yellowgreencol = { 177, 253, 2, 255 };
+        static Color yellowcol = { 255, 255, 0, 255 };
+        static Color orangecol = { 255, 128, 0, 255 };
+        static Color white = { 255,2555,255 };
+        Color* BestColor = &redcol;
+        Vector endpos = grenadePath[grenadePath.size() - 1];
+        Vector absendpos = endpos;
+
+
+        float totaladded = 0.0f;
+
+        while (totaladded < 30.0f) {
+            if (pTrace->GetPointContents(endpos) == CONTENTS_EMPTY)
+                break;
+
+            totaladded += 2.0f;
+            endpos.z += 2.0f;
+        }
+
+        C_BaseCombatWeapon* activeWeapon = (C_BaseCombatWeapon*)pEntityList->GetClientEntityFromHandle(
+           G::LocalPlayer->GetActiveWeapon());
+
+        auto weapon = G::LocalPlayer->GetActiveWeapon();
+        GrenadeType CurrentGrenade = getGrenadeType(activeWeapon);
+
+        if (activeWeapon &&
+            CurrentGrenade == GrenadeType::HEGRENADE ||
+            CurrentGrenade == GrenadeType::MOLOTOV/* ||
+            weap_id == WEAPON_INC*/) {
+            for (int i = 1; i < 64; i++) {
+                C_BasePlayer* pEntity = (C_BasePlayer*)pEntityList->GetClientEntity(i);
+
+                //(player->GetTeam() != localplayer->GetTeam()
+                if (!pEntity || pEntity->GetTeam() == G::LocalPlayer->GetTeam())
+                    continue;
+
+                float dist = (pEntity->GetVecOrigin() - endpos).Length();
+
+                if (dist < 350.0f) {
+                    CTraceFilter filter;
+                    filter.pSkip = G::LocalPlayer;
+                    Ray_t ray;
+                    Vector NadeScreen;
+                    !pDebugOverlay->ScreenPosition(endpos, NadeScreen);
+
+                    Vector vPelvis = pEntity->GetBonePos(2);
+                    ray.Init(endpos, vPelvis);
+                    trace_t ptr;
+                    pTrace->TraceRay(ray, MASK_SHOT, &filter, &ptr);
+
+                    if (ptr.m_pEnt == pEntity) {
+                        Vector PelvisScreen;
+
+                        !pDebugOverlay->ScreenPosition(vPelvis, PelvisScreen);
+
+                        static float a = 105.0f;
+                        static float b = 25.0f;
+                        static float c = 140.0f;
+
+                        float d = ((((pEntity->GetVecOrigin()) - prev).Length() - b) / c);
+                        float flDamage = a * exp(-d * d);
+                        auto dmg = max(static_cast<int>(ceilf(CSGO_Armor(flDamage, pEntity->GetArmor()))), 0);
+
+                        Color* destcolor = dmg >= 65 ? &redcol : dmg >= 40 ? &orangecol : dmg >= 20 ? &white : &greencol;
+
+                        IEngineClient::player_info_t entityInformation;
+                        pEngine->GetPlayerInfo(i, &entityInformation);
+
+                        if (dmg > bestdmg)
+                        {
+                    
+                            EntName = entityInformation.name;
+                            BestColor = destcolor;
+                            bestdmg = dmg;
+                        }
+                    }
+                }
+            }
+        }
+        if (bestdmg > 0.f) {
+            if (CurrentGrenade != GrenadeType::HEGRENADE || CurrentGrenade != GrenadeType::MOLOTOV)
+            {
+                if (!pDebugOverlay->ScreenPosition(prev, nadeEnd))
+                  //  Visuals::DrawString(esp_font, cd[0], cd[1] - 10, *BestColor, FONT_CENTER, firegrenade_didnt_hit ? "No collisions" : (EntName + " will be burnt.").c_str());
+                    Draw::Text(nadeEnd[0], nadeEnd[1] - 10, firegrenade_didnt_hit ? "No collisions" : (EntName + " will be burnt.").c_str(), esp_font, Color(255, 255, 255, 255));
+            }
+            else
+            {
+                if (!pDebugOverlay->ScreenPosition(*grenadePath.begin(), nadeEnd))
+                    Draw::Text(nadeEnd[0], nadeEnd[1] - 10, ("Most damage dealt to: " + EntName + " -" + std::to_string(bestdmg)).c_str(), esp_font, Color(255, 255, 255, 255));
+            }
+        }
     }
 }
+    
 
 void GrenadePrediction::Setup(Vector& vecSrc, Vector& vecThrow, Vector viewangles) {
     if (!Settings::GrenadePrediction::enabled)
@@ -193,6 +310,8 @@ int GrenadePrediction::Step(Vector& vecSrc, Vector& vecThrow, int tick, float in
 }
 
 bool GrenadePrediction::CheckDetonate(const Vector& vecThrow, const trace_t& tr, int tick, float interval) {
+
+    firegrenade_didnt_hit = false;
     if (grenadeType == 0)
         return false;
 
@@ -214,6 +333,8 @@ bool GrenadePrediction::CheckDetonate(const Vector& vecThrow, const trace_t& tr,
     case 43: // WEAPON_FLASHBANG = 43,
     case 44: // WEAPON_HEGRENADE = 44,
         // Pure timer based, detonate at 1.5s, checked every 0.2s
+        // Pure timer based, detonate at 1.5s, checked every 0.2s
+        firegrenade_didnt_hit = static_cast<float>(tick) * interval > 1.5f && !(tick % static_cast<int>(0.2f / interval));
         return static_cast<float>(tick) * interval > 1.5f && !(tick % static_cast<int>(0.2f / interval));
     default:
         assert(false);

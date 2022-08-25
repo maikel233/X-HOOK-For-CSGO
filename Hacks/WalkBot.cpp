@@ -193,31 +193,6 @@ static bool hasAutobought;
 static bool hasDied;
 bool slowLastTick = false;
 
-//
-//const std::vector<Vector> tDust2Points = { Vector(-503.56f, -739.92f, 114.16f),
-//Vector(-1913.50f,-735.72f, 121.20f),Vector(-1676.94f, 726.70f, 31.00f),
-//Vector(-1655.66f,1053.87f,31.57f), Vector(-1989.64f,1330.22f,28.93f),Vector(-1926.35f,2197.58f,-3.22f), Vector(-1685.82,2231.82,-2.47),
-//Vector(-1331.98f,2231.99f,2.05f), Vector(-1286.65f,2164.06f,4.25f),Vector(-606.69f,2370.25f,-105.67f),
-//Vector(-429.61f, 2196.21f, -123.86),Vector(279.11f,2175.06f,-128.18f),Vector(1380.f, 2131.6f, -5.48f),
-//Vector(1398.04f, 928.93f, -8.78f), Vector(841.17f, 950.18f, 0.14f),Vector(581.58f, 674.48f, 1.50f) ,
-//Vector(690.59f, 345.20f, 1.54f), Vector(446.82f, 70.25f, -3.26f), Vector(-5.52f, -829.16f, -3.58f)
-//};
-//
-//const std::vector<Vector> BPlantPoints = { Vector(-1366.03f,2565.97f,4.65f), Vector(-1734.52f,1951.20f,-3.66f),Vector(-1680.61f,1796.50f,2.22f), Vector(-1676.78f, 1620.03f, 2.55f)
-//};
-//
-//const std::vector<Vector> ctDust2Points = { Vector(279.11f,2175.06f,-128.18f),
-//Vector(1380.f, 2131.6f, -5.48f), Vector(1398.04f, 928.93f, -8.78f), Vector(841.17f, 950.18f, 0.14f),
-//Vector(581.58f, 674.48f, 1.50f) , Vector(690.59f, 345.20f, 1.54f), Vector(446.82f, 70.25f, -3.26f),
-//Vector(-5.52f, -829.16f, -3.58f), Vector(-503.56f, -739.92f, 114.16f), Vector(-1913.50f,-735.72f, 121.20f),
-//Vector(-1676.94f, 726.70f, 31.00f), Vector(-1655.66f,1053.87f,31.57f), Vector(-1989.64f,1330.22f,28.93f),
-//Vector(-1926.35f,2197.58f,-3.22f), Vector(-1331.98f,2231.99f,2.05f), Vector(-1286.65f,2164.06f,4.25f),
-//Vector(-606.69f,2370.25f,-105.67f),Vector(-429.61f, 2196.21f, -123.86) };
-//
-////const std::vector<Vector> tRallyPoints = { Vector(-417.1f, -707.38f, 174.8f), Vector(234.3f, -664.2f, 66.0f), Vector(-419.8f, -446.0f, 66.0f), Vector(-375.1f, 701.1f, 67.4f) };
-////const std::vector<Vector> ctRallyPoints = { Vector(262.8f, 2157.6f, -63.2f), Vector(-537.6f, 2110.4f, -58.4f), Vector(-383.1f, 1489.1f, -60.0f), Vector(-375.1f, 701.1f, 67.4f) };
-//
-//C_BasePlayer* localPlayer;
 C_BasePlayer* localPlayer;
 void inline Reset()
 {
@@ -312,21 +287,6 @@ void Walkbot::CreateMove(CUserCmd *cmd)
 			return;
 		}
 	}
-
-//	bool dropped = false;
-
-	//EClassIds classId = localPlayer->GetClientClass()->m_ClassID;
-	//
-	//if ((classId == EClassIds::CC4) && Settings::WalkBot::plantbomb == 0 && !dropped) // If we prefer to drop the bomb and not plant, lets drop.
-	//{
-	//	// Small delay so we don't drop our slot1 too.
-	//	droptick++;
-	//	if (droptick > 64)
-	//	{
-	//		pEngine->ClientCmd("drop");
-	//		dropped = true;
-	//	}
-	//}
 
 	if (ourTeam == TeamID::TEAM_TERRORIST)
 	{

@@ -88,7 +88,6 @@ bool Settings::ESP::BulletTracers::enabled = false;
 bool Settings::ESP::FOVCrosshair::enabled = false;
 bool Settings::ESP::FOVCrosshair::filled = false;
 ColorVar Settings::ESP::FOVCrosshair::color = ImColor(180, 50, 50, 255);
-bool Settings::ESP::PlayerIndicator::enabled = false;
 bool Settings::ESP::Skeleton::enabled = false;
 bool Settings::ESP::SkeletonBacktrack::enabled = false;
 bool Settings::ESP::Sounds::enabled = false;
@@ -834,81 +833,6 @@ static void DrawThrowable(C_BaseEntity* throwable, ClientClass* client)
 	DrawEntity(throwable, nadeName.c_str(), Color::FromImColor(nadeColor));
 }
 
-static void DrawDirection(const Vector& origin) //monarch is the NIGGA
-{
-	/*constexpr float radius = 360.0f;
-	int width, height;
-	pEngine->GetScreenSize(width, height);
-
-	Vector vRealAngles;
-	pEngine->GetViewAngles(vRealAngles);
-
-	Vector vForward, vRight, vUp(0.0f, 0.0f, 1.0f);
-
-	Math::AngleVectors(vRealAngles, &vForward, NULL, NULL);
-
-	vForward.z = 0.0f;
-	Math::NormalizeAngles(vForward);
-	CrossProduct(vUp, vForward, vRight);
-
-
-
-	float flFront = VecDotProduct(origin, vForward);
-	float flSide = VecDotProduct(origin, vRight);
-	float flXPosition = radius * -flSide;
-	float flYPosition = radius * -flFront;
-
-	float rotation = G::UserCmd->viewangles.y + 180;
-
-	rotation = atan2(flXPosition, flYPosition) + M_PI;
-	rotation *= 180.0f / M_PI;
-
-	float flYawRadians = -(rotation)* M_PI / 180.0f;
-	float flCosYaw = cos(flYawRadians);
-	float flSinYaw = sin(flYawRadians);
-
-	flXPosition = (int)((width / 2.0f) + (radius * flSinYaw));
-	flYPosition = (int)((height / 2.0f) - (radius * flCosYaw));
-*/
-
-//	int width, height;
-//	pEngine->GetScreenSize(width, height);
-//
-//	float flRadius = 360.0f;
-//	Vector vRealAngles;
-//	pEngine->GetViewAngles(vRealAngles);
-//
-//	Vector vForward, vRight, vUp(0.0f, 0.0f, 1.0f);
-//
-//	Math::AngleVectors(vRealAngles, vForward);
-//
-//	vForward.z = 0.0f;
-//	Math::NormalizeVector(vForward);
-//	vRight = CrossProduct(vUp, vForward);
-//
-//	float flFront = VecDotProduct(origin, vForward);
-//	float flSide = VecDotProduct(origin, vRight);
-//	float flXPosition = flRadius * -flSide;
-//	float flYPosition = flRadius * -flFront;
-//
-//	float flRotation = G::UserCmd->viewangles.y + 180;
-//
-////	flRotation = atan2(flXPosition, flYPosition) + PI;
-////	flRotation *= 180.f / PI;
-//
-////	float flYawRadians = -(flRotation)* PI / 180.f;
-//	float flCosYaw = cos(flYawRadians);
-//	float flSinYaw = sin(flYawRadians);
-//
-//	flXPosition = (int)((width / 2.0f) + (flRadius * flSinYaw));
-//	flYPosition = (int)((height / 2.0f) - (flRadius * flCosYaw));
-//
-//
-//	Draw::OutlinedCircle(flXPosition, flYPosition, 5, 25, Color(255, 0, 0, 255));
-//	
-
-	//RENDER::DrawFilledCircle(flXPosition, flYPosition, 10, 50, CColor(255, 0, 255, 120));
-}
 
 static void DrawSkeleton(C_BasePlayer* player)
 {
@@ -1805,9 +1729,6 @@ static void DrawPlayer(int index, C_BasePlayer* player, IEngineClient::player_in
 	}
 
 
-	if (Settings::ESP::PlayerIndicator::enabled)
-		DrawDirection(player->GetVecOrigin());
-
 	if (Settings::ESP::Skeleton::enabled)
 		DrawSkeleton(player);
 
@@ -1849,6 +1770,8 @@ void ESP::Paint()
 
 	if (!pEngine->IsInGame())
 		return;
+
+
 
 	C_BasePlayer* localplayer = (C_BasePlayer*)pEntityList->GetClientEntity(pEngine->GetLocalPlayer());
 	if (!localplayer)

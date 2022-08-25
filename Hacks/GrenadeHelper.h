@@ -9,6 +9,7 @@ namespace GrenadeHelper
 //	void AimAssist(CUserCmd* cmd);
 //	ImColor getColor(GrenadeType type);
 //	void CheckForUpdate();
+	//GrenadeType getGrenadeType(C_BaseCombatWeapon* wpn);
 
 	void CreateMove(CUserCmd* cmd);//Activly Help to throw grenade
 	void Paint();//Draw the Grenade Helper Esp

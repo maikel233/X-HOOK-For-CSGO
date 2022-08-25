@@ -100,7 +100,7 @@ static bool Autowall::HandleBulletPenetration(CCSWeaponInfo* weaponInfo, FireBul
 	float enter_surf_penetration_mod = enter_surface_data->game.flPenetrationModifier;
 
 	data.trace_length += data.enter_trace.fraction * data.trace_length_remaining;
-	data.current_damage *= powf(weaponInfo->GetRangeModifier(), data.trace_length * 0.002f);
+	data.current_damage *= powf(weaponInfo->GetRangeModifier, data.trace_length * 0.002f);
 
 	if (data.trace_length > 3000.f || enter_surf_penetration_mod < 0.1f)
 		data.penetrate_count = 0;
@@ -141,7 +141,7 @@ static bool Autowall::HandleBulletPenetration(CCSWeaponInfo* weaponInfo, FireBul
 
 	float v34 = fmaxf(0.f, 1.0f / combined_penetration_modifier);
 	float v35 = (data.current_damage * final_damage_modifier) +
-		v34 * 3.0f * fmaxf(0.0f, (3.0f / weaponInfo->GetPenetration()) * 1.25f);
+		v34 * 3.0f * fmaxf(0.0f, (3.0f / weaponInfo->GetPenetration) * 1.25f);
 	float thickness = (trace_exit.endpos - data.enter_trace.endpos).Length();
 
 	thickness *= thickness;
@@ -177,14 +177,14 @@ static void TraceLine(Vector vecAbsStart, Vector vecAbsEnd, unsigned int mask, C
 
 static bool Autowall::SimulateFireBullet(C_BaseCombatWeapon* pWeapon, bool teamCheck, FireBulletData& data) {
 	C_BasePlayer* localplayer = (C_BasePlayer*)pEntityList->GetClientEntity(pEngine->GetLocalPlayer());
-	CCSWeaponInfo* weaponInfo = pWeapon->GetCSWpnData();
+	CCSWeaponInfo* weaponInfo = pWeapon->GetCSWeaponData();
 
 	data.penetrate_count = 4;
 	data.trace_length = 0.0f;
-	data.current_damage = (float)weaponInfo->GetDamage();
+	data.current_damage = (float)weaponInfo->GetDamage;
 
 	while (data.penetrate_count > 0 && data.current_damage >= 1.0f) {
-		data.trace_length_remaining = weaponInfo->GetRange() - data.trace_length;
+		data.trace_length_remaining = weaponInfo->GetRange - data.trace_length;
 
 		Vector end = data.src + data.direction * data.trace_length_remaining;
 
@@ -204,13 +204,13 @@ static bool Autowall::SimulateFireBullet(C_BaseCombatWeapon* pWeapon, bool teamC
 		if (data.enter_trace.hitgroup <= HitGroups::HITGROUP_RIGHTLEG &&
 			data.enter_trace.hitgroup > HitGroups::HITGROUP_GENERIC) {
 			data.trace_length += data.enter_trace.fraction * data.trace_length_remaining;
-			data.current_damage *= powf(weaponInfo->GetRangeModifier(), data.trace_length * 0.002f);
+			data.current_damage *= powf(weaponInfo->GetRangeModifier, data.trace_length * 0.002f);
 
 			C_BasePlayer* player = (C_BasePlayer*)data.enter_trace.m_pEnt;
 			if (teamCheck && player->GetTeam() == localplayer->GetTeam())
 				return false;
 
-			ScaleDamage(data.enter_trace.hitgroup, player, weaponInfo->GetWeaponArmorRatio(), data.current_damage);
+			ScaleDamage(data.enter_trace.hitgroup, player, weaponInfo->GetWeaponArmorRatio, data.current_damage);
 
 			return true;
 		}

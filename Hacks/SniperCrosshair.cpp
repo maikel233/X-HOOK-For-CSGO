@@ -23,7 +23,7 @@ void SniperCrosshair::Paint() {
 	if (!activeWeapon)
 		return;
 
-	if (activeWeapon->GetCSWpnData()->GetWeaponType() != CSWeaponType::WEAPONTYPE_SNIPER_RIFLE)
+	if (!activeWeapon->IsSniper())
 		return;
 
 	int width, height;

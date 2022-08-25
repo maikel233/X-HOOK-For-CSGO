@@ -22,11 +22,11 @@ std::string Settings::GrenadeHelper::actMapName;
 
 GrenadeType getGrenadeType(C_BaseCombatWeapon* wpn)
 {
-	if (!strcmp(wpn->GetCSWpnData()->szClassName, XorStr("weapon_hegrenade")))
+	if (!strcmp(wpn->GetCSWeaponData()->szClassName, XorStr("weapon_hegrenade")))
 		return GrenadeType::HEGRENADE;
-	if (!strcmp(wpn->GetCSWpnData()->szClassName, XorStr("weapon_smokegrenade")))
+	if (!strcmp(wpn->GetCSWeaponData()->szClassName, XorStr("weapon_smokegrenade")))
 		return GrenadeType::SMOKE;
-	if (!strcmp(wpn->GetCSWpnData()->szClassName, XorStr("weapon_flashbang")) || !strcmp(wpn->GetCSWpnData()->szClassName, XorStr("weapon_decoy")))
+	if (!strcmp(wpn->GetCSWeaponData()->szClassName, XorStr("weapon_flashbang")) || !strcmp(wpn->GetCSWeaponData()->szClassName, XorStr("weapon_decoy")))
 		return GrenadeType::FLASH;
 	return GrenadeType::MOLOTOV;// "weapon_molotov", "weapon_incgrenade"
 }
@@ -95,7 +95,7 @@ void GrenadeHelper::Paint()
 		return;
 
 	C_BaseCombatWeapon* activeWeapon = (C_BaseCombatWeapon*)pEntityList->GetClientEntityFromHandle(localPlayer->GetActiveWeapon());
-	if (!activeWeapon || activeWeapon->GetCSWpnData()->GetWeaponType() != CSWeaponType::WEAPONTYPE_GRENADE)
+	if (!activeWeapon || activeWeapon->IsGrenade())
 		return;
 
 	if (Settings::GrenadeHelper::grenadeInfos.empty())
@@ -128,7 +128,7 @@ void AimAssist(CUserCmd* cmd)
 
 	C_BaseCombatWeapon* activeWeapon = (C_BaseCombatWeapon*)pEntityList->GetClientEntityFromHandle(localPlayer->GetActiveWeapon());
 
-	if (!activeWeapon || activeWeapon->GetCSWpnData()->GetWeaponType() != CSWeaponType::WEAPONTYPE_GRENADE)
+	if (!activeWeapon || activeWeapon->IsGrenade())
 		return;
 
 	bool shootThisTick = cmd->buttons & IN_ATTACK;

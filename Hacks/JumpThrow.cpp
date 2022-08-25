@@ -17,7 +17,7 @@ void JumpThrow::CreateMove(CUserCmd* cmd)
 	if (!activeWeapon)
 		return;
 
-	if (activeWeapon->GetCSWpnData()->GetWeaponType() != CSWeaponType::WEAPONTYPE_GRENADE)
+	if (!activeWeapon->IsGrenade())
 		return;
 
 	if (localplayer->GetMoveType() == MOVETYPE_LADDER || localplayer->GetMoveType() == MOVETYPE_NOCLIP)
