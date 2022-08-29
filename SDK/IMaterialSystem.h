@@ -207,9 +207,9 @@ public:
 		return getvfunc<oFunc>(this, 36)(this);
 	}
 
-	IMaterial* CreateMaterial(const char* pMaterialName, KeyValues* pVMTKeyValues)
+	IMaterial* CreateMaterial(const char* pMaterialName, void* pVMTKeyValues)
 	{
-		typedef IMaterial* (__thiscall* oCreateMaterial)(void*, const char*, KeyValues*);
+		typedef IMaterial* (__thiscall* oCreateMaterial)(void*, const char*, void*);
 		return getvfunc<oCreateMaterial>(this, 83)(this, pMaterialName, pVMTKeyValues);
 	}
 

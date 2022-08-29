@@ -1,6 +1,9 @@
 #pragma once
 
 #include <Windows.h>
+
+#include "../Utils/FindPattern.h"
+
 #include "Vector.h"
 #include "getvfunc.h"
 #include "Color.h"
@@ -11,6 +14,7 @@
 #include "IClientMode.h"
 #include "IAppSystem.h"
 #include "IInputSystem.h"
+#include "WeaponSystem.h"
 #include "IMaterialSystem.h"
 #include "IVModelRender.h"
 #include "IClientEntity.h"
@@ -36,3 +40,6 @@
 //#include "ICommandLine.h" // Param check
 #include "materialsystem_config.h"
 #include "IMaterial.h"
+#include "key_values.h"
+
+#include "Utils_fox.h"

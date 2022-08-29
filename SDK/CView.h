@@ -1,5 +1,7 @@
 #pragma once
 
+#include "pad.h"
+
 enum MotionBlurMode_t
 {
 	MOTION_BLUR_DISABLE = 1,
@@ -17,17 +19,7 @@ public:
 	int oldWidth;
 	int height;
 	int oldHeight;
-
-	bool m_bOrtho;
-	float m_OrthoLeft;
-	float m_OrthoTop;
-	float m_OrthoRight;
-	float m_OrthoBottom;
-
-private:
-	char pad1[0x7C];
-
-public:
+	PAD(144);
 	float fov;
 	float fovViewmodel;
 	Vector origin;

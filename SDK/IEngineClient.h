@@ -1,5 +1,7 @@
 #pragma once
 
+
+
 typedef void* FileNameHandle_t;
 
 struct SndInfo_t
@@ -49,8 +51,6 @@ public:
 		unsigned int customfiles[4];
 		unsigned char filesdownloaded;
 	} player_info_t;
-
-//	VIRTUAL_METHOD(INetChannelInfo*, getNetworkChannel, 78, (), (this))
 
 	void GetScreenSize(int& width, int& height)
 	{

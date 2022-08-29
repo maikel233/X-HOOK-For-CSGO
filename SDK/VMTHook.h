@@ -1,5 +1,7 @@
 #pragma once
 #include <memory>
+#include "../Utils/minhook/Minhook.h"
+
 class VMTHook //credits @ https://github.com/aixxe/vmthook
 {
 private:
@@ -61,3 +63,42 @@ public:
 		return this->total_functions;
 	}
 };
+
+
+
+namespace hookHelper
+{
+	template<typename T>
+	inline constexpr void** ORIGINAL(T& arg)
+	{
+		return reinterpret_cast<void**>(&arg);
+	}
+
+	inline void tryHook(void* target, void* detour, void* original, const std::string_view name)
+	{
+		const MH_STATUS hk = MH_CreateHook(static_cast<LPVOID>(target), static_cast<LPVOID>(detour), static_cast<LPVOID*>(original));
+		if (hk != MH_OK)
+			throw std::runtime_error("{} hook error"), name;
+		//console.log(TypeLogs::LOG_INFO, XOR("{} -> {} hooked at addr {:#0x}"), name, MH_StatusToString(hk), reinterpret_cast<uintptr_t>(target));
+	}
+
+	inline void checkAllHooks()
+	{
+		const auto status = MH_EnableHook(MH_ALL_HOOKS);
+		if (status != MH_OK)
+			throw std::runtime_error("MH_EnableHook error");
+	}
+
+	inline void initMinhook()
+	{
+		if (MH_Initialize() != MH_OK)
+			throw std::runtime_error("MH_Initialize error");
+	}
+
+	inline void shutdownAllHooks()
+	{
+		MH_DisableHook(MH_ALL_HOOKS);
+		MH_RemoveHook(MH_ALL_HOOKS);
+		MH_Uninitialize();
+	}
+}

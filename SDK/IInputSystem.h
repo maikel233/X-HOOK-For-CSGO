@@ -265,8 +265,19 @@ struct CUserCmd
 	short mousedx;
 	short mousedy;
 	bool hasbeenpredicted;
-	Vector headangles;
-	Vector headoffset;
+	char pad[0x18]{};
+
+	//inline int32 get_checksum() const {
+	//	static auto sig = reinterpret_cast<std::uint32_t(__thiscall*)(decltype(this))>(FindPattern("client.dll", "53 8B D9 83 C8"));
+	//	return sig(this);
+	//}
+
+	inline std::uint32_t get_checksum() const{
+		static auto sig = reinterpret_cast<std::uint32_t(__thiscall*)(decltype(this))>(FindPattern("client.dll", "53 8B D9 83 C8"));
+		return sig(this);
+	}
+
+	//[[nodiscard]] std::uint32_t get_checksum() const;
 };
 
 class IInputSystem : public IAppSystem
@@ -319,7 +330,7 @@ class CVerifiedUserCmd
 {
 public:
 	CUserCmd m_cmd;
-	CUserCmd  m_crc;
+	std::uint32_t m_crc{};
 };
 
 class IInputInternal;
@@ -327,46 +338,25 @@ class IInputInternal;
 class CInput
 {
 public:
+	std::byte pad0[0xC]; // 0x0
+	bool m_fTrackIRAvailable; // 0xC
+	bool m_fMouseInitialized; // 0xD
+	bool m_fMouseActive; // 0xE
+	std::byte pad1[0x9A]; // 0xF
+	bool m_fCameraInThirdPerson; // 0xA9
+	std::byte pad2[0x2]; // 0xAA
+	Vector m_vecCameraOffset; // 0xAC
+	std::byte pad3[0x38]; // 0xB8
+	CUserCmd* m_commands{};
+	CVerifiedUserCmd* m_verified_commands{};
 
-	inline CUserCmd* GetUserCmd(int sequence_number);
-//	inline CVerifiedUserCmd* GetVerifiedCmd(int sequence_number);
-	                                                  //should work -4 on all
-	void*               pvftable;                     //0x00
-	char                pad_0x08[0x8];               //0x08
-	bool                m_fTrackIRAvailable;          //0x04
-	bool                m_fMouseInitialized;          //0x05
-	bool                m_fMouseActive;               //0x06
-	bool                m_fJoystickAdvancedInit;      //0x07
-	char                pad_0x088[0x2C];               //0x08
-	void*               m_pKeys;                      //0x34
-	char                pad_0x38[0x64];               //0x38
-	int					pad_0x41;
-	int					pad_0x42;
-	bool                m_fCameraInterceptingMouse;   //0x9C
-	bool                m_fCameraInThirdPerson;       //0x9D
-	bool                m_fCameraMovingWithMouse;     //0x9E
-	Vector				m_vecCameraOffset;            //0xA0
-	bool                m_fCameraDistanceMove;        //0xAC
-	int                 m_nCameraOldX;                //0xB0
-	int                 m_nCameraOldY;                //0xB4
-	int                 m_nCameraX;                   //0xB8
-	int                 m_nCameraY;                   //0xBC
-	bool                m_CameraIsOrthographic;       //0xC0
-	Vector              m_angPreviousViewAngles;      //0xC4
-	Vector              m_angPreviousViewAnglesTilt;  //0xD0
-	float               m_flLastForwardMove;          //0xDC
-	int                 m_nClearInputState;           //0xE0
-	char                pad_0xE4[0x8];                //0xE4
-	CUserCmd*           m_pCommands;                  //0xEC
+	[[nodiscard]] CUserCmd* GetUserCmd(const int sequence_number) const {
+		return &m_commands[sequence_number % 150];
+	}
 
-	CUserCmd* GetUserCmd(int nSlot, int sequence_number)
-	{
-		return VirtualMethod::call<CUserCmd*, 8>(this, nSlot, sequence_number);
+	[[nodiscard]] CVerifiedUserCmd* GetVerifiedUserCmd(const int sequence_number) const {
+		return &m_verified_commands[sequence_number % 150];
 	}
 };
 
 
-CUserCmd* CInput::GetUserCmd(int sequence_number)
-{
-	return &m_pCommands[sequence_number % 150];
-}
