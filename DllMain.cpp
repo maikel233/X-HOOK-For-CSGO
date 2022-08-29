@@ -1,4 +1,4 @@
-#include "DllMain.h"
+﻿#include "DllMain.h"
 
 using namespace std::chrono_literals;
 
@@ -29,16 +29,17 @@ DWORD WINAPI Stage1(LPVOID hInstance)
 	IsReadyCallback = reinterpret_cast <IsReady> ((DWORD)FindPattern(CLIENT, "55 8B EC 83 E4 F8 83 EC 08 56 8B 35 ? ? ? ? 57 83 BE"));
 																																						  		
 	pPredSeed = *(int**)(FindPattern(CLIENT, "8B 0D ? ? ? ? BA ? ? ? ? E8 ? ? ? ? 83 C4 04") + 0x2);    
-	pClientState = *(CClientState**)(FindPattern(ENGINE, "A1 ? ? ? ? 8B 80 ? ? ? ? C3") + 1);
 
+	pClientState = *(CClientState**)(FindPattern(ENGINE, "A1 ? ? ? ? 8B 80 ? ? ? ? C3") + 1);
+	offsets.sigs.LoadSky = FindPattern(ENGINE, "55 8B EC 81 EC ? ? ? ? 56 57 8B F9 C7 45");
+	offsets.sigs.LineGoesThroughSmoke = FindPattern(CLIENT, "55 8B EC 83 EC 08 8B 15 ? ? ? ? 0F 57 C0");
 	offsets.sigs.SubmitReport = FindPattern(CLIENT, "55 8B EC 83 E4 F8 83 EC 28 8B 4D 08");
 
 	pGameRules = *(CSGameRulesProxy***)(FindPattern(CLIENT, "E8 ? ? ? ? A1 ? ? ? ? 85 C0 0F 84 ? ? ? ? 80 B8 ? ? ? ? ? 74 7A") + 0x6);
 	csPlayerResource = *(C_CSPlayerResource***)(FindPattern(CLIENT, "8B 3D ? ? ? ? 85 FF 0F 84 ? ? ? ? 81 C7") + 2);
 	pD3device = **reinterpret_cast<IDirect3DDevice9***>(FindPattern("shaderapidx9.dll", "A1 ? ? ? ? 50 8B 08 FF 51 0C") + 0x1);
 	
-	offsets.sigs.LoadSky = FindPattern(ENGINE, "55 8B EC 81 EC ? ? ? ? 56 57 8B F9 C7 45");							 
-	offsets.sigs.LineGoesThroughSmoke = FindPattern(CLIENT, "55 8B EC 83 EC 08 8B 15 ? ? ? ? 0F 57 C0");
+
 
 	pInput = *(CInput**)(FindPattern(CLIENT, "B9 ? ? ? ? F3 0F 11 04 24 FF 50 10") + 1);
 	pMoveHelper = **(IMoveHelper***)(FindPattern(CLIENT, "8B 0D ? ? ? ? 8B 45 ? 51 8B D4 89 02 8B 01") + 2);
@@ -49,7 +50,6 @@ DWORD WINAPI Stage1(LPVOID hInstance)
 	pGameui = (CGameUI*)(CreateInterfaceFn(GetProcAddress(GetModuleHandleA(CLIENT), "CreateInterface"))		("GameUI011", nullptr));
 	pClient = (IBaseClientDLL*)(CreateInterfaceFn(GetProcAddress(GetModuleHandleA(CLIENT), "CreateInterface"))		("VClient018", nullptr));
 	pEntityList = (IClientEntityList*)(CreateInterfaceFn(GetProcAddress(GetModuleHandleA(CLIENT), "CreateInterface"))		("VClientEntityList003", nullptr));
-
 
 	pInputSystem = (IInputSystem*)(CreateInterfaceFn(GetProcAddress(GetModuleHandleA(INPUTSYSTEM), "CreateInterface"))	("InputSystemVersion001", nullptr));
 

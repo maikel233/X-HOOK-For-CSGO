@@ -12,6 +12,7 @@
 
 extern IBaseClientDLL*			pClient;
 extern IInputSystem*			pInputSystem;
+
 extern IInputInternal*			pInputInternal;
 extern IEngineClient*			pEngine;
 extern IClientEntityList*		pEntityList;
@@ -53,6 +54,8 @@ extern ISteamFriends * pSteamFriends;
 extern ISteamGameCoordinator* pSteamGameCoordinator;
 
 extern MemAlloc* pMemAlloc;
+
+
 
 //extern CMoveData* g_MoveData;
 //extern ICommandLine* commandline;

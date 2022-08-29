@@ -2,6 +2,7 @@
 
 IBaseClientDLL*			pClient;
 IInputSystem*			pInputSystem;
+
 IInputInternal*			pInputInternal;
 IEngineClient*			pEngine;
 IClientEntityList*		pEntityList;
@@ -106,11 +107,10 @@ RecvVarProxyFn fnSequenceProxyFn;
 
 bool* s_bOverridePostProcessingDisable = nullptr;
 
-
 //CViewSetup mirror;
-
-
 class MemAlloc;
 
 void* WriteUsercmdDeltaToBufferReturn;
 uintptr_t WriteUserCmds;
+
+
