@@ -37,4 +37,3 @@ DWORD FindPattern(std::string moduleName, std::string pattern)
 	}
 	return NULL;
 }
-
