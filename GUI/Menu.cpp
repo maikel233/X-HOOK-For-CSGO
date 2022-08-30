@@ -1,4 +1,4 @@
-﻿#include "Menu.h"
+#include "Menu.h"
 #include "../ImGui/imgui_internal.h"
 #include "../settings.h"
 #include "Tabs/aimtab.h"
@@ -14,6 +14,7 @@
 #include "../Shared.h"
 
 CSteamID Settings::steamIdLobby;
+uint64 Settings::local_player_xiud = 0;
 
 bool Settings::UI::MainUI = false;
 bool Settings::UI::middle = true;
@@ -1086,8 +1087,6 @@ void Menu()
 								SetTooltip("Makes wall textures transparent");
 							
 								ImGui::Checkbox("Show Watermark", &Settings::UI::Watermark::showwatermark); 
-								ImGui::Checkbox("Player indicator", &Settings::ESP::PlayerIndicator::enabled);
-								SetTooltip("A test indicator...");
 							}
 							
 							if (ImGui::Button(XorStr("Material Config"), ImVec2(-1, 0)))
@@ -1821,7 +1820,7 @@ void Menu()
 											C_BaseCombatWeapon *activeWeapon = (C_BaseCombatWeapon *)pEntityList->GetClientEntityFromHandle(
 												localPlayer->GetActiveWeapon());
 											if (activeWeapon &&
-												activeWeapon->GetCSWpnData()->GetWeaponType() == CSWeaponType::WEAPONTYPE_GRENADE)
+												activeWeapon->IsGrenade())
 												gType = (int)getGrenadeType(activeWeapon);
 										}
 									}
